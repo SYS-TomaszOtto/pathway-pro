@@ -1,6 +1,6 @@
 # Portfolio Tool
 
-A free tracker for professional review portfolios and **CPD**, for apprentices, candidates and their mentors. It has built-in frameworks for **ICE IEng**, **IStructE** (Chartered, Incorporated and Technician Member) and the Engineering Council's **UK-SPEC** competences (CEng, IEng and EngTech, in the 4th edition and, for CEng and IEng, the older 3rd edition wording that some institutions' forms still use). Every list can be edited, and you can write your own for any institution or level.
+A free tracker for professional review portfolios and **CPD**, for apprentices, candidates and their mentors. It has built-in frameworks for **ICE IEng**, **IStructE** (Chartered, Incorporated and Technician Member) and the Engineering Council's **UK-SPEC** competences (CEng, IEng and EngTech, in the 4th edition and, for CEng and IEng, the older 3rd edition wording that some institutions' forms still use). There are also lists for **IChemE** (Chartered Member), **CIBSE** (MCIBSE, ACIBSE), **IMechE** (CEng and IEng application questions), **RINA** (CEng and IEng experiential learning outcomes), **IHE** (RITTech) and **CIHT** (Transport Planning Professional units, with minimum levels). Every list can be edited, and you can write your own for any institution or level.
 
 It is a single web page. There is nothing to install, no account, no server and no AI. Your files never leave your computer: the tool reads and saves them in a folder you choose, such as your OneDrive folder.
 
@@ -53,7 +53,7 @@ The tool includes:
 - the ICE IEng sub-attribute descriptions;
 - the Knowledge, Skills and Behaviours of the apprenticeship standard, which is published by the Institute for Apprenticeships and Technical Education.
 
-The UK-SPEC frameworks are the Engineering Council's published competence statements (UK-SPEC 4th edition; the 3rd edition wording is read from the Society of Operations Engineers application forms). The IStructE frameworks use the core objectives and minimum standards from the Institution's published IPD guidance (Chartered 2026, Incorporated 2025, Technician 2026); check them against the current guidance. They are included so the tool works offline. ICE's CPD guidance is summarised from ICE's own published guidance. This is an independent tool: it is not made or endorsed by ICE, IStructE, the Engineering Council or any other institution.
+The lists for the other institutions were read from their published guidance and application forms; the source is shown on the Framework page. They may contain mistakes or be out of date, so check them against the current documents and correct anything in Settings → Framework. The UK-SPEC frameworks are the Engineering Council's published competence statements (UK-SPEC 4th edition; the 3rd edition wording is read from the Society of Operations Engineers application forms). The IStructE frameworks use the core objectives and minimum standards from the Institution's published IPD guidance (Chartered 2026, Incorporated 2025, Technician 2026); check them against the current guidance. They are included so the tool works offline. ICE's CPD guidance is summarised from ICE's own published guidance. This is an independent tool: it is not made or endorsed by ICE, IStructE, the Engineering Council or any other institution.
 
 ## Licence
 

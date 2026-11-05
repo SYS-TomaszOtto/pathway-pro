@@ -1,0 +1,1018 @@
+{
+ "cibse-mcibse": {
+  "name": "CIBSE Member (MCIBSE)",
+  "source": "CIBSE, MCIBSE and FCIBSE Competence Criteria Framework",
+  "groups": [
+   [
+    "A",
+    "A. Knowledge and understanding"
+   ],
+   [
+    "B",
+    "B. Design, development and solving engineering problems"
+   ],
+   [
+    "C",
+    "C. Responsibility, management and leadership"
+   ],
+   [
+    "D",
+    "D. Communication and interpersonal skills"
+   ],
+   [
+    "E",
+    "E. Personal and professional commitment"
+   ]
+  ],
+  "attrs": [
+   [
+    "A1",
+    "A",
+    "Maintain and extend a sound theoretical approach to enable you to develop your particular role."
+   ],
+   [
+    "A2",
+    "A",
+    "Develop technological solutions to unusual or challenging problems, using your knowledge and understanding and/ or dealing with complex technical issues or situations with significant levels of risk."
+   ],
+   [
+    "B1",
+    "B",
+    "Take an active role in the identification and definition of project requirements, problems and opportunities."
+   ],
+   [
+    "B2",
+    "B",
+    "Identify the appropriate investigations and research needed to undertake the design, development and analysis required to complete an engineering task and conduct these activities effectively."
+   ],
+   [
+    "B3",
+    "B",
+    "Implement engineering tasks and evaluate the effectiveness of engineering solutions."
+   ],
+   [
+    "C1",
+    "C",
+    "Plan the work and resources needed to enable effective implementation of a significant engineering task or project."
+   ],
+   [
+    "C2",
+    "C",
+    "Manage (organise, direct and control), programme or schedule, budget and resource elements of a significant engineering task or project. Continued overleaf."
+   ],
+   [
+    "C3",
+    "C",
+    "Lead teams or technical specialisms and assist others to meet changing technical and managerial needs."
+   ],
+   [
+    "C4",
+    "C",
+    "Bring about continuous quality improvement and promote best practice."
+   ],
+   [
+    "D1",
+    "D",
+    "Communicate effectively with others, at all levels, in English."
+   ],
+   [
+    "D2",
+    "D",
+    "Clearly present and discuss proposals, justifications and conclusions."
+   ],
+   [
+    "D3",
+    "D",
+    "Demonstrate personal and social skills and awareness of diversity and inclusion issues."
+   ],
+   [
+    "E1",
+    "E",
+    "Understand and comply with relevant codes of conduct."
+   ],
+   [
+    "E2",
+    "E",
+    "Understand the safety implications of their role and manage, apply and improve safe systems of work."
+   ],
+   [
+    "E3",
+    "E",
+    "Understand the principles of sustainable development and apply them in their work. Continued overleaf."
+   ],
+   [
+    "E4",
+    "E",
+    "Carry out and record the Continuing Professional Development (CPD) necessary to maintain and enhance competence in their own area of practice."
+   ],
+   [
+    "E5",
+    "E",
+    "Understand the ethical issues that may arise in their role and carry out their responsibilities in an ethical manner."
+   ]
+  ]
+ },
+ "cibse-acibse": {
+  "name": "CIBSE Associate (ACIBSE)",
+  "source": "CIBSE, ACIBSE Application Guidance (2021)",
+  "groups": [
+   [
+    "A",
+    "A. Knowledge and understanding"
+   ],
+   [
+    "B",
+    "B. Design, development and solving engineering problems"
+   ],
+   [
+    "C",
+    "C. Responsibility, management and leadership"
+   ],
+   [
+    "D",
+    "D. Communication and interpersonal skills"
+   ],
+   [
+    "E",
+    "E. Personal and professional commitment"
+   ]
+  ],
+  "attrs": [
+   [
+    "A1",
+    "A",
+    "Maintain and extend a sound theoretical approach to the application of technology in engineering practice."
+   ],
+   [
+    "A2",
+    "A",
+    "Use a sound evidence-based approach to problem solving and contribute to continuous improvement."
+   ],
+   [
+    "B1",
+    "B",
+    "Identify, review and select techniques, procedures and methods to undertake engineering tasks."
+   ],
+   [
+    "B2",
+    "B",
+    "Contribute to the design and development of engineering solutions."
+   ],
+   [
+    "B3",
+    "B",
+    "Implement design solutions for equipment or processes and contribute to their evaluation."
+   ],
+   [
+    "C1",
+    "C",
+    "Plan the work and resources needed to enable effective implementation of engineering tasks and projects."
+   ],
+   [
+    "C2",
+    "C",
+    "Manage (organise, direct and control), programme or schedule, budget and resource elements of engineering tasks or projects."
+   ],
+   [
+    "C3",
+    "C",
+    "Manage teams, or the input of others, into own work and assist others Continued to meet changing and management needs."
+   ],
+   [
+    "C4",
+    "C",
+    "Take an active role in continuous quality improvement."
+   ],
+   [
+    "D1",
+    "D",
+    "Communicate effectively with others, at all levels, in English."
+   ],
+   [
+    "D2",
+    "D",
+    "Clearly present and discuss proposals, justifications and conclusions."
+   ],
+   [
+    "D3",
+    "D",
+    "Demonstrate personal and social skills and awareness of diversity and inclusion issues."
+   ],
+   [
+    "E1",
+    "E",
+    "Understand and comply with relevant codes of conduct."
+   ],
+   [
+    "E2",
+    "E",
+    "Understand the safety implications of their role and manage, apply and improve safe systems of work."
+   ],
+   [
+    "E3",
+    "E",
+    "Understand the principles of sustainable development and apply them in their work. Continued overleaf."
+   ],
+   [
+    "E4",
+    "E",
+    "Carry out and record the Continuing Professional Development (CPD) necessary to maintain and enhance competence in their own area of practice."
+   ],
+   [
+    "E5",
+    "E",
+    "Understand the ethical issues that may arise in their role and carry out their responsibilities in an ethical manner."
+   ]
+  ]
+ },
+ "icheme": {
+  "name": "IChemE Chartered Member",
+  "source": "IChemE, IPD submission guidance (Chartered Member)",
+  "groups": [
+   [
+    "A",
+    "A. Applying your knowledge and understanding to practical situations"
+   ],
+   [
+    "B",
+    "B. Handling the wider implications of your work as an engineer"
+   ],
+   [
+    "C",
+    "C. Interpersonal, leadership and communication skills"
+   ],
+   [
+    "D",
+    "D. Commitment to high standards of professional and ethical conduct"
+   ]
+  ],
+  "attrs": [
+   [
+    "A1",
+    "A",
+    "Applying appropriate theoretical and practical methods to identify or define a problem, opportunity or project."
+   ],
+   [
+    "A2",
+    "A",
+    "Combining ideas and contributions from different people and disciplines to arrive at appropriate engineering, technical or scientific solutions."
+   ],
+   [
+    "A3",
+    "A",
+    "Displaying creativity and innovation: developing your own ideas to produce new engineering, technical or scientific solutions, new designs and new technological approaches."
+   ],
+   [
+    "A4",
+    "A",
+    "Undertaking scientific or technical evaluation and optimisation (of product, process, equipment, method, project etc) against the requirements you identified, or the brief you were given."
+   ],
+   [
+    "A5",
+    "A",
+    "Planning and executing projects: organising or performing technical work to implement or validate solutions, designs etc."
+   ],
+   [
+    "B1",
+    "B",
+    "Ability to handle health, hazard and safety aspects: to apply appropriate principles, good practice, meet legislative requirements etc."
+   ],
+   [
+    "B2",
+    "B",
+    "Ability to handle sustainability aspects: these could include environmental, public concern and other societal issues, recognition of risks etc."
+   ],
+   [
+    "B3",
+    "B",
+    "Ability to handle commercial and economic aspects."
+   ],
+   [
+    "C1",
+    "C",
+    "Evidence of managing interpersonal communications and relationships including demonstrating an awareness of diversity and inclusion."
+   ],
+   [
+    "C2",
+    "C",
+    "Demonstrating leadership in a professional role."
+   ],
+   [
+    "C3",
+    "C",
+    "Communicating ideas and plans by report writing and oral presentation."
+   ],
+   [
+    "D1",
+    "D",
+    "Professional conduct."
+   ],
+   [
+    "D2",
+    "D",
+    "Ethical decision making."
+   ]
+  ]
+ },
+ "imeche-ceng": {
+  "name": "IMechE Chartered Engineer (CEng) application questions",
+  "source": "IMechE, CEng application form (2019): competence questions",
+  "groups": [
+   [
+    "A",
+    "A. Knowledge and understanding"
+   ],
+   [
+    "B",
+    "B. Design, development and solving engineering problems"
+   ],
+   [
+    "C",
+    "C. Responsibility, management and leadership"
+   ],
+   [
+    "D",
+    "D. Communication and interpersonal skills"
+   ],
+   [
+    "E",
+    "E. Personal and professional commitment"
+   ]
+  ],
+  "attrs": [
+   [
+    "A1",
+    "A",
+    "How have you maintained and extended a sound theoretical approach to enabling the introduction and exploitation of new and advancing technology and other relevant developments?"
+   ],
+   [
+    "A2",
+    "A",
+    "How have you engaged in the creative and innovative development of engineering technology and continuous improvement systems?"
+   ],
+   [
+    "B1",
+    "B",
+    "Have you identified potential projects and opportunities?"
+   ],
+   [
+    "B2",
+    "B",
+    "How have you conducted appropriate research and undertaken design and development of engineering solutions?"
+   ],
+   [
+    "B3",
+    "B",
+    "How have you implemented design solutions and evaluated their effectiveness?"
+   ],
+   [
+    "C1",
+    "C",
+    "How have you planned for effective project implementation?"
+   ],
+   [
+    "C2",
+    "C",
+    "How have you planned, budgeted, organised, directed and controlled tasks, people and resources?"
+   ],
+   [
+    "C3",
+    "C",
+    "How have you led teams and developed staff to meet changing technical and managerial needs?"
+   ],
+   [
+    "C4",
+    "C",
+    "How have you brought about continuous improvement through quality management?"
+   ],
+   [
+    "D1",
+    "D",
+    "How have you communicated in English with others at all levels?"
+   ],
+   [
+    "D2",
+    "D",
+    "How have you presented and discussed proposals?"
+   ],
+   [
+    "D3",
+    "D",
+    "How have you demonstrated personal and social skills?"
+   ],
+   [
+    "E1",
+    "E",
+    "How have you complied with relevant codes of conduct?"
+   ],
+   [
+    "E2",
+    "E",
+    "How have you managed and applied safe systems of work?"
+   ],
+   [
+    "E3",
+    "E",
+    "How have you undertaken engineering activities in a way that contributes to sustainable development?"
+   ],
+   [
+    "E4",
+    "E",
+    "How have you carried out continuing professional development (CPD) necessary to maintain and enhance competence in own area of practice?"
+   ],
+   [
+    "E5",
+    "E",
+    "How have you exercised responsibilities in an ethical manner?"
+   ]
+  ]
+ },
+ "imeche-ieng": {
+  "name": "IMechE Incorporated Engineer (IEng) application questions",
+  "source": "IMechE, IEng application form (2019): competence questions",
+  "groups": [
+   [
+    "A",
+    "A. Knowledge and understanding"
+   ],
+   [
+    "B",
+    "B. Design, development and solving engineering problems"
+   ],
+   [
+    "C",
+    "C. Responsibility, management and leadership"
+   ],
+   [
+    "D",
+    "D. Communication and interpersonal skills"
+   ],
+   [
+    "E",
+    "E. Personal and professional commitment"
+   ]
+  ],
+  "attrs": [
+   [
+    "A1",
+    "A",
+    "How have you maintained and extended a sound theoretical approach to the application of technology in engineering practice?"
+   ],
+   [
+    "A2",
+    "A",
+    "How have you used a sound evidence-based approach to problem solving, and contributed to continuous improvement?"
+   ],
+   [
+    "B1",
+    "B",
+    "How have you identified, reviewed and selected techniques, procedures and methods to undertake engineering tasks?"
+   ],
+   [
+    "B2",
+    "B",
+    "How have you contributed to the design and development of engineering solutions?"
+   ],
+   [
+    "B3",
+    "B",
+    "How have you implemented design solutions, and contributed to their evaluation?"
+   ],
+   [
+    "C1",
+    "C",
+    "How have you planned for effective project implementation?"
+   ],
+   [
+    "C2",
+    "C",
+    "How have you managed the planning, budgeting and organisation of tasks, people and resources?"
+   ],
+   [
+    "C3",
+    "C",
+    "How have you managed teams and developed staff to meet changing technical and managerial needs?"
+   ],
+   [
+    "C4",
+    "C",
+    "How have you managed continuous quality improvement?"
+   ],
+   [
+    "D1",
+    "D",
+    "How have you communicated in English with others at all levels?"
+   ],
+   [
+    "D2",
+    "D",
+    "How have you presented and discussed proposals?"
+   ],
+   [
+    "D3",
+    "D",
+    "How have you demonstrated personal and social skills?"
+   ],
+   [
+    "E1",
+    "E",
+    "How have you complied with relevant codes of conduct?"
+   ],
+   [
+    "E2",
+    "E",
+    "How have you managed and applied safe systems of work?"
+   ],
+   [
+    "E3",
+    "E",
+    "How have you undertaken engineering activities in a way that contributes to sustainable development?"
+   ],
+   [
+    "E4",
+    "E",
+    "How have you carried out continuing professional development (CPD) necessary to maintain and enhance competence in own area of practice?"
+   ],
+   [
+    "E5",
+    "E",
+    "How have you exercised responsibilities in an ethical manner?"
+   ]
+  ]
+ },
+ "rittech": {
+  "name": "IHE Registered IT Technician (RITTech)",
+  "source": "IHE, RITTech Professional Registration guidance V1.3",
+  "groups": [
+   [
+    "P1",
+    "P1. Autonomy"
+   ],
+   [
+    "P2",
+    "P2. Influence"
+   ],
+   [
+    "P3",
+    "P3. Complexity"
+   ],
+   [
+    "P4",
+    "P4. Business Skills"
+   ]
+  ],
+  "attrs": [
+   [
+    "P1.1",
+    "P1",
+    "Works under general direction; uses discretion in identifying and resolving complex problems and assignments."
+   ],
+   [
+    "P1.2",
+    "P1",
+    "Determines when issues should be escalated to a higher level."
+   ],
+   [
+    "P2.1",
+    "P2",
+    "Interacts with and influences department / project team members."
+   ],
+   [
+    "P2.2",
+    "P2",
+    "Has working level contact with customers and suppliers."
+   ],
+   [
+    "P2.3",
+    "P2",
+    "Makes decisions which may impact on the work assigned to individuals or phases of projects. 5."
+   ],
+   [
+    "P3.1",
+    "P3",
+    "Performs a broad range of work, sometimes complex and non-routine, in a variety of environments."
+   ],
+   [
+    "P3.2",
+    "P3",
+    "Demonstrates an analytical and systematic approach to problem solving."
+   ],
+   [
+    "P4.1",
+    "P4",
+    "Communicates effectively with customers, suppliers and partners using appropriate methods and terminology."
+   ],
+   [
+    "P4.2",
+    "P4",
+    "Plans, schedules, and monitors own work (and that of others where applicable) competently within limited deadlines and according to relevant legislation and procedures."
+   ],
+   [
+    "P4.3",
+    "P4",
+    "Identifies and applies technical information."
+   ],
+   [
+    "P4.4",
+    "P4",
+    "Appreciates how own role relates to other stakeholders and contributes fully to the work of teams."
+   ],
+   [
+    "P4.5",
+    "P4",
+    "Understands and uses appropriate methods, tools, and IT applications."
+   ],
+   [
+    "P4.6",
+    "P4",
+    "Understands how own role impacts security and demonstrates routine security practice and knowledge required for own work."
+   ]
+  ]
+ },
+ "rina-ceng": {
+  "name": "RINA Chartered Engineer (CEng): learning outcome areas",
+  "source": "RINA, Experiential Learning Report 2025: the learning outcomes the report asks you to evidence",
+  "groups": [
+   [
+    "1",
+    "1. Underpinning science, mathematics and engineering principles"
+   ],
+   [
+    "2",
+    "2. Engineering analysis"
+   ],
+   [
+    "3",
+    "3. Design"
+   ],
+   [
+    "4",
+    "4. Economic, social, environmental and ethical context"
+   ],
+   [
+    "5",
+    "5. Engineering practice"
+   ],
+   [
+    "6",
+    "6. Management and leadership"
+   ]
+  ],
+  "attrs": [
+   [
+    "1.1",
+    "1",
+    "Apply a comprehensive understanding of scientific, mathematical and engineering principles to complex problems."
+   ],
+   [
+    "1.2",
+    "1",
+    "Be aware of developing technologies."
+   ],
+   [
+    "1.3",
+    "1",
+    "Apply a comprehensive knowledge and understanding of mathematical and computer models, and appreciate their limitations."
+   ],
+   [
+    "1.4",
+    "1",
+    "Apply an understanding of concepts from a range of areas, including some outside engineering, and apply them effectively."
+   ],
+   [
+    "2.1",
+    "2",
+    "Apply fundamental knowledge, aided by critical evaluation of technical literature or other information sources, to investigate new and emerging technologies."
+   ],
+   [
+    "2.2",
+    "2",
+    "Apply mathematical and computer-based models to solve complex problems, and assess their limitations."
+   ],
+   [
+    "2.3",
+    "2",
+    "Extract data pertinent to a problem, and apply it to solving the problem, using computer-based engineering tools when appropriate."
+   ],
+   [
+    "3.1",
+    "3",
+    "Apply a wide knowledge and comprehensive understanding of design processes and methodologies, and adapt them in unfamiliar situations."
+   ],
+   [
+    "3.2",
+    "3",
+    "Apply an integrated or systems approach to the solution of complex problems."
+   ],
+   [
+    "3.3",
+    "3",
+    "Generate an innovative design for products, systems, components or processes, that meets defined needs (eg user, business & customer) and takes into account applicable health and safety, diversity, inclusion, cultural, societal, environmental and commercial matters, codes of practice and industry standards."
+   ],
+   [
+    "4.1",
+    "4",
+    "Evaluate the environmental and societal impact of sustainable solutions to complex problems (to include the entire lifecycle of a product or process) and minimise adverse impacts."
+   ],
+   [
+    "4.2",
+    "4",
+    "Identify and analyse ethical concerns and make reasoned ethical choices informed by professional codes of conduct."
+   ],
+   [
+    "5.1",
+    "5",
+    "Apply a thorough understanding of current engineering technologies, practice and processes (including workshop & laboratory skills) and their limitations when solving complex problems. Maintain awareness of likely new developments."
+   ],
+   [
+    "5.2",
+    "5",
+    "Apply an extensive knowledge and understanding engineering materials and components."
+   ],
+   [
+    "5.3",
+    "5",
+    "Apply engineering techniques, taking account of industrial constraints, including the role of quality management and commercial aspects such as legal matters and intellectual property rights."
+   ],
+   [
+    "5.4",
+    "5",
+    "Communicate effectively on complex engineering matters with technical and non-technical audiences."
+   ],
+   [
+    "6.1",
+    "6",
+    "Apply an extensive knowledge and understanding of engineering management, including project and change management as well as business practices, and their limitations, and how these may be applied appropriately."
+   ],
+   [
+    "6.2",
+    "6",
+    "Adopt an inclusive approach to engineering practice and recognise the responsibilities, benefits and importance of supporting equality, diversity and inclusion (EDI) and promote EDI in your work."
+   ],
+   [
+    "6.3",
+    "6",
+    "Understand the different roles within a team. Function effectively whether leading, as a member or as an individual."
+   ],
+   [
+    "6.4",
+    "6",
+    "Evaluate effectiveness of own and team performance."
+   ],
+   [
+    "6.5",
+    "6",
+    "Develop, monitor and update, on an on-going basis, a plan, to reflect a changing operating environment, as well as a personal programme of work."
+   ],
+   [
+    "6.6",
+    "6",
+    "Learn new theories, concepts, methods etc in unfamiliar situations."
+   ]
+  ]
+ },
+ "rina-ieng": {
+  "name": "RINA Incorporated Engineer (IEng): learning outcome areas",
+  "source": "RINA, Experiential Learning Report 2025: the learning outcomes the report asks you to evidence",
+  "groups": [
+   [
+    "1",
+    "1. Underpinning science and mathematics"
+   ],
+   [
+    "2",
+    "2. Engineering analysis"
+   ],
+   [
+    "3",
+    "3. Design"
+   ],
+   [
+    "4",
+    "4. Economic, social, environmental and ethical context"
+   ],
+   [
+    "5",
+    "5. Engineering practice"
+   ],
+   [
+    "6",
+    "6. Management and leadership"
+   ]
+  ],
+  "attrs": [
+   [
+    "1.1",
+    "1",
+    "Apply knowledge and understanding of the scientific and engineering principles underpinning relevant current technologies, and their evolution."
+   ],
+   [
+    "1.2",
+    "1",
+    "Apply knowledge and understanding of mathematics, including statistics, necessary to support application of key engineering principles."
+   ],
+   [
+    "2.1",
+    "2",
+    "Conduct systematic analysis and modelling of broadly defined problems using first principles to bring about continuous improvement."
+   ],
+   [
+    "2.2",
+    "2",
+    "Utilise quantitative methods and computer software, frequently within a multidisciplinary context, and appreciate their limitations."
+   ],
+   [
+    "2.3",
+    "2",
+    "Use the results of analysis, coupled with evaluation of technical information from all sources, to solve broadly defined engineering problems, coupled with the application of relevant technologies and processes."
+   ],
+   [
+    "3.1",
+    "3",
+    "Design solutions to broadly defined problems, noting constraints and applying an integrated or systems approach."
+   ],
+   [
+    "3.2",
+    "3",
+    "Design solutions, using practical creativity, that meets needs (eg user, business & customer) taking into account applicable health and safety, diversity, inclusion, cultural, societal, environmental and commercial matters, codes of practice and industry standards."
+   ],
+   [
+    "3.3",
+    "3",
+    "For a new or adaptation of an existing design ensure fitness for purpose (including operation, maintenance, reliability, sustainability, etc)."
+   ],
+   [
+    "4.1",
+    "4",
+    "Apply knowledge and understanding of management techniques, including commercial and economic factors, which may aid achievement of engineering objectives."
+   ],
+   [
+    "4.2",
+    "4",
+    "Evaluate the environmental and societal impact of sustainable solutions to broadly defined problems and understand the requirement for engineering activities to promote sustainable development."
+   ],
+   [
+    "4.3",
+    "4",
+    "Be aware of the framework of relevant legal requirements governing engineering activities, including personnel, health, safety, and risk (including environmental risk) issues."
+   ],
+   [
+    "4.4",
+    "4",
+    "Identify and analyse ethical concerns and make reasoned ethical choices informed by professional codes of conduct."
+   ],
+   [
+    "4.5",
+    "4",
+    "Use a risk management process to identify, evaluate and mitigate risks (the effects of uncertainty) linked to a project or activity. Mitigation action should be both holistic and proportionate and include security risks."
+   ],
+   [
+    "5.1",
+    "5",
+    "Apply knowledge and understanding of workshop and laboratory practice, coupled with the ability to use relevant materials, equipment, tools and processes."
+   ],
+   [
+    "5.2",
+    "5",
+    "Understand where engineering knowledge can be applied (eg operations and management, application and development of technology etc) including quality management systems that support continuous improvement."
+   ],
+   [
+    "5.3",
+    "5",
+    "Communicate effectively with technical and non-technical audiences."
+   ],
+   [
+    "6.1",
+    "6",
+    "Apply knowledge of engineering management principles, commercial context, project management and relevant legal matters."
+   ],
+   [
+    "6.2",
+    "6",
+    "Function effectively as an individual and as a member or leader of a team."
+   ],
+   [
+    "6.3",
+    "6",
+    "Recognise the responsibilities, benefits and importance of supporting equality, diversity and inclusion (EDI) and promote EDI in your work."
+   ]
+  ]
+ },
+ "ciht-tpp": {
+  "name": "CIHT Transport Planning Professional (TPP)",
+  "source": "CIHT, TPP Guidance Note 2 (March 2022), minimum requirements table",
+  "groups": [
+   [
+    "P",
+    "Professional units"
+   ],
+   [
+    "T",
+    "Technical units (T1-T6 core, T7-T10 additional)"
+   ]
+  ],
+  "attrs": [
+   [
+    "P1",
+    "P",
+    "Leadership",
+    "P"
+   ],
+   [
+    "P2",
+    "P",
+    "Communication and Collaboration Skills",
+    "P"
+   ],
+   [
+    "P3",
+    "P",
+    "Personal Commitment to Professional Standards and the Profession",
+    "P"
+   ],
+   [
+    "T1",
+    "T",
+    "The Policy Context",
+    "E"
+   ],
+   [
+    "T2",
+    "T",
+    "Laws and Regulations",
+    "E"
+   ],
+   [
+    "T3",
+    "T",
+    "Data",
+    "P"
+   ],
+   [
+    "T4",
+    "T",
+    "Transport Models and Forecasting",
+    "E"
+   ],
+   [
+    "T5",
+    "T",
+    "Appraisal and Evaluation",
+    "E"
+   ],
+   [
+    "T6",
+    "T",
+    "Stakeholder Engagement",
+    "E"
+   ],
+   [
+    "T7",
+    "T",
+    "Developing Strategic and Master Plans for Transport",
+    "A"
+   ],
+   [
+    "T8",
+    "T",
+    "Applying the Principles of Transport System Design",
+    "A"
+   ],
+   [
+    "T9",
+    "T",
+    "Changing Travel Behaviour",
+    "A"
+   ],
+   [
+    "T10",
+    "T",
+    "Commercial and Operational Management of Transport Systems",
+    "A"
+   ]
+  ],
+  "levels": [
+   [
+    "A",
+    "Awareness",
+    "a general awareness of the area."
+   ],
+   [
+    "K",
+    "Knowledge",
+    "knowledge and understanding of the area."
+   ],
+   [
+    "E",
+    "Experience",
+    "has experience of applying it in work."
+   ],
+   [
+    "P",
+    "Proficiency",
+    "is proficient: applies it independently and can advise others."
+   ]
+  ],
+  "note": "The guidance also asks you to choose three technical units, in addition to Data, to show Proficiency, and one additional unit (T7-T10) at Experience. Edit the minimum levels to match the units you choose."
+ }
+}

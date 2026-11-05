@@ -12,6 +12,10 @@ let FRAMEWORK = null;
 const DEFAULT_FOLDERS = { ...FOLDERS };
 const DEFAULT_CATEGORIES = EVIDENCE_CATEGORIES.slice();
 
+const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const escRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const clone = (o) => JSON.parse(JSON.stringify(o));
+
 const ICE_FRAMEWORK = {
   name: 'ICE IEng (apprenticeship)',
   source: 'ICE IEng sub-attributes and the apprenticeship standard KSBs (Institute for Apprenticeships and Technical Education)',
@@ -73,6 +77,21 @@ function ukspecFramework(key) {
     evidenceFolders: ['0 - Project work - PW', '1 - Reports and calculations - RC', '2 - Drawings and models - DM', '3 - Correspondence and meetings - CO', '4 - Certificates and CPD - CE'],
   };
 }
+// Other institutions' published competence lists (one preset each), read from their guidance documents.
+function instFramework(key) {
+  const d = INST_DATA[key];
+  const custom = d.levels && d.levels.length;
+  const levels = custom ? d.levels.map(([short, name, help]) => ({ id: slug(name), short, name, help })) : [{ id: 'evidence', short: 'E', name: 'Evidence', help: 'a piece of evidence that shows this requirement is met, for example a report, drawing, calculation, email or record of your own work.' }];
+  return {
+    name: d.name, source: d.source, goal: 1, labels: { attr: 'Requirements', ksb: 'Standards' }, levels,
+    groups: d.groups.map(([id, title]) => ({ id, title })),
+    attributes: d.attrs.map(([id, group, text, min]) => ({ id, group, text, min: custom && min ? (levels.find((l) => l.short === min) || {}).id || '' : '' })),
+    ksbs: [],
+    folders: { ...DEFAULT_FOLDERS },
+    evidenceFolders: ['0 - Project work - PW', '1 - Reports and calculations - RC', '2 - Drawings and models - DM', '3 - Correspondence and meetings - CO', '4 - Certificates and CPD - CE'],
+  };
+}
+const INST_ABOUT = 'Read from the institution’s published guidance. Evidence is mapped to each item; edit anything that is wrong or out of date.';
 const UKSPEC_ABOUT = 'Competences A1 to E5 as published by the Engineering Council. Many institutions assess against these, usually with their own examples. Evidence is mapped to each competence.';
 const IPD_ABOUT = 'Core objectives and the minimum standard for each, read from the Institution’s IPD guidance. Evidence at the minimum level or above counts. Check wording against the current guidance.';
 
@@ -81,17 +100,23 @@ const PRESETS = {
   'ukspec4-ceng': { group: 'Engineering Council UK-SPEC (used by many institutions)', name: 'Chartered Engineer (CEng), UK-SPEC 4th edition', about: UKSPEC_ABOUT, fw: ukspecFramework('ukspec4-ceng') },
   'ukspec4-ieng': { group: 'Engineering Council UK-SPEC (used by many institutions)', name: 'Incorporated Engineer (IEng), UK-SPEC 4th edition', about: UKSPEC_ABOUT, fw: ukspecFramework('ukspec4-ieng') },
   'ukspec4-engtech': { group: 'Engineering Council UK-SPEC (used by many institutions)', name: 'Engineering Technician (EngTech), UK-SPEC 4th edition', about: UKSPEC_ABOUT, fw: ukspecFramework('ukspec4-engtech') },
-  'ukspec3-ceng': { group: 'Engineering Council UK-SPEC (used by many institutions)', name: 'Chartered Engineer (CEng), older UK-SPEC 3rd edition wording', about: 'The 3rd edition wording, still used on some application forms (for example SOE and IMechE). ' + UKSPEC_ABOUT, fw: ukspecFramework('ukspec3-ceng') },
+  'ukspec3-ceng': { group: 'Engineering Council UK-SPEC (used by many institutions)', name: 'Chartered Engineer (CEng), older UK-SPEC 3rd edition wording', about: 'The 3rd edition wording, still used on some application forms (for example SOE, IET and IMechE forms). ' + UKSPEC_ABOUT, fw: ukspecFramework('ukspec3-ceng') },
   'ukspec3-ieng': { group: 'Engineering Council UK-SPEC (used by many institutions)', name: 'Incorporated Engineer (IEng), older UK-SPEC 3rd edition wording', about: 'The 3rd edition wording, still used on some application forms (for example SOE). ' + UKSPEC_ABOUT, fw: ukspecFramework('ukspec3-ieng') },
   'istructe-cm': { group: 'IStructE', name: 'IStructE Chartered Member (MIStructE): 10 core objectives', about: IPD_ABOUT, fw: ipdFramework('cm', 'IStructE Chartered Member (MIStructE)') },
   'istructe-im': { group: 'IStructE', name: 'IStructE Incorporated Member (IMIStructE): 10 core objectives', about: IPD_ABOUT, fw: ipdFramework('im', 'IStructE Incorporated Member (IMIStructE)') },
   'istructe-tm': { group: 'IStructE', name: 'IStructE Technician Member (TIStructE): 11 core objectives', about: IPD_ABOUT, fw: ipdFramework('tm', 'IStructE Technician Member (TIStructE)') },
+  'icheme': { group: 'IChemE', name: 'Chartered Member: IPD submission sections A to D', about: INST_ABOUT, fw: instFramework('icheme') },
+  'cibse-mcibse': { group: 'CIBSE', name: 'Member (MCIBSE): competence criteria A1 to E5', about: INST_ABOUT, fw: instFramework('cibse-mcibse') },
+  'cibse-acibse': { group: 'CIBSE', name: 'Associate (ACIBSE): competence criteria A1 to E5', about: INST_ABOUT, fw: instFramework('cibse-acibse') },
+  'imeche-ceng': { group: 'IMechE', name: 'Chartered Engineer (CEng): application questions (2019 form)', about: INST_ABOUT, fw: instFramework('imeche-ceng') },
+  'imeche-ieng': { group: 'IMechE', name: 'Incorporated Engineer (IEng): application questions (2019 form)', about: INST_ABOUT, fw: instFramework('imeche-ieng') },
+  'rina-ceng': { group: 'RINA', name: 'Chartered Engineer (CEng): experiential learning outcomes', about: INST_ABOUT, fw: instFramework('rina-ceng') },
+  'rina-ieng': { group: 'RINA', name: 'Incorporated Engineer (IEng): experiential learning outcomes', about: INST_ABOUT, fw: instFramework('rina-ieng') },
+  'rittech': { group: 'IHE', name: 'Registered IT Technician (RITTech): competencies P1 to P4', about: INST_ABOUT, fw: instFramework('rittech') },
+  'ciht-tpp': { group: 'CIHT', name: 'Transport Planning Professional (TPP): units with minimum levels', about: INST_ABOUT + ' ' + INST_DATA['ciht-tpp'].note, fw: instFramework('ciht-tpp') },
   blank: { group: 'Your own', name: 'Start my own (blank)', about: 'One level, one requirement and two evidence folders. You write the rest in Settings → Framework: paste your requirements from a spreadsheet or document.', fw: BLANK_FRAMEWORK },
 };
 
-const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-const escRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-const clone = (o) => JSON.parse(JSON.stringify(o));
 
 function applyFramework(fw) {
   fw = fw || ICE_FRAMEWORK;

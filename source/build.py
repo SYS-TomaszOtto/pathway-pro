@@ -11,8 +11,10 @@ ref = {
 }
 version = datetime.date.today().isoformat()
 IPD = json.loads((src / 'ipd.json').read_text())
+INST = json.loads((src / 'institutions.json').read_text())
 UKSPEC = json.loads((src / 'ukspec.json').read_text())
-js = [f'const UKSPEC_DATA = {json.dumps(UKSPEC, ensure_ascii=False, separators=(",", ":"))};\n',
+js = [f'const INST_DATA = {json.dumps(INST, ensure_ascii=False, separators=(",", ":"))};\n',
+      f'const UKSPEC_DATA = {json.dumps(UKSPEC, ensure_ascii=False, separators=(",", ":"))};\n',
       f'const IPD_DATA = {json.dumps(IPD, ensure_ascii=False, separators=(",", ":"))};\n',
       f'const TOOL_VERSION = {json.dumps(version)};\n',
       f'// ICE IEng sub-attributes and apprenticeship KSBs, from "IEng Attributes and KSB List.xlsx".\nconst REF = {json.dumps(ref, ensure_ascii=False, separators=(",", ":"))};\n']
