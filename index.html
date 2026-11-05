@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ICE Tool</title>
-<!-- ICE Tool 2026-11-05: a tracker for the ICE Professional Review and CPD. One file, no install, no internet,
-     no AI. Open in Microsoft Edge or Google Chrome. Source and licence notes: see "How to use ICE Tool". -->
+<title>Portfolio Tool</title>
+<!-- Portfolio Tool 2026-11-05: a tracker for a professional review portfolio and CPD. One file, no install, no internet,
+     no AI. Open in Microsoft Edge or Google Chrome. Source and licence notes: see "How to use Portfolio Tool". -->
 <style>
 :root {
   --bg: #f5f6f8; --panel: #ffffff; --ink: #1d2330; --muted: #5f6b7a; --line: #dde1e7; --soft: #eef1f5;
@@ -42,7 +42,7 @@ kbd { border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4p
 
 /* ---------- top bar ---------- */
 header.top { position: sticky; top: 0; z-index: 20; background: var(--panel); border-bottom: 1px solid var(--line); box-shadow: var(--shadow); }
-header.top .bar { display: flex; align-items: center; gap: .25rem; padding: 0 16px; min-height: 48px; flex-wrap: wrap; }
+header.top .bar { display: flex; align-items: center; gap: .25rem; padding: 0 24px; min-height: 48px; flex-wrap: wrap; }
 header.top .brand { font-weight: 700; margin-right: .8rem; color: var(--ink); white-space: nowrap; }
 header.top .brand small { font-weight: 400; color: var(--muted); margin-left: .4rem; }
 nav.tabs { display: flex; gap: 2px; flex-wrap: wrap; }
@@ -60,15 +60,15 @@ nav.tabs a .count { display: inline-block; min-width: 1.4em; padding: 0 .35em; m
 #searchResults a:hover, #searchResults a.sel { background: var(--accent-soft); text-decoration: none; }
 #searchResults .kind { display: inline-block; width: 5.5rem; color: var(--muted); font-size: .8rem; }
 
-main { padding: 18px 16px 60px; max-width: 2600px; margin: 0 auto; }
+main { padding: 24px 24px 60px; max-width: 2600px; margin: 0 auto; }
 .banner { padding: .6rem .9rem; border-radius: var(--radius); margin-bottom: .8rem; background: var(--part-soft); color: var(--ink); border: 1px solid var(--line); }
 .banner.bad { background: var(--bad-soft); }
 .banner.info { background: var(--accent-soft); }
 
 /* ---------- building blocks ---------- */
-.card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; box-shadow: var(--shadow); margin-bottom: 14px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; box-shadow: var(--shadow); margin-bottom: 14px; }
 .card > h2:first-child, .card > h3:first-child { margin-top: 0; }
-.grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); align-items: start; }
+.grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(min(330px, 100%), 1fr)); align-items: start; }
 .cols { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
 .cols.wide-left { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); }
 @media (max-width: 1000px) { .cols, .cols.wide-left { grid-template-columns: 1fr; } }
@@ -101,8 +101,15 @@ label { display: block; font-size: .85rem; color: var(--muted); margin: .55rem 0
 .form-grid input, .form-grid select { width: 100%; }
 
 table { width: 100%; border-collapse: collapse; }
-th, td { text-align: left; padding: .4rem .5rem; border-bottom: 1px solid var(--soft); vertical-align: top; }
-th { font-size: .82rem; color: var(--muted); font-weight: 600; position: sticky; top: 49px; background: var(--panel); z-index: 1; }
+th, td { text-align: left; padding: .6rem .8rem; border-bottom: 1px solid var(--soft); vertical-align: top; }
+th { font-size: .82rem; color: var(--muted); font-weight: 600; background: var(--panel); white-space: nowrap; }
+/* Sticky headers only where nothing scrolls sideways and the top bar stays one line; elsewhere they overlapped the first row. */
+@media (min-width: 1200px) { table:not(.table-wrap table) th { position: sticky; top: 49px; z-index: 1; } }
+table.attr td:nth-child(2) { min-width: 18rem; }
+table.attr td:nth-child(3) { white-space: nowrap; }
+table.attr td:nth-child(4) { min-width: 8rem; overflow-wrap: anywhere; }
+table.attr td, table.attr th { padding-top: .7rem; padding-bottom: .7rem; }
+td.nowrap + td { padding-left: 1rem; }
 tr.click { cursor: pointer; }
 tr.click:hover td { background: var(--accent-soft); }
 .table-wrap { overflow-x: auto; }
@@ -211,7 +218,10 @@ dialog::backdrop { background: rgba(10, 15, 25, .45); }
   th { position: static; }
 }
 @media (max-width: 700px) {
-  main { padding: 12px 12px 50px; }
+  main { padding: 14px 12px 50px; }
+  .card { padding: 14px 14px; }
+  header.top .bar { padding: 0 12px; }
+  th, td { padding: .5rem .55rem; }
   .tline { grid-template-columns: 1fr; }
   #search { width: 9rem; }
 }
@@ -224,6 +234,10 @@ dialog::backdrop { background: rgba(10, 15, 25, .45); }
 <noscript>This tool needs JavaScript. Open it in Microsoft Edge or Google Chrome.</noscript>
 <script>
 "use strict";
+const UKSPEC_DATA = {"ukspec4-engtech":{"name":"UK-SPEC 4th edition: Engineering Technician (EngTech)","source":"Engineering Council, UK-SPEC 4th edition, Competence and Commitment Standard","attrs":[["A1","A","Review and select appropriate techniques, procedures and methods to undertake tasks."],["A2","A","Use appropriate scientific, technical or engineering principles."],["B1","B","Identify problems and apply appropriate methods to identify causes and achieve satisfactory solutions."],["B2","B","Identify, organise and use resources effectively to complete tasks, with consideration for cost, quality, safety, security and environmental impact."],["C1","C","Work reliably and effectively without close supervision, to the appropriate codes of practice."],["C2","C","Accept responsibility for the work of themselves or others."],["C3","C","Accept, allocate and supervise technical and other tasks."],["D1","D","Communicate effectively with others, at all levels, in English."],["D2","D","Work effectively with colleagues, clients, suppliers or the public."],["D3","D","Demonstrate personal and social skills and awareness of diversity and inclusion issues."],["E1","E","Understand and comply with relevant codes of conduct."],["E2","E","Understand the safety implications of their role and apply safe systems of work."],["E3","E","Understand the principles of sustainable development and apply them in their work."],["E4","E","Carry out and record the Continuing Professional Development (CPD) necessary to maintain and enhance competence in their own area of practice."],["E5","E","Understand the ethical issues that may arise in their role and carry out their responsibilities in an ethical manner."]]},"ukspec4-ieng":{"name":"UK-SPEC 4th edition: Incorporated Engineer (IEng)","source":"Engineering Council, UK-SPEC 4th edition, Competence and Commitment Standard","attrs":[["A1","A","Have maintained and extended a sound theoretical approach to the application of technology in engineering practice."],["A2","A","Use a sound evidence-based approach to problem-solving and contribute to continuous improvement."],["B1","B","Identify, review and select techniques, procedures and methods to undertake engineering tasks."],["B2","B","Contribute to the design and development of engineering solutions."],["B3","B","Implement design solutions for equipment or processes and contribute to their evaluation."],["C1","C","Plan the work and resources needed to enable effective implementation of engineering tasks and projects."],["C2","C","Manage (organise, direct and control), programme or schedule, budget and resource elements of engineering tasks or projects."],["C3","C","Manage teams, or the input of others, into own work and assist others to meet changing technical and management needs."],["C4","C","Take an active role in continuous quality improvement."],["D1","D","Communicate effectively with others, at all levels, in English."],["D2","D","Clearly present and discuss proposals, justifications and conclusions."],["D3","D","Demonstrate personal and social skills and awareness of diversity and inclusion issues."],["E1","E","Understand and comply with relevant codes of conduct."],["E2","E","Understand the safety implications of their role and manage, apply and improve safe systems of work."],["E3","E","Understand the principles of sustainable development and apply them in their work."],["E4","E","Carry out and record the Continuing Professional Development (CPD) necessary to maintain and enhance competence in their own area of practice."],["E5","E","Understand the ethical issues that may arise in their role and carry out their responsibilities in an ethical manner."]]},"ukspec4-ceng":{"name":"UK-SPEC 4th edition: Chartered Engineer (CEng)","source":"Engineering Council, UK-SPEC 4th edition, Competence and Commitment Standard","attrs":[["A1","A","Have maintained and extended a sound theoretical approach to enable them to develop their particular role."],["A2","A","Are developing technological solutions to unusual or challenging problems, using their knowledge and understanding and/or dealing with complex technical issues or situations with significant levels of risk."],["B1","B","Take an active role in the identification and definition of project requirements, problems and opportunities."],["B2","B","Can identify the appropriate investigations and research needed to undertake the design, development and analysis required to complete an engineering task and conduct these activities effectively."],["B3","B","Can implement engineering tasks and evaluate the effectiveness of engineering solutions."],["C1","C","Plan the work and resources needed to enable effective implementation of a significant engineering task or project."],["C2","C","Manage (organise, direct and control), programme or schedule, budget and resource elements of a significant engineering task or project."],["C3","C","Lead teams or technical specialisms and assist others to meet changing technical and managerial needs."],["C4","C","Bring about continuous quality improvement and promote best practice."],["D1","D","Communicate effectively with others, at all levels, in English."],["D2","D","Clearly present and discuss proposals, justifications and conclusions."],["D3","D","Demonstrate personal and social skills and awareness of diversity and inclusion issues."],["E1","E","Understand and comply with relevant codes of conduct."],["E2","E","Understand the safety implications of their role and manage, apply and improve safe systems of work."],["E3","E","Understand the principles of sustainable development and apply them in their work."],["E4","E","Carry out and record the Continuing Professional Development (CPD) necessary to maintain and enhance competence in their own area of practice."],["E5","E","Understand the ethical issues that may arise in their role and carry out their responsibilities in an ethical manner."]]},"ukspec3-ceng":{"name":"UK-SPEC 3rd edition wording: Chartered Engineer (CEng)","source":"Engineering Council UK-SPEC 3rd edition competences, as listed on the Society of Operations Engineers application form","attrs":[["A1","A","Maintain and extend a sound theoretical approach in enabling the introduction and exploitation of new and advancing technology."],["A2","A","Engage in the creative and innovative development of engineering technology and continuous improvement systems."],["B1","B","Identify potential projects and opportunities."],["B2","B","Conduct appropriate research, and undertake the design and development of engineering solutions."],["B3","B","Manage implementation of design solutions, and evaluate their effectiveness."],["C1","C","Plan for effective project implementation."],["C2","C","Plan, budget, organise, direct and control tasks, people and resources."],["C3","C","Lead teams and develop staff to meet changing technical and managerial needs."],["C4","C","Bring about continuous improvement through quality management."],["D1","D","Communicate in English with others at all levels."],["D2","D","Present and discuss proposals."],["D3","D","Demonstrate personal and social skills."],["E1","E","Comply with relevant codes of conduct."],["E2","E","Manage and apply safe systems of work."],["E3","E","Undertake engineering activities in a way that contributes to sustainable development."],["E4","E","Carry out and record CPD necessary to maintain and enhance competence in your own area of practice."],["E5","E","Exercise responsibilities in an ethical manner."]]},"ukspec3-ieng":{"name":"UK-SPEC 3rd edition wording: Incorporated Engineer (IEng)","source":"Engineering Council UK-SPEC 3rd edition competences, as listed on the Society of Operations Engineers application form","attrs":[["A1","A","Maintain and extend a sound theoretical approach to the application of technology in engineering practice."],["A2","A","Use a sound evidence-based approach to problem-solving and contribute to continuous improvement."],["B1","B","Identify, review and select techniques, procedures and methods to undertake engineering tasks."],["B2","B","Contribute to the design and development of engineering solutions."],["B3","B","Implement design solutions and contribute to their evaluation."],["C1","C","Plan for effective project implementation."],["C2","C","Manage tasks, people and resources to plan and budget."],["C3","C","Manage teams and develop staff to meet changing technical and managerial needs."],["C4","C","Manage continuous quality improvement."],["D1","D","Communicate in English with others at all levels."],["D2","D","Present and discuss proposals."],["D3","D","Demonstrate personal and social skills."],["E1","E","Comply with relevant codes of conduct."],["E2","E","Manage and apply safe systems of work."],["E3","E","Undertake engineering activities in a way that contributes to sustainable development."],["E4","E","Carry out and record CPD necessary to maintain and enhance competence in own area of practice."],["E5","E","Exercise responsibilities in an ethical manner."]]},"_titles":{"A":"Knowledge and understanding","B":"Design, development and solving engineering problems","C":"Responsibility, management and leadership","D":"Communication and interpersonal skills","E":"Personal and professional commitment"}};
+
+const IPD_DATA = {"cm":[{"num":"1","title":"PROFESSIONAL STANDARDS AND ENGINEERING RESPONSIBILITY","level":"Knowledge","intro":"This objective is intended to demonstrate knowledge of professional conduct, a commitment to continuous professional development and engagement with the Institution and wider industry.","must":["the structure and purpose of the Institution of Structural Engineers, together with an awareness of the Institution’s Code of Conduct","an involvement in Institution affairs appropriate to their individual circumstances and location","the limits of their technical competency in recognising complexity in problems and solution methods","the importance of sharing knowledge and data across the industry","the importance of CPD, the Institution requirements for CPD and a record of appropriate training","their need to plan for an ongoing commitment to CPD","being supportive of the needs and concerns of others, especially where this relates to diversity and inclusion","the ethical issues that could arise in their role and how they should carry out their responsibilities in an ethical manner"]},{"num":"2","title":"COMMUNICATION","level":"Ability","intro":"This objective is intended to demonstrate candidates have an ability to communicate effectively in a variety of situations and demonstrate appropriate interpersonal skills.","must":["produce appropriate drawings, sketches, or models (physical or digital) to communicate ideas","produce formal reports","produce both formal and informal communications appropriately","communicate verbally and demonstrate effective inter -personal skills","prepare and deliver presentations","produce documents suitable for a variety of appropriate audiences","create, maintain, and enhance productive working relationships, and resolve conflicts.","evaluate and provide positive critical feedback on the work of others","exchanging information and providing advice to technical and non -technical colleagues"]},{"num":"3","title":"CONCEPT CREATION AND DESIGN","level":"Ability","intro":"This objective is intended to demonstrate a candidate’s skills around producing structural solutions in response to a brief. This would account for key aspects of a structural engineer’s skillset such as designing for safety, carbon, durability, reuse, aes thetics, and cost.","must":["understanding and interrogating the brief to identify possible solutions","producing and comparing a variety of options to a single brief","determining appropriate loading and design criteria","designing load transfer and stability systems, both superstructure and substructure","considering robustness and accidental actions including fire","estimating and communicating the embodied carbon (both upfront and whole life) in the structure as part of the decision -making process, and minimising this as far as possible","consideration of construction issues (e.g., detailing, constructability, phasing, site constraints)","driving collaboration across the project team through an appreciation of wider objectives","coordinating the structural design with other disciplines (e.g., civils, drainage, facades)"]},{"num":"4","title":"ANALYSIS AND SIZING","level":"Ability","intro":"This objective is intended to demonstrate an understanding of structural behaviour and the ability to assess behaviour using appropriate methods of analysis. This objective is also intended to demonstrate competency of interpreting that analysis and using it to size structural elements and details, using the minimum amount of necessary material.","must":["Analysis: understanding structural behaviour at all scales, from a single element to an entire frame","Analysis: using the appropriate analysis tools for each purpose (e.g., hand calcs and models to the appropriate level of detail)","Analysis: using suitable modelling assumptions for each purpose","Analysis: applying appropriate design criteria including loading, utilisation targets, serviceability, and user comfort (e.g., vibration)","Analysis: understanding the limitations of the model and its outputs (approximations, simplifications, etc)","Analysis: verifying results through hand checks, simple approximation, and engineering judgement","Analysis: validation and verification of analysis or design methods","Analysis: identification of limitations in analysis and/or design methods either in terms of accuracy or capability","Sizing and detailing: sizing structures to minimise material usage within the agreed design criteria (e.g., strength, stiffness, durability/maintenance, buildability, etc.)","Sizing and detailing: designing structural details such as connections and reinforcement to the appropriate level of detail at each stage of design","Sizing and detailing: determining and utilising the capacity of existing structures and components through collection and analysis of appropriate information or data where relevant","Sizing and detailing: using appropriate standards, codes of practice, specifications, Institution publications, technical agency publications, bulletins, reports, commercial and relevant publications from other professional institutions etc., and applying the requirements or re commendations of these documents within specification or design criteria"]},{"num":"5","title":"MATERIALS","level":"Ability","intro":"This objective is intended to demonstrate an in -depth understanding of the structural materials used in the candidate’s work, along with an ability to specify and coordinate the use of such materials.","must":["the behaviour and structural properties (including strength, stiffness, ductility, and directionality) for different materials and their common grades/subgrades, and how these impact design and detailing requirements","the effects on carbon emissions related to production methods, material sourcing and supply chains","durability requirements","detailing requirements, including an appreciation of how these affect end -of-life disassembly and reuse","movement behaviour including creep, drying, and thermal movement Whilst candidates often choose to specialise in one or two materials (and thus will have developed an ability in determining their behaviour) they must still have some knowledge of the carbon credentials, availability, behaviour, cost, manufacture, princip al engineering properties and potential applications of a wider range of construction materials."]},{"num":"6","title":"SUSTAINABILITY","level":"Experience","intro":"This objective is intended to demonstrate experience in applying structural engineering in a way that minimises (and ultimately, reverses) negative environmental impacts whilst maximising societal benefit.","must":["communicating the environmental impact of a structural design to the design and client team","questioning the brief to reduce negative impacts whilst achieving the client’s desired outcomes","advocating for reuse and ‘build less’ design approaches","considering wider sustainability aspects within their work"]},{"num":"7","title":"CONSTRUCTION","level":"Experience","intro":"This objective is intended to demonstrate a candidate’s experience of the practical process to convert design work into completed structures and should demonstrate that they are able to contribute to this in a meaningful way. Practical experience of site c onditions and working practices is essential to the safe design and specification of projects.","must":["construction techniques, construction plant and machinery","designing, specifying, or reviewing temporary systems","reviewing construction programmes and construction sequencing","reviewing or producing fabrication or shop drawings","erection methodologies","identification and correction of potential errors","how their observations of construction/fabrication have informed their approach to design/buildability"]},{"num":"8","title":"HEALTH, SAFETY AND RISK MANAGEMENT","level":"Experience","intro":"This objective is intended to demonstrate a candidate’s experience in meeting health and safety requirements and legislation.","must":["using appropriate health and safety standards","engagement with CROSS (Collaborative Reporting for Safer Structures) https://www.cross -safety.org/uk","reviewing and applying learning from CROSS publications","producing risk and hazard assessments","designing out risk","safety on construction sites"]},{"num":"9","title":"MANAGEMENT","level":"Experience","intro":"This objective is intended to demonstrate a candidate’s experience of management skills for programming and control.","must":["management of individuals, teams, and data/information","leadership","programming and project control","interdisciplinary/inter team liaison and interface management","working within a quality management system","contributing to and working within a quality plan"]},{"num":"10","title":"COMMERCIAL AND LEGAL","level":"Knowledge","intro":"This objective is intended to demonstrate a candidate’s knowledge of commercial, financial, contractual, and legal matters relevant to the country and industry in which they work.","must":["commercial pressures within the construction industry including the effects of national and international current affairs on costs","the methods of calculating construction costs including estimating and monitoring the cost of design work","sensitivity of cost variations in construction techniques","relevant forms of contract used in projects for which they are involved, for both design and construction","the procurement routes relevant to the work in which they are involved and appropriate procurement issues including dispute resolution","statutory legislation, negligence/liability laws, health, and safety legislation","decarbonisation and sustainability legislation","contract law"]}],"im":[{"num":"1","title":"PROFESSIONAL STANDARDS AND ENGINEERING RESPONSIBILITY","level":"Knowledge","intro":"This objective is intended to demonstrate knowledge of professional conduct, a commitment to continuous professional development and engagement with the Institution and wider industry.","must":["the structure and purpose of the Institution of Structural Engineers, together with an awareness of the Institution’s Code of Conduct.","an involvement in Institution affairs appropriate to their individual circumstances and location.","the limits of their technical competency in recognising complexity in problems and solution methods.","the importance of CPD, the Institution requirements for CPD and a record of appropriate training.","their need to plan for an ongoing commitment to CPD.","being supportive of the needs and concerns of others, especially where this relates to diversity and inclusion.","the ethical issues that may arise in their role and how they should carry out their responsibilities in an ethical manner."]},{"num":"2","title":"COMMUNICATION","level":"Ability","intro":"This objective is intended to demonstrate candidates have an ability to communicate effectively in a variety of situations and demonstrate appropriate interpersonal skills.","must":["produce appropriate drawings, sketches, or models (physical or digital) to communicate ideas.","produce formal reports.","produce both formal and informal communications appropriately.","communicate verbally and demonstrate effective inter-personal skills.","prepare and deliver presentations.","produce documents suitable for a variety of appropriate audiences.","create, maintain and enhance productive working relationships, and resolve conflicts.","evaluate and provide positive critical feedback on the work of others.","exchange information and provide advice to technical and non-technical colleagues."]},{"num":"3","title":"CONCEPT CREATION AND DESIGN","level":"Experience","intro":"This objective is intended to demonstrate a candidate’s experience of producing structural solutions in response to a brief. This would account for key aspects of a structural engineer’s skillset such as designing for safety, carbon, durability, reuse, aesthetics and cost.","must":["understanding and interrogating the brief to identify possible solutions","producing and comparing a variety of options to a single brief","determining appropriate loading and design criteria","designing load transfer and stability systems, both superstructure and substructure","considering robustness and accidental actions including fire","estimating and communicating the embodied carbon (both upfront and whole-life) in the structure as part of the decision making process, and minimising this as far as possible","considering construction issues (e.g. detailing, constructability, phasing, site constraints)","driving collaboration across the project team through an appreciation of wider objectives","coordinating the structural design with other disciplines (e.g. civils, drainage, facades)"]},{"num":"4","title":"ANALYSIS AND SIZING","level":"Ability","intro":"This objective is intended to demonstrate an understanding of structural behaviour and the ability to assess behaviour using appropriate methods of analysis. This objective is also intended to demonstrate competency of interpreting that analysis and using it to size structural elements and details, using the minimum amount of necessary material.","must":["Analysis: understanding structural behaviour at all scales, from a single element to an entire frame","Analysis: using the appropriate analysis tools for each purpose (e.g. hand calcs and models to the appropriate level of detail)","Analysis: using suitable modelling assumptions for each purpose","Analysis: applying appropriate design criteria including loading, utilisation targets, serviceability and user comfort (e.g. vibration)","Analysis: understanding the limitations of the model and its outputs (approximations, simplifications, etc)","Analysis: verifying results through hand checks, simple approximation, and engineering judgement validation and verification of analysis or design methods","Analysis: identification of limitations in analysis and/or design methods either in terms of accuracy or capability","Sizing and detailing: sizing structures to minimise material usage within the agreed design criteria (eg. strength, stiffness, durability/maintenance, buildability, etc.)","Sizing and detailing: designing structural details such as connections and reinforcement to the appropriate level of detail at each stage of design","Sizing and detailing: contributing to the determination and utilisation of the capacity of existing structures and components through collection and analysis of appropriate information or data where relevant","Sizing and detailing: using appropriate standards, codes of practice, specifications, Institution publications, technical agency publications, bulletins, reports, commercial and relevant publications from other professional institutions etc., and applying the requirements or recommendations of these documents within specification or design criteria"]},{"num":"5","title":"MATERIALS","level":"Ability","intro":"This objective is intended to demonstrate an in-depth understanding of the structural materials used in the candidate’s work, along with an ability to specify and coordinate the use of such materials.","must":["The behaviour and structural properties (including strength, stiffness, ductility, and directionality) for different materials and their common grades/subgrades; and how these impact design and detailing requirements.","The effects on carbon emissions related to production methods, material sourcing and supply chains.","Durability requirements.","Detailing requirements, including an appreciation of how these affect end-of-life disassembly and reuse.","Movement behaviour including creep, drying, and thermal movement. Whilst the candidate often chooses to specialise in one or two materials (and thus have developed an ability in determining their behaviour) they must still have some knowledge of the carbon credentials, availability, behaviour, cost, manufacture, principal engineering properties and potential applications of a wider range of construction materials."]},{"num":"6","title":"SUSTAINABILITY","level":"Experience","intro":"This objective is intended to demonstrate experience in applying structural engineering in a way that minimises (and ultimately, reverses) negative environmental impacts whilst maximising societal benefit.","must":["communicating the impact of a structural design to the design and client team","contributing to questioning the brief to reduce negative impacts whilst achieving the client’s desired outcomes.","contributing to advocating for reuse and ‘build less’ design approaches.","considering the wider sustainability aspects within their work."]},{"num":"7","title":"CONSTRUCTION","level":"Experience","intro":"This objective is intended to demonstrate a candidate’s experience of the practical process to convert design work into completed structures and should demonstrate that they are able to contribute to this in a meaningful way. Practical experience of site conditions and working practices is essential to the safe design and specification of projects.","must":["construction techniques, construction plant and machinery.","designing, specifying, or reviewing temporary systems.","reviewing construction programmes and construction sequencing.","reviewing or producing fabrication or shop drawings.","erection methodologies","identification and correction of potential errors","how their observations of construction/fabrication have informed their approach to design/buildability"]},{"num":"8","title":"HEALTH, SAFETY AND RISK MANAGEMENT","level":"Experience","intro":"This objective is intended to demonstrate a candidate’s experience in meeting health and safety requirements and legislation.","must":["using appropriate health and safety standards","engagement with CROSS (Collaborative Reporting for Safer Structures) https://www.cross-safety.org/uk","reviewing and applying learning from CROSS publications","producing risk and hazard assessments","designing out risk","safety on construction sites"]},{"num":"9","title":"MANAGEMENT","level":"Experience","intro":"This objective is intended to demonstrate a candidate’s experience of management skills for programming and control.","must":["management of individuals, teams, and data/information","leadership at an appropriate level","programming and project control","interdisciplinary/inter team liaison and interface management","working within a quality management system","contributing to and working within a quality plan"]},{"num":"10","title":"COMMERCIAL AND LEGAL","level":"Knowledge","intro":"This objective is intended to demonstrate a candidate’s knowledge of commercial, financial, contractual, and legal matters relevant to the country and industry in which they work.","must":["commercial pressures within the construction industry including the effects of national and international current affairs on costs","the methods of calculating construction costs including estimating and monitoring the cost of design work","sensitivity of cost variations in construction techniques","relevant forms of contract used in projects for which they are involved, for both design and construction","the procurement routes relevant to the work in which they are involved and appropriate procurement issues including dispute resolution","competitive tendering","statutory legislation, negligence/liability laws, health, and safety legislation","decarbonisation and sustainability legislation","contract law"]}],"tm":[{"num":"1","title":"PROFESSIONAL STANDARDS AND ENGINEERING RESPONSIBILITY","level":"Knowledge","intro":"This objective is intended to demonstrate knowledge of professional conduct, a commitment to continuous professional development and engagement with the Institution and wider industry.","must":["the structure and purpose of the Institution of Structural Engineers, together with an awareness of the Institution’s Code of Conduct","an involvement in Institution affairs appropriate to their individual circumstances and location","the limits of their technical competency in recognising complexity in problems and solution methods","the importance of sharing knowledge and data across the industry","the importance of CPD, the Institution requirements for CPD and a record of appropriate training","their need to plan for an ongoing commitment to CPD","being supportive of the needs and concerns of others, especially where this relates to diversity and inclusion","the ethical issues that may arise in their role and how they should carry out their responsibilities in an ethical manner"]},{"num":"2","title":"COMMUNICATION","level":"Ability","intro":"This objective is intended to demonstrate candidates have an ability to communicate effectively in a variety of situations and demonstrate appropriate interpersonal skills.","must":["produce appropriate drawings, sketches, or 3D models (physical or digital) to communicate ideas","contribute to the production of formal reports","produce both formal and informal communications appropriately","communicate verbally and demonstrate effective inter -personal skills","prepare and deliver presentations","produce documents suitable for a variety of appropriate audiences","create, maintain and enhance productive working relationships, and resolve conflicts","evaluate and provide positive critical feedback on the work of others","exchang e information and provid e advice to technical and non -technical colleagues"]},{"num":"3","title":"CONCEPT CREATION AND DESIGN","level":"Appreciation","intro":"This objective is intended to demonstrate an appreciation of the process of concept creation and design. This would include designing for safety, carbon, durability, reuse aesthetics and cost .","must":["the assessment of the brief to identify possible solutions","determining appropriate loading and design criteria","establishing load paths and stability systems","considering robustness and accidental actions, including fire","the process to estimate embodied carbon","the way construction issues impact on design choices","collaboration and coordination with other disciplines"]},{"num":"4","title":"DESIGN AND ANALYSIS","level":"Knowledge","intro":"This objective is intended to demonstrate knowledge of the processes involved in the analysis and design of structures .","must":["the processes involved with the design of individual components in at least one primary structural material (i.e. derivation of forces/stresses/deflections and maintaining equilibrium)","the application of appropriate loading criteria","the use of appropriate design standards, codes of practice etc","the elements within a structure which determine overall stability, robustness and structural integrity","limits of the structural model and its outputs (approximations, simplifications etc)","the verification of analysis using hand checks, simple approximation and engineering judgment"]},{"num":"5","title":"MATERIALS","level":"Knowledge","intro":"This objective is intended to demonstrate knowledge of how materials are specified and incorporated into the structure.","must":["the behaviour and structural properties (including strength, stiffness, ductility, and directionality) for different materials and their common grades/subgrades; and how these impact design and detailing requirements","the effects on carbon emissions related to production methods, material sourcing and supply chains","durability requirements","detailing requirements, including an appreciation of how these affect end -of-life disassembly and reuse","movement behaviour including creep, drying, and thermal movement. Whilst candidates often choose to specialise in one or two materials (and thus will have developed knowledge in determining their behaviour) they must still have some appreciation of the carbon credentials, availability, behaviour, cost, manufacture, princ ipal engineering properties and potential applications of a wider range of construction materials."]},{"num":"6","title":"SUSTAINABILITY","level":"Knowledge","intro":"This objective is intended to demonstrate knowledge in applying structural engineering in a way that minimises (and ultimately, reverses) negative environmental impacts whilst maximising societal benefit .","must":["contributing to the communication of the impact of a structural design within the context of climate and biodiversity issues.","contributing to the questioning of the brief to reduce negative impacts whilst achieving the client’s desired outcomes.","working with the wider design team to reduce the overall project carbon.","considering wider sustainability aspects within their work"]},{"num":"7","title":"CONSTRUCTION","level":"Experience","intro":"This objective is intended to demonstrate candidate’s experience of the practical process to convert design work into completed structures and should demonstrate that they are able to contribute to this in a meaningful way. Practical experience of site con ditions and working practices is essential to the safe design and specification of projects.","must":["construction sites . This may include site visits, undertaking surveys, visiting fabrication/manufacturing locations, responding to site queries, communicating sequence and buildability matter s","construction techniques, construction plant and machinery","reviewing temporary support systems","reviewing construction programmes and construction sequencing","reviewing or producing fabrication or shop drawings","erection methodologies","identification and correction of potential errors","how their observations of construction/fabrication has informed their approach to design/buildability"]},{"num":"8","title":"HEALTH       AND SAFETY","level":"Knowledge","intro":"This objective is intended to demonstrate a candidate’s knowledge of meeting health and safety requirements and legislation.","must":["using appropriate health and safety standards","reviewing CROSS (Collaborative Reporting for Safer Structures) publications","communicating risk and hazard assessments","designing out risk","safety on construction/fabrication sites"]},{"num":"9","title":"MANAGEMENT","level":"Knowledge","intro":"This objective is intended to demonstrate a candidate’s knowledge of management skills and responsibility.","must":["contributing to the management of individuals/self and/or teams and data/information","cooperation with team leadership and management","programming and project control.","interdisciplinary/inter team liaison and interface management."]},{"num":"10","title":"COMMERCIAL","level":"Appreciation","intro":"This objective is intended to demonstrate a candidate’s appreciation of commercial, financial, and contractual matters relevant to the country and industry in which they work.","must":["commercial pressures within the construction industry, including the effects of national and international current affairs on the costs.","the methods of calculating construction costs, including estimating and monitoring the cost of design work.","sensitivity of cost variations in construction techniques.","relevant forms of contract used in projects for which they are involved, for both design and construction.","the procurement routes relevant to the work in which they are involved and the impact on their scope of work","the role of the expert witness In preparing their Summary Report Forms the candidate should be prepared to discuss their understanding of commercial matters and how they have affected the projects they have worked on."]},{"num":"11","title":"TECHNOLOGY, DOCUMENTATION & PROCESS","level":"Ability","intro":"This objective is intended to demonstrate ability in the production, control and management of engineering documentation and systems.","must":["the production of general arrangement drawings","the creation of detail drawings showing the interface between components and materials","the coordination of details and information received from other parts of the design team with the structural information","the control and documentation of information received from and issued to third parties","the use of standard procedures and drawing standards, either company specific or based on industry standards","the production of appropriate schedules (such as bar bending schedules, lintel schedules, beams schedules, pile schedules, material take offs for use in pricing or embodied carbon calculations)","the communication of risks and hazards","the implementation of and compliance with Project Quality Plans"]}]};
+
 const TOOL_VERSION = "2026-11-05";
 
 // ICE IEng sub-attributes and apprenticeship KSBs, from "IEng Attributes and KSB List.xlsx".
@@ -662,7 +676,16 @@ function makeXlsx(sheets) {
 
 const DATA_DIR = 'ice-data';
 const FILES = { apprentice: 'portfolio.json', mentor: 'mentor.json' };
-const FOLDERS = { evidence: 'Evidence', prr: 'PRR', meetings: 'Meetings', cpd: 'CPD', exports: 'Exports' };
+const FOLDERS = {
+  prr: '0 - Reports', matrix: '1 - Evidence Matrix', evidence: '2 - Evidence', feedback: '4 - Feedback, Compliance and Status',
+  meetings: 'Meetings', cpd: 'CPD', exports: 'Exports',
+};
+// Sub-folders of the evidence folder; the letters after the last dash are the code prefix for files in it.
+let EVIDENCE_CATEGORIES = [
+  '0 - Correspondences - CO', '1 - Modeling Snaps - MO', '2 - Markups - MU', '3 - Deliverable Reports - DR', '4 - Calculations - CA',
+  '5 - Tools - MM', '6 - Deliverable Drawings - DD', '7 - Certificates - CE', '8 - Presentations - PR',
+];
+const categoryPrefix = (folder) => { const m = /(?:^|\/)[^/]*? - ([A-Z]{2,3})$/.exec(folder || ''); return m ? m[1] : ''; };
 const IGNORE = /^(~\$|\.|desktop\.ini$|thumbs\.db$)/i;
 
 const S = {
@@ -808,6 +831,7 @@ function upgrade(d) {
     return d;
   }
   d.mode = d.mode || 'ice';
+  d.framework = d.framework || null;   // null = the built-in ICE IEng framework
   d.profile = { jobRole: '', responsibilities: '', sector: '', ...(d.profile || {}) };
   d.settings = { goal: 3, cpdTarget: 30, cpdYearStart: 1, themes: [], ...(d.settings || {}) };
   d.evidence = d.evidence || {}; d.comments = d.comments || {}; d.meetings = d.meetings || [];
@@ -913,21 +937,211 @@ function setSaveState(text, cls = '') {
 
 window.addEventListener('beforeunload', (e) => { if (S.dirty) { e.preventDefault(); e.returnValue = ''; } });
 
+// The framework: what the person is being assessed against. Levels (such as Knowledge / Experience / Ability),
+// groups of attributes, attributes, requirements (such as KSBs), the folder names and the evidence folders.
+// ICE IEng is built in; anyone can edit it or write their own for another institution, level or field.
+// It is stored in the portfolio data (framework) and applied here, so the rest of the tool just reads the
+// globals below.
+
+let LEVELS = [], LEVEL_SHORT = {}, LEVEL_NAME = {}, LEVEL_HELP = {};
+let SUBS = [], SUB = {}, GROUPS = [], KSBS = [], KSB = {};
+let HEADING_RE = /$^/, SUB_LC = {};
+let LABEL = { attr: 'Attributes', ksb: 'KSBs' };
+let FRAMEWORK = null;
+const DEFAULT_FOLDERS = { ...FOLDERS };
+const DEFAULT_CATEGORIES = EVIDENCE_CATEGORIES.slice();
+
+const ICE_FRAMEWORK = {
+  name: 'ICE IEng (apprenticeship)',
+  source: 'ICE IEng sub-attributes and the apprenticeship standard KSBs (Institute for Apprenticeships and Technical Education)',
+  labels: { attr: 'Attributes', ksb: 'KSBs' },
+  levels: [
+    { id: 'knowledge', short: 'K', name: 'Knowledge', help: 'knows and understands it (training, CPD, reading), not yet shown applied on real work.' },
+    { id: 'experience', short: 'E', name: 'Experience', help: 'applied it on real work, with guidance, as part of a team, or with a senior making the key decisions.' },
+    { id: 'ability', short: 'A', name: 'Ability', help: 'did it themselves and took responsibility: own judgement and decisions, led the task, or guided others.' },
+  ],
+  groups: [...new Map(REF.attributes.map((a) => [String(a.group), a.group_title])).entries()].map(([id, title]) => ({ id, title })),
+  attributes: REF.attributes.map((a) => ({ id: a.id, group: String(a.group), text: a.text })),
+  ksbs: REF.ksbs.map((k) => ({ id: k.id, kind: k.kind, text: k.text, attributes: k.attributes.slice() })),
+  folders: { ...DEFAULT_FOLDERS },
+  evidenceFolders: DEFAULT_CATEGORIES.slice(),
+};
+
+const BLANK_FRAMEWORK = {
+  name: 'My framework',
+  labels: { attr: 'Requirements', ksb: 'Standards' },
+  levels: [{ id: 'evidence', short: 'E', name: 'Evidence', help: 'a piece of evidence that shows this requirement is met.' }],
+  groups: [{ id: '1', title: 'First group (rename me)' }],
+  attributes: [{ id: '1a', group: '1', text: 'First requirement (replace with your own)' }],
+  ksbs: [],
+  folders: { ...DEFAULT_FOLDERS },
+  evidenceFolders: ['0 - Documents - DO', '1 - Records - RE'],
+};
+
+// IStructE core objectives, read from the Institution's IPD guidance (Chartered 2026, Incorporated 2025, Technician 2026).
+// Each objective has a minimum standard; the bullets under "must demonstrate" become the standards list.
+function ipdFramework(key, name, level) {
+  const objs = IPD_DATA[key];
+  const lv = { Appreciation: 'appreciation', Knowledge: 'knowledge', Experience: 'experience', Ability: 'ability' };
+  const sentence = (s) => s.charAt(0) + s.slice(1).toLowerCase();
+  const levels = [
+    ...(key === 'tm' ? [{ id: 'appreciation', short: 'A', name: 'Appreciation', help: 'a general appreciation of the subject, and how it relates to other subjects.' }] : []),
+    { id: 'knowledge', short: 'K', name: 'Knowledge', help: 'a knowledge and understanding of the subject and its application.' },
+    { id: 'experience', short: 'E', name: 'Experience', help: 'the subject performed independently or under supervision.' },
+    { id: 'ability', short: 'B', name: 'Ability', help: 'performed without supervision and competent to advise others.' },
+  ];
+  return {
+    name, source: 'Institution of Structural Engineers, IPD Guidance for this grade', goal: 1, labels: { attr: 'Core objectives', ksb: 'Must demonstrate' }, levels,
+    groups: [{ id: 'CO', title: 'Core Objectives' }],
+    attributes: objs.map((o) => ({ id: o.num, group: 'CO', text: `${sentence(o.title)}: ${o.intro.replace(/^This objective is intended to /, '')}`, min: lv[o.level] || '' })),
+    ksbs: objs.flatMap((o) => o.must.map((m, i) => ({ id: `${o.num}.${i + 1}`, kind: `Objective ${o.num}`, text: m, attributes: [o.num] }))),
+    folders: { ...DEFAULT_FOLDERS },
+    evidenceFolders: ['0 - Portfolio evidence - PE', '1 - CPD records - CP', '2 - IPD reports - IP'],
+  };
+}
+// Engineering Council UK-SPEC competences A to E, per registration level (read from the published standard).
+function ukspecFramework(key) {
+  const d = UKSPEC_DATA[key];
+  return {
+    name: d.name, source: d.source, goal: 1, labels: { attr: 'Competences', ksb: 'Standards' },
+    levels: [{ id: 'evidence', short: 'E', name: 'Evidence', help: 'a piece of evidence that shows this competence, for example a report, drawing, calculation, email or record of your own work.' }],
+    groups: Object.entries(UKSPEC_DATA._titles).map(([id, title]) => ({ id, title: `${id}. ${title}` })),
+    attributes: d.attrs.map(([id, group, text]) => ({ id, group, text })),
+    ksbs: [],
+    folders: { ...DEFAULT_FOLDERS },
+    evidenceFolders: ['0 - Project work - PW', '1 - Reports and calculations - RC', '2 - Drawings and models - DM', '3 - Correspondence and meetings - CO', '4 - Certificates and CPD - CE'],
+  };
+}
+const UKSPEC_ABOUT = 'Competences A1 to E5 as published by the Engineering Council. Many institutions assess against these, usually with their own examples. Evidence is mapped to each competence.';
+const IPD_ABOUT = 'Core objectives and the minimum standard for each, read from the Institution’s IPD guidance. Evidence at the minimum level or above counts. Check wording against the current guidance.';
+
+const PRESETS = {
+  ice: { group: 'ICE', name: 'ICE IEng (apprenticeship)', about: 'The Institution of Civil Engineers IEng sub-attributes and apprenticeship KSBs, with Knowledge / Experience / Ability levels.', fw: ICE_FRAMEWORK },
+  'ukspec4-ceng': { group: 'Engineering Council UK-SPEC (used by many institutions)', name: 'Chartered Engineer (CEng), UK-SPEC 4th edition', about: UKSPEC_ABOUT, fw: ukspecFramework('ukspec4-ceng') },
+  'ukspec4-ieng': { group: 'Engineering Council UK-SPEC (used by many institutions)', name: 'Incorporated Engineer (IEng), UK-SPEC 4th edition', about: UKSPEC_ABOUT, fw: ukspecFramework('ukspec4-ieng') },
+  'ukspec4-engtech': { group: 'Engineering Council UK-SPEC (used by many institutions)', name: 'Engineering Technician (EngTech), UK-SPEC 4th edition', about: UKSPEC_ABOUT, fw: ukspecFramework('ukspec4-engtech') },
+  'ukspec3-ceng': { group: 'Engineering Council UK-SPEC (used by many institutions)', name: 'Chartered Engineer (CEng), older UK-SPEC 3rd edition wording', about: 'The 3rd edition wording, still used on some application forms (for example SOE and IMechE). ' + UKSPEC_ABOUT, fw: ukspecFramework('ukspec3-ceng') },
+  'ukspec3-ieng': { group: 'Engineering Council UK-SPEC (used by many institutions)', name: 'Incorporated Engineer (IEng), older UK-SPEC 3rd edition wording', about: 'The 3rd edition wording, still used on some application forms (for example SOE). ' + UKSPEC_ABOUT, fw: ukspecFramework('ukspec3-ieng') },
+  'istructe-cm': { group: 'IStructE', name: 'IStructE Chartered Member (MIStructE): 10 core objectives', about: IPD_ABOUT, fw: ipdFramework('cm', 'IStructE Chartered Member (MIStructE)') },
+  'istructe-im': { group: 'IStructE', name: 'IStructE Incorporated Member (IMIStructE): 10 core objectives', about: IPD_ABOUT, fw: ipdFramework('im', 'IStructE Incorporated Member (IMIStructE)') },
+  'istructe-tm': { group: 'IStructE', name: 'IStructE Technician Member (TIStructE): 11 core objectives', about: IPD_ABOUT, fw: ipdFramework('tm', 'IStructE Technician Member (TIStructE)') },
+  blank: { group: 'Your own', name: 'Start my own (blank)', about: 'One level, one requirement and two evidence folders. You write the rest in Settings → Framework: paste your requirements from a spreadsheet or document.', fw: BLANK_FRAMEWORK },
+};
+
+const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const escRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const clone = (o) => JSON.parse(JSON.stringify(o));
+
+function applyFramework(fw) {
+  fw = fw || ICE_FRAMEWORK;
+  FRAMEWORK = fw;
+  LEVELS = fw.levels.map((l) => l.id);
+  LEVEL_SHORT = Object.fromEntries(fw.levels.map((l) => [l.id, l.short]));
+  LEVEL_NAME = Object.fromEntries(fw.levels.map((l) => [l.id, l.name]));
+  LEVEL_HELP = Object.fromEntries(fw.levels.map((l) => [l.id, `${l.name}: ${l.help}`]));
+  const title = Object.fromEntries(fw.groups.map((g) => [String(g.id), g.title]));
+  SUBS = fw.attributes.map((a) => ({ id: a.id, group: String(a.group), group_title: title[String(a.group)] || String(a.group), text: a.text, min: a.min || '' }));
+  SUB = Object.fromEntries(SUBS.map((a) => [a.id, a]));
+  SUB_LC = Object.fromEntries(SUBS.map((a) => [a.id.toLowerCase(), a.id]));
+  const used = new Set(SUBS.map((a) => a.group));
+  GROUPS = fw.groups.filter((g) => used.has(String(g.id))).map((g) => ({ group: String(g.id), title: g.title }));
+  KSBS = (fw.ksbs || []).map((k) => ({ id: k.id, kind: k.kind || '', text: k.text, attributes: k.attributes || [] }));
+  KSB = Object.fromEntries(KSBS.map((k) => [k.id, k]));
+  const ids = SUBS.map((a) => a.id).sort((x, y) => y.length - x.length).map(escRe);
+  HEADING_RE = ids.length ? new RegExp(`^\\s*(${ids.join('|')})\\s*[–—\\-:.)]\\s*(.*)$`, 'i') : /$^/;
+  LABEL = { attr: (fw.labels && fw.labels.attr) || 'Attributes', ksb: (fw.labels && fw.labels.ksb) || 'KSBs' };
+  Object.assign(FOLDERS, DEFAULT_FOLDERS, fw.folders || {});
+  EVIDENCE_CATEGORIES = (fw.evidenceFolders || []).slice();
+  S.prr = {};   // parsed reports depend on the requirement ids: read them again
+}
+const subIdFromHeading = (text) => SUB_LC[String(text).toLowerCase()] || '';
+applyFramework(null);
+
+// Make the folders in the person's OneDrive folder, including one per kind of evidence.
+async function ensureFolders(dir, mode) {
+  const names = mode === 'cpd' ? [FOLDERS.cpd, FOLDERS.exports] : Object.values(FOLDERS);
+  for (const f of names) await subDir(dir, f, true);
+  if (mode !== 'cpd') for (const c of EVIDENCE_CATEGORIES) await subDir(dir, `${FOLDERS.evidence}/${c}`, true);
+}
+
+function choosePreset() {
+  return new Promise((resolve) => {
+    const d = dialog(`<h2>What are you being assessed against?</h2>
+      <p class="muted small">You can change everything later in Settings → Framework.</p>
+      <p class="small muted">The built-in lists were read from the institutions’ published documents. They may contain mistakes or be out of date, so every word can be edited afterwards.</p>
+      <div style="max-height:50vh;overflow:auto;padding-right:.4rem">${[...new Set(Object.values(PRESETS).map((p) => p.group))].map((g) => `<h3 style="margin:.9rem 0 .2rem">${esc(g)}</h3>` + Object.entries(PRESETS).filter(([, p]) => p.group === g).map(([k, p]) => `<label style="display:flex;gap:.6rem;align-items:flex-start;color:var(--ink);margin:.5rem 0"><input type="radio" name="preset" value="${k}" ${k === 'ice' ? 'checked' : ''}><span><b>${esc(p.name)}</b><br><span class="small muted">${esc(p.about)}</span></span></label>`).join('')).join('')}</div>
+      <div class="row" style="justify-content:flex-end;margin-top:1rem"><button value="">Cancel</button><button class="primary" id="presetOk">Continue</button></div>`);
+    let done = false;
+    const finish = (v) => { if (!done) { done = true; resolve(v); } };
+    $('button[value=""]', d).addEventListener('click', () => { finish(null); d.close(); });
+    $('#presetOk', d).addEventListener('click', () => { finish($('input[name=preset]:checked', d).value); d.close(); });
+    d.addEventListener('close', () => finish(null));
+  });
+}
+
+// ---------- editing as text ----------
+// One item per line, columns separated by " | " or a tab (so a table pasted from Excel or Word works).
+const splitLine = (line) => line.split(/\t|\s*\|\s*/).map((s) => s.trim());
+const lines = (text) => String(text || '').split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+const toLevelText = (fw) => fw.levels.map((l) => [l.short, l.name, l.help].join(' | ')).join('\n');
+const toGroupText = (fw) => fw.groups.map((g) => [g.id, g.title].join(' | ')).join('\n');
+const toAttrText = (fw) => fw.attributes.map((a) => { const lv = a.min && fw.levels.find((l) => l.id === a.min); return [a.id, a.group, a.text, ...(lv ? ['needs: ' + lv.short] : [])].join(' | '); }).join('\n');
+const toKsbText = (fw) => (fw.ksbs || []).map((k) => [k.id, k.kind, k.text, (k.attributes || []).join(', ')].join(' | ')).join('\n');
+
+// Turns the form text into a framework, or throws a message saying what is wrong.
+function buildFramework(f, previous) {
+  const levels = lines(f.levels).map((l) => {
+    const [short, name, ...help] = splitLine(l);
+    if (!short || !name) throw new Error(`Level line "${l}": write it as  K | Knowledge | what this level means`);
+    const old = previous.levels.find((x) => x.short === short);
+    return { id: old ? old.id : slug(name) || slug(short), short, name, help: help.join(' | ') };
+  });
+  if (!levels.length) throw new Error('Add at least one level.');
+  if (new Set(levels.map((l) => l.id)).size !== levels.length || new Set(levels.map((l) => l.short)).size !== levels.length) throw new Error('Each level needs its own letters and name.');
+  const groups = lines(f.groups).map((l) => {
+    const [id, ...title] = splitLine(l);
+    if (!id) throw new Error(`Group line "${l}": write it as  1 | Title of the group`);
+    return { id, title: title.join(' | ') || id };
+  });
+  const attributes = lines(f.attributes).map((l) => {
+    const parts = splitLine(l);
+    const need = /^needs:\s*(.+)$/i.exec(parts[parts.length - 1] || '');
+    if (need) parts.pop();
+    const [id, group, ...text] = parts;
+    if (!id || !group || !text.length) throw new Error(`Requirement line "${l}": write it as  2b | 2 | The text of the requirement`);
+    let min = '';
+    if (need) {
+      const lv = levels.find((x) => x.short.toLowerCase() === need[1].trim().toLowerCase() || x.name.toLowerCase() === need[1].trim().toLowerCase());
+      if (!lv) throw new Error(`Requirement ${id}: "needs: ${need[1]}" is not one of your levels`);
+      min = lv.id;
+    }
+    return { id, group, text: text.join(' | '), min };
+  });
+  if (!attributes.length) throw new Error('Add at least one requirement.');
+  const ids = attributes.map((a) => a.id);
+  if (new Set(ids.map((x) => x.toLowerCase())).size !== ids.length) throw new Error('Two requirements have the same id.');
+  for (const a of attributes) if (!groups.some((g) => String(g.id) === a.group)) groups.push({ id: a.group, title: a.group });
+  const ksbs = lines(f.ksbs).map((l) => {
+    const [id, kind, text, links] = splitLine(l);
+    if (!id || !text) throw new Error(`Standard line "${l}": write it as  K1 | Knowledge | The text | 2a, 2b`);
+    return { id, kind: kind || '', text, attributes: (links || '').split(/[,;\s]+/).filter((x) => ids.includes(x)) };
+  });
+  if (new Set(ksbs.map((k) => k.id)).size !== ksbs.length) throw new Error('Two standards have the same id.');
+  const folders = {};
+  for (const k of Object.keys(DEFAULT_FOLDERS)) {
+    const v = String(f.folders[k] || '').trim().replace(/[\\/:*?"<>|]+/g, ' ').trim();
+    folders[k] = v || DEFAULT_FOLDERS[k];
+  }
+  if (new Set(Object.values(folders)).size !== Object.keys(folders).length) throw new Error('Each folder needs a different name.');
+  const evidenceFolders = lines(f.evidenceFolders).map((x) => x.replace(/[\\/:*?"<>|]+/g, ' ').trim()).filter(Boolean);
+  return { name: f.name.trim() || 'My framework', goal: previous.goal, source: previous.source, labels: { attr: f.labelAttr.trim() || 'Attributes', ksb: f.labelKsb.trim() || 'KSBs' }, levels, groups, attributes, ksbs, folders, evidenceFolders };
+}
+
+
 // What the views show, worked out from the data: evidence list, K/E/A coverage, PRR structure and checks,
 // mentor feedback, completion and next steps. All plain code: nothing here guesses.
 
-const LEVELS = ['knowledge', 'experience', 'ability'];
-const LEVEL_SHORT = { knowledge: 'K', experience: 'E', ability: 'A' };
-const LEVEL_HELP = {
-  knowledge: 'Knowledge: knows and understands it (training, CPD, reading), not yet shown applied on real work.',
-  experience: 'Experience: applied it on real work, with guidance, as part of a team, or with a senior making the key decisions.',
-  ability: 'Ability: did it themselves and took responsibility: own judgement and decisions, led the task, or guided others.',
-};
-const SUBS = REF.attributes;
-const SUB = Object.fromEntries(SUBS.map((a) => [a.id, a]));
-const GROUPS = [...new Map(SUBS.map((a) => [a.group, a.group_title])).entries()].map(([group, title]) => ({ group, title }));
-const KSBS = REF.ksbs;
-const KSB = Object.fromEntries(KSBS.map((k) => [k.id, k]));
+// LEVELS, LEVEL_SHORT, LEVEL_HELP, SUBS, SUB, GROUPS, KSBS, KSB come from the framework (05-framework.js).
 const goal = () => (P() && P().settings.goal) || 3;
 
 // ---------- evidence ----------
@@ -953,7 +1167,7 @@ const label = (it) => it.code || it.title;
 
 // For each sub-attribute and level: the evidence items mapped there.
 function coverage() {
-  const out = Object.fromEntries(SUBS.map((a) => [a.id, { knowledge: [], experience: [], ability: [] }]));
+  const out = Object.fromEntries(SUBS.map((a) => [a.id, Object.assign(Object.fromEntries(LEVELS.map((l) => [l, []])), needLevels(a) ? { _need: needLevels(a) } : {})]));
   for (const it of evidenceItems()) {
     if (it.missing || !it.rec) continue;
     for (const m of it.rec.maps || []) {
@@ -963,10 +1177,15 @@ function coverage() {
   }
   return out;
 }
-function slots(cell) { return LEVELS.reduce((n, l) => n + Math.min(cell[l].length, goal()), 0); }
+// A requirement with a minimum level (IStructE objectives) needs `goal` items at that level or above, counted once;
+// otherwise it needs `goal` items at every level.
+const needLevels = (a) => (a.min && LEVELS.includes(a.min) ? LEVELS.slice(LEVELS.indexOf(a.min)) : null);
+const distinctNeeded = (cell) => new Set(cell._need.flatMap((l) => cell[l])).size;
+function slots(cell) { return cell._need ? Math.min(distinctNeeded(cell), goal()) : LEVELS.reduce((n, l) => n + Math.min(cell[l].length, goal()), 0); }
+const slotMax = (cell) => (cell._need ? goal() : LEVELS.length * goal());
 function slotStatus(cell) {
   const s = slots(cell);
-  return s >= 3 * goal() ? 'met' : s > 0 ? 'part' : 'none';
+  return s >= slotMax(cell) ? 'met' : s > 0 ? 'part' : 'none';
 }
 function ksbCoverage() {
   const out = Object.fromEntries(KSBS.map((k) => [k.id, { direct: new Set(), via: new Set() }]));
@@ -981,7 +1200,7 @@ function ksbCoverage() {
 }
 
 // ---------- PRRs (Word) ----------
-const HEADING_RE = /^\s*(\d)\s*([a-e])\s*[–—\-:.)]\s*(.*)$/;
+// HEADING_RE is built from the framework's ids (05-framework.js).
 const EVIDENCE_RE = /^\s*evidence\s*:\s*(.*)$/i;
 const TAG_RE = /\{\s*([A-Z]{2,3}-\d{2,3})\s*\}/g;
 const PLACEHOLDER_RE = /^(?:[\d\s.…]*|.*(?:…|\.\.\.)\s*(?:…|\.\.\.)?\s*|tbc|tbd|todo|xxx+|placeholder)$/i;
@@ -1000,8 +1219,9 @@ function parsePrr(paragraphs) {
     const text = p.text;
     if (!text) return;
     const h = HEADING_RE.exec(text);
-    if (h && SUB[h[1] + h[2]] && (/^heading/i.test(p.style) || text.length < 250)) {
-      cur = { id: h[1] + h[2], heading: h[3].trim(), start: i, end: paragraphs.length, listed: [], listedText: '', general: [], blocks: [] };
+    const hid = h && subIdFromHeading(h[1]);
+    if (h && hid && (/^heading/i.test(p.style) || text.length < 250)) {
+      cur = { id: hid, heading: h[2].trim(), start: i, end: paragraphs.length, listed: [], listedText: '', general: [], blocks: [] };
       if (sections.length) sections[sections.length - 1].end = i;
       sections.push(cur);
       block = null;
@@ -1130,7 +1350,7 @@ function completion() {
   const fb = feedbackItems();
   let ev = 0, pr = 0, fe = 0;
   for (const a of SUBS) {
-    ev += slots(cov[a.id]) / (3 * goal());
+    ev += slots(cov[a.id]) / slotMax(cov[a.id]);
     const st = prr[a.id].state;
     pr += st === 'ready' ? 1 : st === 'draft' ? 0.5 : 0;
     if (st === 'ready' && !fb.some((f) => f.sub === a.id && f.status === 'open')) fe += 1;
@@ -1153,8 +1373,8 @@ function nextSteps(limit = 8) {
   if (unmapped.length) out.push({ text: `Map ${plural(unmapped.length, 'evidence file')} to sub-attributes`, href: '#evidence?show=unmapped' });
   const gaps = SUBS.map((a) => ({ a, s: slots(cov[a.id]) })).sort((x, y) => x.s - y.s);
   for (const { a, s } of gaps.slice(0, 4)) {
-    if (s >= 3 * goal()) break;
-    const lacking = LEVELS.filter((l) => cov[a.id][l].length < goal()).map((l) => `${goal() - cov[a.id][l].length} ${l}`);
+    if (s >= slotMax(cov[a.id])) break;
+    const lacking = cov[a.id]._need ? [`${goal() - s} at ${LEVEL_NAME[cov[a.id]._need[0]]} or above`] : LEVELS.filter((l) => cov[a.id][l].length < goal()).map((l) => `${goal() - cov[a.id][l].length} ${l}`);
     out.push({ text: `${a.id}: needs ${lacking.join(', ')}`, href: '#sub/' + a.id });
   }
   for (const a of SUBS) {
@@ -1244,19 +1464,20 @@ function cpdWarnings(a) {
 const VIEWS = {};      // name -> function(arg, query) that renders into #main
 const canEdit = () => !isMentor();   // the portfolio data belongs to the apprentice
 
-function tabsFor() {
+function tabsFor() { return tabsAll().filter((t) => t[0] !== 'ksbs' || KSBS.length); }
+function tabsAll() {
   if (!S.data) return [];
-  if (isMentor()) return [['home', 'Home'], ['evidence', 'Evidence'], ['attributes', 'Attributes'], ['ksbs', 'KSBs'], ['reports', 'Reports'], ['feedback', 'Feedback'], ['meetings', 'Meetings'], ['mentor', 'Assessment'], ['cpd', 'CPD'], ['settings', 'Settings'], ['help', 'Help']];
+  if (isMentor()) return [['home', 'Home'], ['evidence', 'Evidence'], ['attributes', LABEL.attr], ['ksbs', LABEL.ksb], ['reports', 'Reports'], ['feedback', 'Feedback'], ['meetings', 'Meetings'], ['mentor', 'Assessment'], ['cpd', 'CPD'], ['settings', 'Settings'], ['help', 'Help']];
   if (P().mode === 'cpd') return [['cpd', 'CPD'], ['settings', 'Settings'], ['help', 'Help']];
-  return [['home', 'Home'], ['evidence', 'Evidence'], ['attributes', 'Attributes'], ['ksbs', 'KSBs'], ['reports', 'Reports'], ['feedback', 'Feedback'], ['meetings', 'Meetings'], ['cpd', 'CPD'], ['mentor', 'Mentor'], ['settings', 'Settings'], ['help', 'Help']];
+  return [['home', 'Home'], ['evidence', 'Evidence'], ['attributes', LABEL.attr], ['ksbs', LABEL.ksb], ['reports', 'Reports'], ['feedback', 'Feedback'], ['meetings', 'Meetings'], ['cpd', 'CPD'], ['mentor', 'Mentor'], ['settings', 'Settings'], ['help', 'Help']];
 }
-const ACTIVE_TAB = { item: 'evidence', sub: 'attributes', report: 'reports', meeting: 'meetings', ksb: 'ksbs' };
+const ACTIVE_TAB = { framework: 'settings', item: 'evidence', sub: 'attributes', report: 'reports', meeting: 'meetings', ksb: 'ksbs' };
 
 function renderHeader(active) {
   const who = S.data ? (isMentor() ? `Mentor: ${esc(S.data.name)} · apprentice: ${esc((P() && P().name) || S.data.apprentice || '?')}` : esc(S.data.name)) : '';
   const openFb = S.data && P() ? feedbackItems().filter((f) => f.status === 'open').length : 0;
   $('#top').innerHTML = `<div class="bar">
-    <a class="brand" href="#${S.data && P() && P().mode === 'cpd' ? 'cpd' : 'home'}">ICE Tool<small>${who}</small></a>
+    <a class="brand" href="#${S.data && P() && P().mode === 'cpd' ? 'cpd' : 'home'}">Portfolio Tool<small>${who}</small></a>
     <nav class="tabs">${tabsFor().map(([id, name]) => `<a href="#${id}" class="${active === id ? 'active' : ''}"${active === id ? ' aria-current="page"' : ''}>${name}${
       id === 'feedback' && openFb ? `<span class="count" title="open comments">${openFb}</span>` : ''}</a>`).join('')}</nav>
     <div class="top-right">${S.data ? `<div class="search-wrap"><input id="search" type="search" placeholder="Search (Ctrl+K)" autocomplete="off"><div id="searchResults" hidden></div></div>
@@ -1292,7 +1513,7 @@ async function render() {
     console.error(err);
     main.innerHTML = banners + `<div class="banner bad">This page failed to load: ${esc(err.message)}</div>`;
   }
-  document.title = `ICE Tool · ${$('nav.tabs a.active') ? $('nav.tabs a.active').firstChild.textContent : ''}`;
+  document.title = `Portfolio Tool · ${$('nav.tabs a.active') ? $('nav.tabs a.active').firstChild.textContent : ''}`;
 }
 window.addEventListener('hashchange', () => { closePreview(); render(); window.scrollTo(0, 0); });
 
@@ -1326,6 +1547,10 @@ const chip = (text, cls = '') => `<span class="chip ${cls}">${esc(text)}</span>`
 const prrChip = (state) => chip(...(PRR_STATE[state] || [state, '']));
 const meter = (frac, cls = '') => `<div class="bar-meter ${cls}" title="${Math.round(frac * 100)}%"><span style="width:${Math.round(Math.min(1, frac) * 100)}%"></span></div>`;
 function slotsHtml(cell) {
+  if (cell._need) {
+    const n = distinctNeeded(cell), lv = cell._need[0];
+    return `<span class="slots" title="needs ${esc(LEVEL_NAME[lv])} or above: ${n}"><span class="lvl"><b>${esc(LEVEL_SHORT[lv])}+</b>${Array.from({ length: goal() }, (_, i) => `<i class="${i < n ? 'on' : ''}"></i>`).join('')}</span></span>`;
+  }
   return `<span class="slots" title="${LEVELS.map((l) => `${l}: ${cell[l].length}`).join(', ')}">${LEVELS.map((l) =>
     `<span class="lvl"><b>${LEVEL_SHORT[l]}</b>${Array.from({ length: goal() }, (_, n) => `<i class="${n < cell[l].length ? 'on' : ''}"></i>`).join('')}</span>`).join('')}</span>`;
 }
@@ -1466,8 +1691,8 @@ function showConflict() {
 async function start() {
   if (!supported()) {
     $('#main').innerHTML = `<div class="welcome card"><h1>Please open this in Microsoft Edge or Google Chrome</h1>
-      <p>The ICE Tool keeps your files in a folder on your computer (your OneDrive folder). Only Edge and Chrome on a computer let a page do that.</p>
-      <p class="muted">Right-click <b>ICE Tool.html</b> → <b>Open with</b> → <b>Microsoft Edge</b>.</p></div>`;
+      <p>The Portfolio Tool keeps your files in a folder on your computer (your OneDrive folder). Only Edge and Chrome on a computer let a page do that.</p>
+      <p class="muted">Right-click <b>Portfolio Tool.html</b> → <b>Open with</b> → <b>Microsoft Edge</b>.</p></div>`;
     return;
   }
   S.own = await recall('own');
@@ -1479,8 +1704,9 @@ async function start() {
 
 async function openAll() {
   S.warnings = [];
-  if (!(await loadOwn())) return welcome(`The folder "${esc(S.own.name)}" has no ICE Tool data yet.`);
+  if (!(await loadOwn())) return welcome(`The folder "${esc(S.own.name)}" has no Portfolio Tool data yet.`);
   await loadOther();
+  applyFramework(P() && P().framework);
   if (isMentor() && !S.other) S.warnings.push('Link the apprentice\'s portfolio folder in Settings to see their work.');
   if (isMentor() && S.other && !S.otherData) S.warnings.push('The apprentice\'s folder needs permission again: open Settings and press Reconnect.');
   const copies = await conflictCopies();
@@ -1507,9 +1733,9 @@ function reconnect() {
 function welcome(note = '') {
   renderHeader('');
   $('#main').innerHTML = `<div class="welcome">
-    <h1>ICE Tool</h1>
-    <p>A tracker for the ICE Professional Review: evidence mapped to the attributes with Knowledge, Experience and Ability levels,
-    checks on your Word PRRs, your mentor's comments, meeting notes and CPD. No AI, no internet, no install: everything stays in your OneDrive folder.</p>
+    <h1>Portfolio Tool</h1>
+    <p>A tracker for a professional review or apprenticeship portfolio: evidence mapped to the attributes or requirements of your own framework (ICE IEng is built in; you can edit it or write your own for any institution or level),
+    checks on your Word reports, your mentor's comments, meeting notes and CPD. No AI, no internet, no install: everything stays in your OneDrive folder.</p>
     ${note ? `<div class="banner">${note}</div>` : ''}
     <div class="choices">
       <button class="choice card" id="wNew"><b>Start my portfolio</b><span class="muted">Pick (or make) an empty folder in your OneDrive, e.g. <i>ICE Portfolio - Your Name</i>. The tool creates the Evidence, PRR, Meetings and CPD folders in it.</span></button>
@@ -1549,7 +1775,14 @@ async function setupPortfolio(mode) {
   const name = await askText('Your name', 'Name (as on your ICE application)', '', 'Shown on exports and to your mentor.');
   if (!name) return;
   S.data = newPortfolio(name, mode);
-  for (const f of mode === 'cpd' ? [FOLDERS.cpd, FOLDERS.exports] : Object.values(FOLDERS)) await subDir(dir, f, true);
+  if (mode !== 'cpd') {
+    const key = await choosePreset();
+    if (!key) { S.data = null; return; }
+    S.data.framework = key === 'ice' ? null : clone(PRESETS[key].fw);
+    if (PRESETS[key].fw.goal) S.data.settings.goal = PRESETS[key].fw.goal;
+  }
+  applyFramework(S.data.framework);
+  await ensureFolders(dir, mode);
   await subDir(dir, DATA_DIR, true);
   await save(true);
   await remember('own', dir);
@@ -1586,7 +1819,7 @@ async function setupMentor() {
 window.addEventListener('error', (e) => toast('Something went wrong: ' + e.message, 'error'));
 window.addEventListener('unhandledrejection', (e) => toast('Something went wrong: ' + ((e.reason && e.reason.message) || e.reason), 'error'));
 document.addEventListener('DOMContentLoaded', () => start().catch((err) => {
-  $('#main').innerHTML = `<div class="welcome card"><h1>The ICE Tool could not start</h1><p class="bad">${esc(err.message || err)}</p><p>Try opening it in Microsoft Edge or Google Chrome.</p></div>`;
+  $('#main').innerHTML = `<div class="welcome card"><h1>The Portfolio Tool could not start</h1><p class="bad">${esc(err.message || err)}</p><p>Try opening it in Microsoft Edge or Google Chrome.</p></div>`;
 }));
 
 // Home, the evidence list, one evidence item (mapping with K/E/A levels), the attributes and KSBs.
@@ -1607,7 +1840,7 @@ VIEWS.home = async () => {
   return `<h1>${isMentor() ? esc(P() ? P().name : 'Apprentice') + '’s portfolio' : 'Your ICE Professional Review'}</h1>
     <div class="kpis">
       <div class="kpi"><div class="label">Overall</div><div class="big-number">${Math.round(c.total * 100)}%</div>${meter(c.total)}</div>
-      <div class="kpi"><div class="label">Evidence slots (K/E/A × ${goal()})</div><div class="big-number">${Math.round(c.evidence * 100)}%</div>${meter(c.evidence)}<div class="small muted">${met} of ${SUBS.length} sub-attributes full</div></div>
+      <div class="kpi"><div class="label">Evidence slots (${LEVELS.map((l) => LEVEL_SHORT[l]).join('/')} × ${goal()})</div><div class="big-number">${Math.round(c.evidence * 100)}%</div>${meter(c.evidence)}<div class="small muted">${met} of ${SUBS.length} sub-attributes full</div></div>
       <div class="kpi"><div class="label">PRR sections</div><div class="big-number">${Math.round(c.prr * 100)}%</div>${meter(c.prr)}<div class="small muted">${Object.keys(S.prr).length} Word file(s) in PRR</div></div>
       <div class="kpi"><div class="label">Mentor comments</div><div class="big-number">${fbOpen}</div><div class="small muted">open · <a href="#feedback">answer them</a></div></div>
       <div class="kpi"><div class="label">Evidence files</div><div class="big-number">${items.filter((i) => !i.missing).length}</div><div class="small muted">${items.filter((i) => !i.missing && !(i.rec && i.rec.maps && i.rec.maps.length)).length} not mapped yet</div></div>
@@ -1619,7 +1852,7 @@ VIEWS.home = async () => {
       <div class="card"><h2>Open actions from meetings</h2>${actions.length ? `<ul class="list-plain">${actions.slice(0, 10).map((a) => `<li>${a.due ? `<span class="chip ${a.due < today() ? 'bad' : ''}">${fmtDate(a.due)}</span> ` : ''}${linkify(a.text)} <span class="small muted">· <a href="#meeting/${a.meeting.id}">${fmtDate(a.meeting.date)}</a></span></li>`).join('')}</ul>` : '<p class="muted">None. Actions come from tagging "To do" in a meeting.</p>'}</div>
       <div class="card"><h2>By attribute</h2><table><tbody>${GROUPS.map((g) => {
         const subs = SUBS.filter((a) => a.group === g.group);
-        const frac = subs.reduce((n, a) => n + slots(cov[a.id]), 0) / (subs.length * 3 * goal());
+        const frac = subs.reduce((n, a) => n + slots(cov[a.id]), 0) / subs.reduce((n, a) => n + slotMax(cov[a.id]), 0);
         return `<tr class="click" onclick="location.hash='#attributes?g=${g.group}'"><td class="nowrap"><b>${g.group}</b></td><td>${esc(g.title)}</td><td style="width:30%">${meter(frac, frac >= 1 ? 'good' : '')}</td></tr>`;
       }).join('')}</tbody></table></div>
     </div>`;
@@ -1648,7 +1881,7 @@ VIEWS.evidence = async (arg, q) => {
       <button id="rescan" title="Look for new, moved or deleted files">↻ Refresh</button>
       ${canEdit() ? '<button id="autoCodes" title="Give codes to files that have none">Number files…</button>' : ''}
       <button id="exportXlsx" class="primary">Export Excel matrix</button></div></div>
-    <p class="muted small">Every file in <code>${FOLDERS.evidence}</code> (and its sub-folders) is listed. Put a code such as <code>CO-14</code> at the start of a file name and it is picked up; otherwise type one in. Click a row to map it.</p>
+    <p class="muted small">Every file in <code>${FOLDERS.evidence}</code> (and its sub-folders) is listed. Save each file in the folder for its kind (correspondence, markups, calculations…). Put a code such as <code>CO-14</code> at the start of a file name and it is picked up; otherwise type one in. Click a row to map it.</p>
     <div class="sub-tabs">${['all', 'unmapped', 'mapped', 'missing'].map((s) => `<a href="${qs({ show: s })}" class="${show === s ? 'active' : ''}">${{ all: 'All', unmapped: 'Not mapped', mapped: 'Mapped', missing: 'File missing' }[s]} (${counts[s]})</a>`).join('')}
       <select id="folderSel"><option value="">All folders</option>${folders.map((f) => `<option ${f === folder ? 'selected' : ''}>${esc(f)}</option>`).join('')}</select>
       <input id="evFilter" type="search" placeholder="Filter…" value="${esc(q.get('q') || '')}"></div>
@@ -1686,7 +1919,7 @@ async function numberFiles() {
   const d = dialog(`<h2>Give codes to ${plural(items.length, 'file')}</h2>
     <p class="small muted">Pick a 2 or 3 letter prefix per folder (for example SV for site visits). Files are numbered in name order, skipping codes already used. Only the tracker changes: file names stay as they are.</p>
     <table><thead><tr><th>Folder</th><th>Files</th><th>Prefix</th></tr></thead><tbody>${Object.entries(byFolder).map(([f, list]) => `<tr><td>${esc(f || '(top level)')}</td><td>${list.length}</td>
-      <td><input data-folder="${esc(f)}" size="4" maxlength="3" value="${esc((f.replace(/^[\d\s.\-–]+/, '').match(/[A-Za-z]/g) || ['E', 'V']).slice(0, 2).join('').toUpperCase())}"></td></tr>`).join('')}</tbody></table>
+      <td><input data-folder="${esc(f)}" size="4" maxlength="3" value="${esc(categoryPrefix(f) || (f.replace(/^[\d\s.\-–]+/, '').match(/[A-Za-z]/g) || ['E', 'V']).slice(0, 2).join('').toUpperCase())}"></td></tr>`).join('')}</tbody></table>
     <div class="row" style="justify-content:flex-end;margin-top:1rem"><button value="no">Cancel</button><button class="primary" id="doNumber">Give codes</button></div>`);
   $('button[value=no]', d).addEventListener('click', () => d.close());
   $('#doNumber', d).addEventListener('click', () => {
@@ -1743,7 +1976,7 @@ VIEWS.item = async (arg) => {
         <p class="small muted">File: ${it.missing ? esc(it.path) : fileLink(it.path, it.path)}${it.file ? ` · ${fmtSize(it.file.size)}` : ''}${usedIn.length ? ` · in your PRR for ${usedIn.map(subLink).join(' ')}` : ''}</p></div>
 
         <div class="card"><h2>Sub-attributes and level</h2>
-          <p class="small muted">Click K, E or A for each sub-attribute this shows. <b>K</b> ${esc(LEVEL_HELP.knowledge.split(': ')[1])} <b>E</b> ${esc(LEVEL_HELP.experience.split(': ')[1])} <b>A</b> ${esc(LEVEL_HELP.ability.split(': ')[1])}</p>
+          <p class="small muted">Click ${LEVELS.map((l) => LEVEL_SHORT[l]).join(', ')} for each sub-attribute this shows. ${LEVELS.map((l) => `<b>${esc(LEVEL_SHORT[l])}</b> ${esc(LEVEL_HELP[l].replace(/^[^:]*: /, ''))}`).join(' ')}</p>
           <div class="map-grid">${GROUPS.map((g) => `<div class="group-title">${g.group}. ${esc(g.title)}</div>` + SUBS.filter((a) => a.group === g.group).map((a) =>
             `<div class="map-row"><span class="sid">${subLink(a.id)}</span><span class="stext" title="${esc(a.text)}">${esc(a.text)}</span>${LEVELS.map((l) =>
               `<button class="small lvl-btn ${has(a.id, l) ? 'on' : ''}" data-sub="${a.id}" data-level="${l}" title="${esc(LEVEL_HELP[l])}"${dis(ed)}>${LEVEL_SHORT[l]}</button>`).join('')}</div>`).join('')).join('')}</div>
@@ -1823,10 +2056,10 @@ VIEWS.attributes = async (arg, q) => {
   const prr = prrBySub();
   const fb = feedbackItems();
   const only = q.get('g');
-  return `<h1>Attributes</h1>
-    <p class="muted small">Goal: ${goal()} different pieces of evidence at each level (Knowledge, Experience, Ability) for every sub-attribute. Click a row for everything about it.</p>
-    ${GROUPS.filter((g) => !only || String(g.group) === only).map((g) => `<div class="card"><h2>${g.group}. ${esc(g.title)}</h2><div class="table-wrap"><table>
-      <thead><tr><th>Sub</th><th>Description</th><th>K / E / A</th><th>Evidence</th><th>PRR</th><th>Comments</th>${M() ? '<th>Mentor</th>' : ''}</tr></thead><tbody>
+  return `<h1>${esc(LABEL.attr)}</h1>
+    <p class="muted small">Goal: ${goal()} different pieces of evidence at each level (${LEVELS.map((l) => LEVEL_NAME[l]).join(', ')}) for every sub-attribute. Click a row for everything about it.</p>
+    ${GROUPS.filter((g) => !only || String(g.group) === only).map((g) => `<div class="card"><h2>${g.group}. ${esc(g.title)}</h2><div class="table-wrap"><table class="attr">
+      <thead><tr><th>Sub</th><th>Description</th><th>${LEVELS.map((l) => LEVEL_SHORT[l]).join(' / ')}</th><th>Evidence</th><th>PRR</th><th>Comments</th>${M() ? '<th>Mentor</th>' : ''}</tr></thead><tbody>
       ${SUBS.filter((a) => a.group === g.group).map((a) => {
         const cell = cov[a.id];
         const codes = [...new Set(LEVELS.flatMap((l) => cell[l].map(label)))].sort(natural);
@@ -1856,7 +2089,7 @@ VIEWS.sub = async (id) => {
     <h1>${id} · ${esc(a.text)}</h1><p class="muted">${a.group}. ${esc(a.group_title)} · ${slotsHtml(cell)}</p>
     <div class="cols">
       <div>
-        <div class="card"><h2>Evidence by level</h2>${LEVELS.map((l) => `<h3>${l[0].toUpperCase() + l.slice(1)} <span class="small muted">${cell[l].length} / ${goal()}</span></h3>
+        <div class="card"><h2>Evidence by level</h2>${LEVELS.map((l) => `<h3>${esc(LEVEL_NAME[l])} <span class="small muted">${cell[l].length} / ${goal()}</span></h3>
           ${cell[l].length ? `<ul class="list-plain">${cell[l].map((it) => {
             const m = it.rec.maps.find((x) => x.sub === id && x.level === l);
             return `<li>${itemLink(it)} ${it.code ? esc(it.title) : ''}${m && m.note ? `<div class="small muted">${esc(m.note)}</div>` : ''}</li>`;
@@ -1904,7 +2137,7 @@ VIEWS.reports = async () => {
     <p class="muted small">Write your PRRs in Word, in the <code>${FOLDERS.prr}</code> folder. The tool reads them (it never changes them) and checks the structure.
       <a href="#" id="howWrite">How to write them so the checks work</a></p>
     ${reports.length ? reports.map((r) => {
-      const group = (/attribute\s*(\d)/i.exec(r.name) || /attribute\s*(\d)/i.exec(r.doc.title) || [])[1];
+      const group = (/attribute\s*([A-Za-z0-9]+)/i.exec(r.name) || /attribute\s*([A-Za-z0-9]+)/i.exec(r.doc.title) || [])[1];
       const expected = group ? SUBS.filter((a) => String(a.group) === group && !r.doc.sections.some((s) => s.id === a.id)) : [];
       const open = feedbackItems().filter((f) => f.file === r.path && f.status === 'open').length;
       return `<div class="card"><div class="row spread"><h2 style="margin:0">${fileLink(r.path, r.name)}</h2>
@@ -1941,7 +2174,7 @@ const PRR_HELP = `<h2>Writing a PRR the tool can check</h2>
 function newPrrDialog() {
   const d = dialog(`<h2>New PRR from the template</h2>
     <p class="small muted">Makes a Word file in <code>${FOLDERS.prr}</code> with a heading and an Evidence line for each sub-attribute. Existing files are never overwritten.</p>
-    <label>Attribute</label><select id="prrGroup">${GROUPS.map((g) => `<option value="${g.group}">${g.group}. ${esc(g.title)}</option>`).join('')}<option value="all">All nine in one file</option></select>
+    <label>Attribute</label><select id="prrGroup">${GROUPS.map((g) => `<option value="${g.group}">${g.group}. ${esc(g.title)}</option>`).join('')}<option value="all">All in one file</option></select>
     <label><input type="checkbox" id="prrEvidence" checked> Fill the Evidence lines from what is already mapped</label>
     <div class="row" style="justify-content:flex-end;margin-top:1rem"><button value="no">Cancel</button><button class="primary" id="prrMake">Create</button></div>`);
   $('button[value=no]', d).addEventListener('click', () => d.close());
@@ -2042,7 +2275,7 @@ async function exportResponses() {
     { type: 'small', text: `${P().name} · ${fmtDate(today())} · ${items.filter((f) => f.status !== 'open').length} of ${items.length} answered` },
     { type: 'table', rows, widths: [500, 1100, 3700, 3700, 1100] },
   ]);
-  const path = `${FOLDERS.exports}/Response to feedback ${today()}.docx`;
+  const path = `${FOLDERS.feedback}/Response to feedback ${today()}.docx`;
   await writeFile(S.own, path, blob);
   return path;
 }
@@ -2607,8 +2840,10 @@ VIEWS.settings = async () => {
         <button id="linkOther">${S.other ? 'Pick a different ' : 'Link '}${otherLabel}…</button>${S.other ? '<button id="unlinkOther">Unlink</button>' : ''}</div>
       <p class="small muted" style="margin-top:1rem">The tool never writes into the linked folder. To protect your own files from changes by others, share your folder with them as <b>Can view</b> in OneDrive.</p>
       <button id="switchFolder" style="margin-top:.5rem">Open a different folder of my own…</button></div>
+    <div class="card"><h2>Framework</h2><p>Assessing against <b>${esc(FRAMEWORK.name)}</b>: ${plural(SUBS.length, 'requirement')}, ${plural(LEVELS.length, 'level')}${KSBS.length ? `, ${plural(KSBS.length, 'standard')}` : ''}.</p>
+      <p class="small muted">${mentor ? 'Set by the apprentice; shown here read-only.' : 'Edit the requirements, levels, evidence folders and folder names to match your institution or level, or start from a blank one.'}</p><a class="btn" href="#framework">${mentor ? 'View' : 'Edit'} framework</a></div>
     ${mentor ? '' : `<div class="card"><h2>Targets</h2>
-      ${d.mode !== 'cpd' ? `<label>Evidence goal per level (Knowledge, Experience, Ability) for each sub-attribute</label><input type="number" min="1" max="9" id="setGoal" value="${d.settings.goal}">` : ''}
+      ${d.mode !== 'cpd' ? `<label>Evidence goal per level (${LEVELS.map((l) => LEVEL_NAME[l]).join(', ')}) for each sub-attribute</label><input type="number" min="1" max="9" id="setGoal" value="${d.settings.goal}">` : ''}
       <label>CPD hours a year</label><input type="number" min="0" id="setTarget" value="${d.settings.cpdTarget}">
       <label>CPD year starts in</label><select id="setYearStart">${['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map((m, i) => `<option value="${i + 1}" ${d.settings.cpdYearStart === i + 1 ? 'selected' : ''}>${m}</option>`).join('')}</select>
       <label>ICE CPD Framework themes, one per line (start a line with * for a mandatory theme)</label>
@@ -2622,7 +2857,7 @@ VIEWS.settings = async () => {
 VIEWS.settings.after = () => {
   const d = S.data;
   $('#setName').addEventListener('input', (e) => { d.name = e.target.value; changed(); });
-  if ($('#setMode')) $('#setMode').addEventListener('change', async (e) => { d.mode = e.target.value; if (d.mode === 'ice') for (const f of Object.values(FOLDERS)) await subDir(S.own, f, true); changed(); render(); });
+  if ($('#setMode')) $('#setMode').addEventListener('change', async (e) => { d.mode = e.target.value; if (d.mode === 'ice') await ensureFolders(S.own, 'ice'); changed(); render(); });
   if ($('#setGoal')) $('#setGoal').addEventListener('input', (e) => { d.settings.goal = Math.max(1, +e.target.value || 3); changed(); });
   if ($('#setTarget')) $('#setTarget').addEventListener('input', (e) => { d.settings.cpdTarget = +e.target.value || 0; changed(); });
   if ($('#setYearStart')) $('#setYearStart').addEventListener('change', (e) => { d.settings.cpdYearStart = +e.target.value; changed(); });
@@ -2668,10 +2903,10 @@ async function exportMatrix() {
       rows: [['Code', 'Title', 'Project', 'Date', ...SUBS.map((a) => a.id), 'KSBs', 'File'],
         ...items.map((it) => [it.code, it.title, (it.rec && it.rec.project) || '', (it.rec && it.rec.date) || '', ...SUBS.map((a) => levelCell(it, a.id)),
           [...new Set(((it.rec && it.rec.maps) || []).flatMap((m) => m.ksbs || []))].sort(natural).join(', '), it.path])] },
-    { name: 'Summary', freeze: { rows: 1 }, filter: true, widths: [6, 30, 6, 60, 7, 7, 7, 10, 12, 10, 14, 40],
-      rows: [['Attr.', 'Attribute', 'Sub', 'Sub-attribute', 'K', 'E', 'A', 'Slots', 'PRR', 'Open comments', 'Mentor', 'Evidence'],
-        ...SUBS.map((a) => [a.group, a.group_title, a.id, { v: a.text, s: 'wrap' }, status(cov[a.id].knowledge.length), status(cov[a.id].experience.length), status(cov[a.id].ability.length),
-          `${slots(cov[a.id])}/${3 * g}`, prr[a.id].state, fb.filter((f) => f.sub === a.id && f.status === 'open').length, M() ? MENTOR_STATUS[(M().subs[a.id] || {}).status || ''] : '',
+    { name: 'Summary', freeze: { rows: 1 }, filter: true, widths: [6, 30, 6, 60, ...LEVELS.map(() => 7), 10, 12, 10, 14, 40],
+      rows: [['Attr.', 'Attribute', 'Sub', 'Sub-attribute', ...LEVELS.map((l) => LEVEL_SHORT[l]), 'Slots', 'PRR', 'Open comments', 'Mentor', 'Evidence'],
+        ...SUBS.map((a) => [a.group, a.group_title, a.id, { v: a.text, s: 'wrap' }, ...LEVELS.map((l) => status(cov[a.id][l].length)),
+          `${slots(cov[a.id])}/${slotMax(cov[a.id])}`, prr[a.id].state, fb.filter((f) => f.sub === a.id && f.status === 'open').length, M() ? MENTOR_STATUS[(M().subs[a.id] || {}).status || ''] : '',
           [...new Set(LEVELS.flatMap((l) => cov[a.id][l].map(label)))].sort(natural).join(', ')])] },
     { name: 'KSBs', freeze: { rows: 1 }, widths: [6, 80, 16, 30], rows: [['KSB', 'Description', 'Sub-attributes', 'Evidence (ticked)'],
       ...KSBS.map((k) => { const c = ksbCoverage()[k.id]; return [k.id, { v: k.text, s: 'wrap' }, k.attributes.join(', '), [...c.direct].map(label).join(', ')]; })] },
@@ -2681,22 +2916,22 @@ async function exportMatrix() {
       ...allActions().map((a) => [a.meeting.date, a.meeting.title, { v: a.text, s: 'wrap' }, a.sub, a.due, a.status === 'done' ? 'Done' : 'Open'])] },
     ...cpdSheets('all'),
   ];
-  const path = `${FOLDERS.exports}/ICE evidence matrix ${today()}.xlsx`;
+  const path = `${FOLDERS.matrix}/ICE evidence matrix ${today()}.xlsx`;
   await writeFile(S.own, path, makeXlsx(sheets));
   return path;
 }
 
 // ---------- help ----------
-VIEWS.help = async () => (P() && P().mode === 'cpd' ? `<h1>How to use the ICE Tool</h1><div class="grid">
+VIEWS.help = async () => (P() && P().mode === 'cpd' ? `<h1>How to use the Portfolio Tool</h1><div class="grid">
   <div class="card"><h2>CPD record</h2><p>This follows ICE's CPD guidance. Review your learning needs at least once a year (a SWOT works well), set objectives with reference codes in the <b>Development plan</b>, and record what you do in the <b>Development record</b> with its effective learning time and what you learned.</p>
     <p>Keep an <b>Unplanned</b> objective for learning you did not plan. ICE advises no more than 6 hours for a day and 30 hours for one activity.</p>
     <p><b>Export</b> makes Word or Excel files in the layout of ICE's CPD templates, ready for an application or the annual CPD audit.</p></div>
   <div class="card"><h2>Good to know</h2><ul>
     <li>Your folder holds <b>${FOLDERS.cpd}</b> (attached certificates and notes), <b>${FOLDERS.exports}</b> and <b>${DATA_DIR}</b> (the record itself: do not edit by hand).</li>
     <li>It saves as you type, and keeps one copy a day in <code>${DATA_DIR}/backups</code>.</li>
-    <li>To track a Professional Review as well, switch in <a href="#settings">Settings</a>.</li></ul></div></div>` : '') || `<h1>How to use the ICE Tool</h1><div class="grid">
+    <li>To track a Professional Review as well, switch in <a href="#settings">Settings</a>.</li></ul></div></div>` : '') || `<h1>How to use the Portfolio Tool</h1><div class="grid">
   <div class="card"><h2>The idea</h2><p>One HTML file that keeps a tracker of your ICE Professional Review in your OneDrive folder. It does no thinking for you (no AI): it lists, links, counts and checks, so nothing gets missed.</p>
-    <p>Your folder holds: <b>${FOLDERS.evidence}</b> (any sub-folders), <b>${FOLDERS.prr}</b> (your Word PRRs), <b>${FOLDERS.meetings}</b>, <b>${FOLDERS.cpd}</b>, <b>${FOLDERS.exports}</b>, and <b>${DATA_DIR}</b> (the tracker itself: do not edit by hand).</p></div>
+    <p>Your folder holds: <b>${FOLDERS.prr}</b> (your Word PRRs), <b>${FOLDERS.matrix}</b> (the Excel matrix), <b>${FOLDERS.evidence}</b> (one sub-folder per kind of evidence), <b>${FOLDERS.feedback}</b> (response tables), <b>${FOLDERS.meetings}</b>, <b>${FOLDERS.cpd}</b>, <b>${FOLDERS.exports}</b>, and <b>${DATA_DIR}</b> (the tracker itself: do not edit by hand).</p></div>
   <div class="card"><h2>1. Evidence</h2><ol><li>Save evidence files into <b>${FOLDERS.evidence}</b>. Start file names with a code such as <code>CO-14</code> to have it picked up (or use <b>Number files…</b>).</li>
     <li>Open each one and click <b>K</b>, <b>E</b> or <b>A</b> against every sub-attribute it shows. Add a note on why.</li>
     <li><b>Attributes</b> shows what is covered; the goal is ${P() ? goal() : 3} pieces at each level for every sub-attribute. <b>Home</b> lists the biggest gaps.</li></ol></div>
@@ -2715,6 +2950,89 @@ VIEWS.help = async () => (P() && P().mode === 'cpd' ? `<h1>How to use the ICE To
     <li><kbd>Ctrl</kbd>+<kbd>K</kbd> searches everything. Click any code or file name to preview it beside the page.</li>
     <li>One copy of the tracker is kept per day in <code>${DATA_DIR}/backups</code>.</li></ul></div>
 </div>`;
+
+// The Framework page (Settings → Framework): edit levels, requirements, standards and folders.
+
+const FOLDER_LABELS = { prr: 'Reports (Word files you write)', matrix: 'Evidence matrix (Excel)', evidence: 'Evidence', feedback: 'Feedback, compliance and status', meetings: 'Meetings', cpd: 'CPD', exports: 'Exports' };
+
+VIEWS.framework = async () => {
+  const fw = FRAMEWORK;
+  const ed = canEdit();
+  const dd = dis(ed);
+  const rows = (n) => ` rows="${n}" wrap="off" style="white-space:pre;font-family:Consolas,monospace;font-size:.85rem"`;
+  return `<div class="row spread"><div><a href="#settings">← Settings</a><h1 style="margin-top:.3rem">Framework</h1></div>
+      <div class="row"><button id="fwExport">Export as file</button>${ed ? '<button id="fwImport">Import file…</button><input type="file" id="fwFile" accept=".json,application/json" hidden>' : ''}</div></div>
+    ${fw.source ? `<div class="banner info"><b>Source:</b> ${esc(fw.source)}. Read from the published document: it may contain mistakes or be out of date, so check it against the current version and correct anything below.</div>` : ''}
+    <p class="muted small">This is what the tool checks you against. Change it to match your institution, profession or level. One item per line, columns separated by <code>|</code> or a tab, so you can paste a table straight from Excel or Word.
+      ${ed ? 'Existing evidence mappings stay: a mapping to a requirement or level you delete is kept in your data but no longer counted.' : 'The apprentice owns the framework; you see it read-only.'}</p>
+    <div class="grid">
+      <div class="card"><h2>Name and words</h2>
+        <label>Framework name</label><input id="fwName" value="${esc(fw.name)}" style="width:100%"${dd}>
+        <div class="form-grid"><div><label>Tab name for the requirements</label><input id="fwLabelAttr" value="${esc(LABEL.attr)}"${dd}></div>
+          <div><label>Tab name for the standards (leave the list empty to hide the tab)</label><input id="fwLabelKsb" value="${esc(LABEL.ksb)}"${dd}></div></div>
+        <label>Start from</label><div class="row"><select id="fwPreset"${dd}><option value="">Choose…</option>${Object.entries(PRESETS).map(([k, p]) => `<option value="${k}">${esc(p.name)}</option>`).join('')}</select><span class="small muted">replaces everything in the boxes below (nothing is saved until you press Save)</span></div></div>
+      <div class="card"><h2>Levels</h2><p class="small muted">Letters | Name | What it means. Each requirement needs the goal number of evidence items at every level (set in Settings). One level is fine.</p>
+        <textarea id="fwLevels"${rows(4)}${dd}>${esc(toLevelText(fw))}</textarea></div>
+      <div class="card"><h2>Groups</h2><p class="small muted">Group id | Title. Groups collect requirements, for example one per attribute, unit or competence area.</p>
+        <textarea id="fwGroups"${rows(8)}${dd}>${esc(toGroupText(fw))}</textarea></div>
+      <div class="card"><h2>Folders</h2><p class="small muted">Folder names inside your portfolio folder. New names are created when you save; existing folders are not renamed or moved.</p>
+        <div class="form-grid">${Object.keys(DEFAULT_FOLDERS).map((k) => `<div><label>${FOLDER_LABELS[k]}</label><input data-folder="${k}" value="${esc(fw.folders[k] || DEFAULT_FOLDERS[k])}"${dd}></div>`).join('')}</div>
+        <label>Kinds of evidence (folders inside the evidence folder, one per line; end with " - " and 2 or 3 letters for the code, e.g. <code>4 - Calculations - CA</code>)</label>
+        <textarea id="fwEvFolders"${rows(9)}${dd}>${esc((fw.evidenceFolders || []).join('\n'))}</textarea></div>
+    </div>
+    <div class="card"><h2>Requirements</h2><p class="small muted">Id | Group id | Text, then optionally <code>| needs: K</code> to say the requirement is met by evidence at that level or above (otherwise every level needs evidence). The id is what you write in report headings, for example <code>2b – Contribute to…</code>.</p>
+      <textarea id="fwAttrs"${rows(14)}${dd}>${esc(toAttrText(fw))}</textarea></div>
+    <div class="card"><h2>Standards (optional, such as KSBs)</h2><p class="small muted">Id | Type | Text | Requirement ids it relates to (comma separated). Leave empty if your scheme has none.</p>
+      <textarea id="fwKsbs"${rows(10)}${dd}>${esc(toKsbText(fw))}</textarea></div>
+    ${ed ? '<div class="row"><button class="primary" id="fwSave">Save framework</button><span class="small muted">The tool checks the lines first and tells you which one is wrong.</span></div>' : ''}`;
+};
+VIEWS.framework.after = () => {
+  const val = (id) => $(id).value;
+  const fill = (fw) => {
+    $('#fwName').value = fw.name; $('#fwLabelAttr').value = (fw.labels || {}).attr || 'Attributes'; $('#fwLabelKsb').value = (fw.labels || {}).ksb || 'KSBs';
+    $('#fwLevels').value = toLevelText(fw); $('#fwGroups').value = toGroupText(fw); $('#fwAttrs').value = toAttrText(fw); $('#fwKsbs').value = toKsbText(fw);
+    $('#fwEvFolders').value = (fw.evidenceFolders || []).join('\n');
+    for (const i of $$('[data-folder]')) i.value = (fw.folders || {})[i.dataset.folder] || DEFAULT_FOLDERS[i.dataset.folder];
+  };
+  const read = () => {
+    const folders = {};
+    for (const i of $$('[data-folder]')) folders[i.dataset.folder] = i.value;
+    return buildFramework({ name: val('#fwName'), labelAttr: val('#fwLabelAttr'), labelKsb: val('#fwLabelKsb'), levels: val('#fwLevels'), groups: val('#fwGroups'), attributes: val('#fwAttrs'), ksbs: val('#fwKsbs'), evidenceFolders: val('#fwEvFolders'), folders }, FRAMEWORK);
+  };
+  $('#fwPreset').addEventListener('change', (e) => { if (e.target.value) { fill(PRESETS[e.target.value].fw); e.target.value = ''; toast('Filled in: press Save to use it'); } });
+  $('#fwExport').addEventListener('click', () => {
+    let fw;
+    try { fw = canEdit() ? read() : FRAMEWORK; } catch (err) { return toast(err.message, 'error'); }
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([JSON.stringify({ format: 'ice-tool/framework-1', ...fw }, null, 1)], { type: 'application/json' }));
+    a.download = `${slug(fw.name) || 'framework'}.json`;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  });
+  if ($('#fwImport')) {
+    $('#fwImport').addEventListener('click', () => $('#fwFile').click());
+    $('#fwFile').addEventListener('change', async (e) => {
+      try {
+        const fw = JSON.parse(await e.target.files[0].text());
+        if (!fw || !Array.isArray(fw.levels) || !Array.isArray(fw.attributes)) throw new Error('That file is not a framework exported from this tool');
+        fill({ labels: {}, groups: [], ksbs: [], folders: {}, evidenceFolders: [], ...fw });
+        toast('Loaded: check it, then press Save');
+      } catch (err) { toast(err.message, 'error'); }
+      e.target.value = '';
+    });
+  }
+  if ($('#fwSave')) $('#fwSave').addEventListener('click', (e) => act(e.currentTarget, async () => {
+    const fw = read();
+    P().framework = fw;
+    applyFramework(fw);
+    await ensureFolders(S.own, P().mode);
+    changed();
+    await save();
+    await scanEvidence();
+    await loadReports();
+    await render();
+  }, 'Framework saved'));
+};
 
 </script>
 

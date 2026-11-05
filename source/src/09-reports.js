@@ -14,7 +14,7 @@ VIEWS.reports = async () => {
     <p class="muted small">Write your PRRs in Word, in the <code>${FOLDERS.prr}</code> folder. The tool reads them (it never changes them) and checks the structure.
       <a href="#" id="howWrite">How to write them so the checks work</a></p>
     ${reports.length ? reports.map((r) => {
-      const group = (/attribute\s*(\d)/i.exec(r.name) || /attribute\s*(\d)/i.exec(r.doc.title) || [])[1];
+      const group = (/attribute\s*([A-Za-z0-9]+)/i.exec(r.name) || /attribute\s*([A-Za-z0-9]+)/i.exec(r.doc.title) || [])[1];
       const expected = group ? SUBS.filter((a) => String(a.group) === group && !r.doc.sections.some((s) => s.id === a.id)) : [];
       const open = feedbackItems().filter((f) => f.file === r.path && f.status === 'open').length;
       return `<div class="card"><div class="row spread"><h2 style="margin:0">${fileLink(r.path, r.name)}</h2>
@@ -51,7 +51,7 @@ const PRR_HELP = `<h2>Writing a PRR the tool can check</h2>
 function newPrrDialog() {
   const d = dialog(`<h2>New PRR from the template</h2>
     <p class="small muted">Makes a Word file in <code>${FOLDERS.prr}</code> with a heading and an Evidence line for each sub-attribute. Existing files are never overwritten.</p>
-    <label>Attribute</label><select id="prrGroup">${GROUPS.map((g) => `<option value="${g.group}">${g.group}. ${esc(g.title)}</option>`).join('')}<option value="all">All nine in one file</option></select>
+    <label>Attribute</label><select id="prrGroup">${GROUPS.map((g) => `<option value="${g.group}">${g.group}. ${esc(g.title)}</option>`).join('')}<option value="all">All in one file</option></select>
     <label><input type="checkbox" id="prrEvidence" checked> Fill the Evidence lines from what is already mapped</label>
     <div class="row" style="justify-content:flex-end;margin-top:1rem"><button value="no">Cancel</button><button class="primary" id="prrMake">Create</button></div>`);
   $('button[value=no]', d).addEventListener('click', () => d.close());
@@ -152,7 +152,7 @@ async function exportResponses() {
     { type: 'small', text: `${P().name} · ${fmtDate(today())} · ${items.filter((f) => f.status !== 'open').length} of ${items.length} answered` },
     { type: 'table', rows, widths: [500, 1100, 3700, 3700, 1100] },
   ]);
-  const path = `${FOLDERS.exports}/Response to feedback ${today()}.docx`;
+  const path = `${FOLDERS.feedback}/Response to feedback ${today()}.docx`;
   await writeFile(S.own, path, blob);
   return path;
 }

@@ -1,18 +1,7 @@
 // What the views show, worked out from the data: evidence list, K/E/A coverage, PRR structure and checks,
 // mentor feedback, completion and next steps. All plain code: nothing here guesses.
 
-const LEVELS = ['knowledge', 'experience', 'ability'];
-const LEVEL_SHORT = { knowledge: 'K', experience: 'E', ability: 'A' };
-const LEVEL_HELP = {
-  knowledge: 'Knowledge: knows and understands it (training, CPD, reading), not yet shown applied on real work.',
-  experience: 'Experience: applied it on real work, with guidance, as part of a team, or with a senior making the key decisions.',
-  ability: 'Ability: did it themselves and took responsibility: own judgement and decisions, led the task, or guided others.',
-};
-const SUBS = REF.attributes;
-const SUB = Object.fromEntries(SUBS.map((a) => [a.id, a]));
-const GROUPS = [...new Map(SUBS.map((a) => [a.group, a.group_title])).entries()].map(([group, title]) => ({ group, title }));
-const KSBS = REF.ksbs;
-const KSB = Object.fromEntries(KSBS.map((k) => [k.id, k]));
+// LEVELS, LEVEL_SHORT, LEVEL_HELP, SUBS, SUB, GROUPS, KSBS, KSB come from the framework (05-framework.js).
 const goal = () => (P() && P().settings.goal) || 3;
 
 // ---------- evidence ----------
@@ -38,7 +27,7 @@ const label = (it) => it.code || it.title;
 
 // For each sub-attribute and level: the evidence items mapped there.
 function coverage() {
-  const out = Object.fromEntries(SUBS.map((a) => [a.id, { knowledge: [], experience: [], ability: [] }]));
+  const out = Object.fromEntries(SUBS.map((a) => [a.id, Object.assign(Object.fromEntries(LEVELS.map((l) => [l, []])), needLevels(a) ? { _need: needLevels(a) } : {})]));
   for (const it of evidenceItems()) {
     if (it.missing || !it.rec) continue;
     for (const m of it.rec.maps || []) {
@@ -48,10 +37,15 @@ function coverage() {
   }
   return out;
 }
-function slots(cell) { return LEVELS.reduce((n, l) => n + Math.min(cell[l].length, goal()), 0); }
+// A requirement with a minimum level (IStructE objectives) needs `goal` items at that level or above, counted once;
+// otherwise it needs `goal` items at every level.
+const needLevels = (a) => (a.min && LEVELS.includes(a.min) ? LEVELS.slice(LEVELS.indexOf(a.min)) : null);
+const distinctNeeded = (cell) => new Set(cell._need.flatMap((l) => cell[l])).size;
+function slots(cell) { return cell._need ? Math.min(distinctNeeded(cell), goal()) : LEVELS.reduce((n, l) => n + Math.min(cell[l].length, goal()), 0); }
+const slotMax = (cell) => (cell._need ? goal() : LEVELS.length * goal());
 function slotStatus(cell) {
   const s = slots(cell);
-  return s >= 3 * goal() ? 'met' : s > 0 ? 'part' : 'none';
+  return s >= slotMax(cell) ? 'met' : s > 0 ? 'part' : 'none';
 }
 function ksbCoverage() {
   const out = Object.fromEntries(KSBS.map((k) => [k.id, { direct: new Set(), via: new Set() }]));
@@ -66,7 +60,7 @@ function ksbCoverage() {
 }
 
 // ---------- PRRs (Word) ----------
-const HEADING_RE = /^\s*(\d)\s*([a-e])\s*[–—\-:.)]\s*(.*)$/;
+// HEADING_RE is built from the framework's ids (05-framework.js).
 const EVIDENCE_RE = /^\s*evidence\s*:\s*(.*)$/i;
 const TAG_RE = /\{\s*([A-Z]{2,3}-\d{2,3})\s*\}/g;
 const PLACEHOLDER_RE = /^(?:[\d\s.…]*|.*(?:…|\.\.\.)\s*(?:…|\.\.\.)?\s*|tbc|tbd|todo|xxx+|placeholder)$/i;
@@ -85,8 +79,9 @@ function parsePrr(paragraphs) {
     const text = p.text;
     if (!text) return;
     const h = HEADING_RE.exec(text);
-    if (h && SUB[h[1] + h[2]] && (/^heading/i.test(p.style) || text.length < 250)) {
-      cur = { id: h[1] + h[2], heading: h[3].trim(), start: i, end: paragraphs.length, listed: [], listedText: '', general: [], blocks: [] };
+    const hid = h && subIdFromHeading(h[1]);
+    if (h && hid && (/^heading/i.test(p.style) || text.length < 250)) {
+      cur = { id: hid, heading: h[2].trim(), start: i, end: paragraphs.length, listed: [], listedText: '', general: [], blocks: [] };
       if (sections.length) sections[sections.length - 1].end = i;
       sections.push(cur);
       block = null;
@@ -215,7 +210,7 @@ function completion() {
   const fb = feedbackItems();
   let ev = 0, pr = 0, fe = 0;
   for (const a of SUBS) {
-    ev += slots(cov[a.id]) / (3 * goal());
+    ev += slots(cov[a.id]) / slotMax(cov[a.id]);
     const st = prr[a.id].state;
     pr += st === 'ready' ? 1 : st === 'draft' ? 0.5 : 0;
     if (st === 'ready' && !fb.some((f) => f.sub === a.id && f.status === 'open')) fe += 1;
@@ -238,8 +233,8 @@ function nextSteps(limit = 8) {
   if (unmapped.length) out.push({ text: `Map ${plural(unmapped.length, 'evidence file')} to sub-attributes`, href: '#evidence?show=unmapped' });
   const gaps = SUBS.map((a) => ({ a, s: slots(cov[a.id]) })).sort((x, y) => x.s - y.s);
   for (const { a, s } of gaps.slice(0, 4)) {
-    if (s >= 3 * goal()) break;
-    const lacking = LEVELS.filter((l) => cov[a.id][l].length < goal()).map((l) => `${goal() - cov[a.id][l].length} ${l}`);
+    if (s >= slotMax(cov[a.id])) break;
+    const lacking = cov[a.id]._need ? [`${goal() - s} at ${LEVEL_NAME[cov[a.id]._need[0]]} or above`] : LEVELS.filter((l) => cov[a.id][l].length < goal()).map((l) => `${goal() - cov[a.id][l].length} ${l}`);
     out.push({ text: `${a.id}: needs ${lacking.join(', ')}`, href: '#sub/' + a.id });
   }
   for (const a of SUBS) {

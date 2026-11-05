@@ -4,7 +4,16 @@
 
 const DATA_DIR = 'ice-data';
 const FILES = { apprentice: 'portfolio.json', mentor: 'mentor.json' };
-const FOLDERS = { evidence: 'Evidence', prr: 'PRR', meetings: 'Meetings', cpd: 'CPD', exports: 'Exports' };
+const FOLDERS = {
+  prr: '0 - Reports', matrix: '1 - Evidence Matrix', evidence: '2 - Evidence', feedback: '4 - Feedback, Compliance and Status',
+  meetings: 'Meetings', cpd: 'CPD', exports: 'Exports',
+};
+// Sub-folders of the evidence folder; the letters after the last dash are the code prefix for files in it.
+let EVIDENCE_CATEGORIES = [
+  '0 - Correspondences - CO', '1 - Modeling Snaps - MO', '2 - Markups - MU', '3 - Deliverable Reports - DR', '4 - Calculations - CA',
+  '5 - Tools - MM', '6 - Deliverable Drawings - DD', '7 - Certificates - CE', '8 - Presentations - PR',
+];
+const categoryPrefix = (folder) => { const m = /(?:^|\/)[^/]*? - ([A-Z]{2,3})$/.exec(folder || ''); return m ? m[1] : ''; };
 const IGNORE = /^(~\$|\.|desktop\.ini$|thumbs\.db$)/i;
 
 const S = {
@@ -150,6 +159,7 @@ function upgrade(d) {
     return d;
   }
   d.mode = d.mode || 'ice';
+  d.framework = d.framework || null;   // null = the built-in ICE IEng framework
   d.profile = { jobRole: '', responsibilities: '', sector: '', ...(d.profile || {}) };
   d.settings = { goal: 3, cpdTarget: 30, cpdYearStart: 1, themes: [], ...(d.settings || {}) };
   d.evidence = d.evidence || {}; d.comments = d.comments || {}; d.meetings = d.meetings || [];

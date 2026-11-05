@@ -16,7 +16,7 @@ VIEWS.home = async () => {
   return `<h1>${isMentor() ? esc(P() ? P().name : 'Apprentice') + '’s portfolio' : 'Your ICE Professional Review'}</h1>
     <div class="kpis">
       <div class="kpi"><div class="label">Overall</div><div class="big-number">${Math.round(c.total * 100)}%</div>${meter(c.total)}</div>
-      <div class="kpi"><div class="label">Evidence slots (K/E/A × ${goal()})</div><div class="big-number">${Math.round(c.evidence * 100)}%</div>${meter(c.evidence)}<div class="small muted">${met} of ${SUBS.length} sub-attributes full</div></div>
+      <div class="kpi"><div class="label">Evidence slots (${LEVELS.map((l) => LEVEL_SHORT[l]).join('/')} × ${goal()})</div><div class="big-number">${Math.round(c.evidence * 100)}%</div>${meter(c.evidence)}<div class="small muted">${met} of ${SUBS.length} sub-attributes full</div></div>
       <div class="kpi"><div class="label">PRR sections</div><div class="big-number">${Math.round(c.prr * 100)}%</div>${meter(c.prr)}<div class="small muted">${Object.keys(S.prr).length} Word file(s) in PRR</div></div>
       <div class="kpi"><div class="label">Mentor comments</div><div class="big-number">${fbOpen}</div><div class="small muted">open · <a href="#feedback">answer them</a></div></div>
       <div class="kpi"><div class="label">Evidence files</div><div class="big-number">${items.filter((i) => !i.missing).length}</div><div class="small muted">${items.filter((i) => !i.missing && !(i.rec && i.rec.maps && i.rec.maps.length)).length} not mapped yet</div></div>
@@ -28,7 +28,7 @@ VIEWS.home = async () => {
       <div class="card"><h2>Open actions from meetings</h2>${actions.length ? `<ul class="list-plain">${actions.slice(0, 10).map((a) => `<li>${a.due ? `<span class="chip ${a.due < today() ? 'bad' : ''}">${fmtDate(a.due)}</span> ` : ''}${linkify(a.text)} <span class="small muted">· <a href="#meeting/${a.meeting.id}">${fmtDate(a.meeting.date)}</a></span></li>`).join('')}</ul>` : '<p class="muted">None. Actions come from tagging "To do" in a meeting.</p>'}</div>
       <div class="card"><h2>By attribute</h2><table><tbody>${GROUPS.map((g) => {
         const subs = SUBS.filter((a) => a.group === g.group);
-        const frac = subs.reduce((n, a) => n + slots(cov[a.id]), 0) / (subs.length * 3 * goal());
+        const frac = subs.reduce((n, a) => n + slots(cov[a.id]), 0) / subs.reduce((n, a) => n + slotMax(cov[a.id]), 0);
         return `<tr class="click" onclick="location.hash='#attributes?g=${g.group}'"><td class="nowrap"><b>${g.group}</b></td><td>${esc(g.title)}</td><td style="width:30%">${meter(frac, frac >= 1 ? 'good' : '')}</td></tr>`;
       }).join('')}</tbody></table></div>
     </div>`;
@@ -57,7 +57,7 @@ VIEWS.evidence = async (arg, q) => {
       <button id="rescan" title="Look for new, moved or deleted files">↻ Refresh</button>
       ${canEdit() ? '<button id="autoCodes" title="Give codes to files that have none">Number files…</button>' : ''}
       <button id="exportXlsx" class="primary">Export Excel matrix</button></div></div>
-    <p class="muted small">Every file in <code>${FOLDERS.evidence}</code> (and its sub-folders) is listed. Put a code such as <code>CO-14</code> at the start of a file name and it is picked up; otherwise type one in. Click a row to map it.</p>
+    <p class="muted small">Every file in <code>${FOLDERS.evidence}</code> (and its sub-folders) is listed. Save each file in the folder for its kind (correspondence, markups, calculations…). Put a code such as <code>CO-14</code> at the start of a file name and it is picked up; otherwise type one in. Click a row to map it.</p>
     <div class="sub-tabs">${['all', 'unmapped', 'mapped', 'missing'].map((s) => `<a href="${qs({ show: s })}" class="${show === s ? 'active' : ''}">${{ all: 'All', unmapped: 'Not mapped', mapped: 'Mapped', missing: 'File missing' }[s]} (${counts[s]})</a>`).join('')}
       <select id="folderSel"><option value="">All folders</option>${folders.map((f) => `<option ${f === folder ? 'selected' : ''}>${esc(f)}</option>`).join('')}</select>
       <input id="evFilter" type="search" placeholder="Filter…" value="${esc(q.get('q') || '')}"></div>
@@ -95,7 +95,7 @@ async function numberFiles() {
   const d = dialog(`<h2>Give codes to ${plural(items.length, 'file')}</h2>
     <p class="small muted">Pick a 2 or 3 letter prefix per folder (for example SV for site visits). Files are numbered in name order, skipping codes already used. Only the tracker changes: file names stay as they are.</p>
     <table><thead><tr><th>Folder</th><th>Files</th><th>Prefix</th></tr></thead><tbody>${Object.entries(byFolder).map(([f, list]) => `<tr><td>${esc(f || '(top level)')}</td><td>${list.length}</td>
-      <td><input data-folder="${esc(f)}" size="4" maxlength="3" value="${esc((f.replace(/^[\d\s.\-–]+/, '').match(/[A-Za-z]/g) || ['E', 'V']).slice(0, 2).join('').toUpperCase())}"></td></tr>`).join('')}</tbody></table>
+      <td><input data-folder="${esc(f)}" size="4" maxlength="3" value="${esc(categoryPrefix(f) || (f.replace(/^[\d\s.\-–]+/, '').match(/[A-Za-z]/g) || ['E', 'V']).slice(0, 2).join('').toUpperCase())}"></td></tr>`).join('')}</tbody></table>
     <div class="row" style="justify-content:flex-end;margin-top:1rem"><button value="no">Cancel</button><button class="primary" id="doNumber">Give codes</button></div>`);
   $('button[value=no]', d).addEventListener('click', () => d.close());
   $('#doNumber', d).addEventListener('click', () => {
@@ -152,7 +152,7 @@ VIEWS.item = async (arg) => {
         <p class="small muted">File: ${it.missing ? esc(it.path) : fileLink(it.path, it.path)}${it.file ? ` · ${fmtSize(it.file.size)}` : ''}${usedIn.length ? ` · in your PRR for ${usedIn.map(subLink).join(' ')}` : ''}</p></div>
 
         <div class="card"><h2>Sub-attributes and level</h2>
-          <p class="small muted">Click K, E or A for each sub-attribute this shows. <b>K</b> ${esc(LEVEL_HELP.knowledge.split(': ')[1])} <b>E</b> ${esc(LEVEL_HELP.experience.split(': ')[1])} <b>A</b> ${esc(LEVEL_HELP.ability.split(': ')[1])}</p>
+          <p class="small muted">Click ${LEVELS.map((l) => LEVEL_SHORT[l]).join(', ')} for each sub-attribute this shows. ${LEVELS.map((l) => `<b>${esc(LEVEL_SHORT[l])}</b> ${esc(LEVEL_HELP[l].replace(/^[^:]*: /, ''))}`).join(' ')}</p>
           <div class="map-grid">${GROUPS.map((g) => `<div class="group-title">${g.group}. ${esc(g.title)}</div>` + SUBS.filter((a) => a.group === g.group).map((a) =>
             `<div class="map-row"><span class="sid">${subLink(a.id)}</span><span class="stext" title="${esc(a.text)}">${esc(a.text)}</span>${LEVELS.map((l) =>
               `<button class="small lvl-btn ${has(a.id, l) ? 'on' : ''}" data-sub="${a.id}" data-level="${l}" title="${esc(LEVEL_HELP[l])}"${dis(ed)}>${LEVEL_SHORT[l]}</button>`).join('')}</div>`).join('')).join('')}</div>
@@ -232,10 +232,10 @@ VIEWS.attributes = async (arg, q) => {
   const prr = prrBySub();
   const fb = feedbackItems();
   const only = q.get('g');
-  return `<h1>Attributes</h1>
-    <p class="muted small">Goal: ${goal()} different pieces of evidence at each level (Knowledge, Experience, Ability) for every sub-attribute. Click a row for everything about it.</p>
-    ${GROUPS.filter((g) => !only || String(g.group) === only).map((g) => `<div class="card"><h2>${g.group}. ${esc(g.title)}</h2><div class="table-wrap"><table>
-      <thead><tr><th>Sub</th><th>Description</th><th>K / E / A</th><th>Evidence</th><th>PRR</th><th>Comments</th>${M() ? '<th>Mentor</th>' : ''}</tr></thead><tbody>
+  return `<h1>${esc(LABEL.attr)}</h1>
+    <p class="muted small">Goal: ${goal()} different pieces of evidence at each level (${LEVELS.map((l) => LEVEL_NAME[l]).join(', ')}) for every sub-attribute. Click a row for everything about it.</p>
+    ${GROUPS.filter((g) => !only || String(g.group) === only).map((g) => `<div class="card"><h2>${g.group}. ${esc(g.title)}</h2><div class="table-wrap"><table class="attr">
+      <thead><tr><th>Sub</th><th>Description</th><th>${LEVELS.map((l) => LEVEL_SHORT[l]).join(' / ')}</th><th>Evidence</th><th>PRR</th><th>Comments</th>${M() ? '<th>Mentor</th>' : ''}</tr></thead><tbody>
       ${SUBS.filter((a) => a.group === g.group).map((a) => {
         const cell = cov[a.id];
         const codes = [...new Set(LEVELS.flatMap((l) => cell[l].map(label)))].sort(natural);
@@ -265,7 +265,7 @@ VIEWS.sub = async (id) => {
     <h1>${id} · ${esc(a.text)}</h1><p class="muted">${a.group}. ${esc(a.group_title)} · ${slotsHtml(cell)}</p>
     <div class="cols">
       <div>
-        <div class="card"><h2>Evidence by level</h2>${LEVELS.map((l) => `<h3>${l[0].toUpperCase() + l.slice(1)} <span class="small muted">${cell[l].length} / ${goal()}</span></h3>
+        <div class="card"><h2>Evidence by level</h2>${LEVELS.map((l) => `<h3>${esc(LEVEL_NAME[l])} <span class="small muted">${cell[l].length} / ${goal()}</span></h3>
           ${cell[l].length ? `<ul class="list-plain">${cell[l].map((it) => {
             const m = it.rec.maps.find((x) => x.sub === id && x.level === l);
             return `<li>${itemLink(it)} ${it.code ? esc(it.title) : ''}${m && m.note ? `<div class="small muted">${esc(m.note)}</div>` : ''}</li>`;

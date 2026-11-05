@@ -33,7 +33,7 @@ kbd { border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4p
 
 /* ---------- top bar ---------- */
 header.top { position: sticky; top: 0; z-index: 20; background: var(--panel); border-bottom: 1px solid var(--line); box-shadow: var(--shadow); }
-header.top .bar { display: flex; align-items: center; gap: .25rem; padding: 0 16px; min-height: 48px; flex-wrap: wrap; }
+header.top .bar { display: flex; align-items: center; gap: .25rem; padding: 0 24px; min-height: 48px; flex-wrap: wrap; }
 header.top .brand { font-weight: 700; margin-right: .8rem; color: var(--ink); white-space: nowrap; }
 header.top .brand small { font-weight: 400; color: var(--muted); margin-left: .4rem; }
 nav.tabs { display: flex; gap: 2px; flex-wrap: wrap; }
@@ -51,15 +51,15 @@ nav.tabs a .count { display: inline-block; min-width: 1.4em; padding: 0 .35em; m
 #searchResults a:hover, #searchResults a.sel { background: var(--accent-soft); text-decoration: none; }
 #searchResults .kind { display: inline-block; width: 5.5rem; color: var(--muted); font-size: .8rem; }
 
-main { padding: 18px 16px 60px; max-width: 2600px; margin: 0 auto; }
+main { padding: 24px 24px 60px; max-width: 2600px; margin: 0 auto; }
 .banner { padding: .6rem .9rem; border-radius: var(--radius); margin-bottom: .8rem; background: var(--part-soft); color: var(--ink); border: 1px solid var(--line); }
 .banner.bad { background: var(--bad-soft); }
 .banner.info { background: var(--accent-soft); }
 
 /* ---------- building blocks ---------- */
-.card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; box-shadow: var(--shadow); margin-bottom: 14px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; box-shadow: var(--shadow); margin-bottom: 14px; }
 .card > h2:first-child, .card > h3:first-child { margin-top: 0; }
-.grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); align-items: start; }
+.grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(min(330px, 100%), 1fr)); align-items: start; }
 .cols { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
 .cols.wide-left { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); }
 @media (max-width: 1000px) { .cols, .cols.wide-left { grid-template-columns: 1fr; } }
@@ -92,8 +92,15 @@ label { display: block; font-size: .85rem; color: var(--muted); margin: .55rem 0
 .form-grid input, .form-grid select { width: 100%; }
 
 table { width: 100%; border-collapse: collapse; }
-th, td { text-align: left; padding: .4rem .5rem; border-bottom: 1px solid var(--soft); vertical-align: top; }
-th { font-size: .82rem; color: var(--muted); font-weight: 600; position: sticky; top: 49px; background: var(--panel); z-index: 1; }
+th, td { text-align: left; padding: .6rem .8rem; border-bottom: 1px solid var(--soft); vertical-align: top; }
+th { font-size: .82rem; color: var(--muted); font-weight: 600; background: var(--panel); white-space: nowrap; }
+/* Sticky headers only where nothing scrolls sideways and the top bar stays one line; elsewhere they overlapped the first row. */
+@media (min-width: 1200px) { table:not(.table-wrap table) th { position: sticky; top: 49px; z-index: 1; } }
+table.attr td:nth-child(2) { min-width: 18rem; }
+table.attr td:nth-child(3) { white-space: nowrap; }
+table.attr td:nth-child(4) { min-width: 8rem; overflow-wrap: anywhere; }
+table.attr td, table.attr th { padding-top: .7rem; padding-bottom: .7rem; }
+td.nowrap + td { padding-left: 1rem; }
 tr.click { cursor: pointer; }
 tr.click:hover td { background: var(--accent-soft); }
 .table-wrap { overflow-x: auto; }
@@ -202,7 +209,10 @@ dialog::backdrop { background: rgba(10, 15, 25, .45); }
   th { position: static; }
 }
 @media (max-width: 700px) {
-  main { padding: 12px 12px 50px; }
+  main { padding: 14px 12px 50px; }
+  .card { padding: 14px 14px; }
+  header.top .bar { padding: 0 12px; }
+  th, td { padding: .5rem .55rem; }
   .tline { grid-template-columns: 1fr; }
   #search { width: 9rem; }
 }

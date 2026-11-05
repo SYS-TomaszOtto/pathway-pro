@@ -1,0 +1,473 @@
+{
+ "cm": [
+  {
+   "num": "1",
+   "title": "PROFESSIONAL STANDARDS AND ENGINEERING RESPONSIBILITY",
+   "level": "Knowledge",
+   "intro": "This objective is intended to demonstrate knowledge of professional conduct, a commitment to continuous professional development and engagement with the Institution and wider industry.",
+   "must": [
+    "the structure and purpose of the Institution of Structural Engineers, together with an awareness of the Institution\u2019s Code of Conduct",
+    "an involvement in Institution affairs appropriate to their individual circumstances and location",
+    "the limits of their technical competency in recognising complexity in problems and solution methods",
+    "the importance of sharing knowledge and data across the industry",
+    "the importance of CPD, the Institution requirements for CPD and a record of appropriate training",
+    "their need to plan for an ongoing commitment to CPD",
+    "being supportive of the needs and concerns of others, especially where this relates to diversity and inclusion",
+    "the ethical issues that could arise in their role and how they should carry out their responsibilities in an ethical manner"
+   ]
+  },
+  {
+   "num": "2",
+   "title": "COMMUNICATION",
+   "level": "Ability",
+   "intro": "This objective is intended to demonstrate candidates have an ability to communicate effectively in a variety of situations and demonstrate appropriate interpersonal skills.",
+   "must": [
+    "produce appropriate drawings, sketches, or models (physical or digital) to communicate ideas",
+    "produce formal reports",
+    "produce both formal and informal communications appropriately",
+    "communicate verbally and demonstrate effective inter -personal skills",
+    "prepare and deliver presentations",
+    "produce documents suitable for a variety of appropriate audiences",
+    "create, maintain, and enhance productive working relationships, and resolve conflicts.",
+    "evaluate and provide positive critical feedback on the work of others",
+    "exchanging information and providing advice to technical and non -technical colleagues"
+   ]
+  },
+  {
+   "num": "3",
+   "title": "CONCEPT CREATION AND DESIGN",
+   "level": "Ability",
+   "intro": "This objective is intended to demonstrate a candidate\u2019s skills around producing structural solutions in response to a brief. This would account for key aspects of a structural engineer\u2019s skillset such as designing for safety, carbon, durability, reuse, aes thetics, and cost.",
+   "must": [
+    "understanding and interrogating the brief to identify possible solutions",
+    "producing and comparing a variety of options to a single brief",
+    "determining appropriate loading and design criteria",
+    "designing load transfer and stability systems, both superstructure and substructure",
+    "considering robustness and accidental actions including fire",
+    "estimating and communicating the embodied carbon (both upfront and whole life) in the structure as part of the decision -making process, and minimising this as far as possible",
+    "consideration of construction issues (e.g., detailing, constructability, phasing, site constraints)",
+    "driving collaboration across the project team through an appreciation of wider objectives",
+    "coordinating the structural design with other disciplines (e.g., civils, drainage, facades)"
+   ]
+  },
+  {
+   "num": "4",
+   "title": "ANALYSIS AND SIZING",
+   "level": "Ability",
+   "intro": "This objective is intended to demonstrate an understanding of structural behaviour and the ability to assess behaviour using appropriate methods of analysis. This objective is also intended to demonstrate competency of interpreting that analysis and using it to size structural elements and details, using the minimum amount of necessary material.",
+   "must": [
+    "Analysis: understanding structural behaviour at all scales, from a single element to an entire frame",
+    "Analysis: using the appropriate analysis tools for each purpose (e.g., hand calcs and models to the appropriate level of detail)",
+    "Analysis: using suitable modelling assumptions for each purpose",
+    "Analysis: applying appropriate design criteria including loading, utilisation targets, serviceability, and user comfort (e.g., vibration)",
+    "Analysis: understanding the limitations of the model and its outputs (approximations, simplifications, etc)",
+    "Analysis: verifying results through hand checks, simple approximation, and engineering judgement",
+    "Analysis: validation and verification of analysis or design methods",
+    "Analysis: identification of limitations in analysis and/or design methods either in terms of accuracy or capability",
+    "Sizing and detailing: sizing structures to minimise material usage within the agreed design criteria (e.g., strength, stiffness, durability/maintenance, buildability, etc.)",
+    "Sizing and detailing: designing structural details such as connections and reinforcement to the appropriate level of detail at each stage of design",
+    "Sizing and detailing: determining and utilising the capacity of existing structures and components through collection and analysis of appropriate information or data where relevant",
+    "Sizing and detailing: using appropriate standards, codes of practice, specifications, Institution publications, technical agency publications, bulletins, reports, commercial and relevant publications from other professional institutions etc., and applying the requirements or re commendations of these documents within specification or design criteria"
+   ]
+  },
+  {
+   "num": "5",
+   "title": "MATERIALS",
+   "level": "Ability",
+   "intro": "This objective is intended to demonstrate an in -depth understanding of the structural materials used in the candidate\u2019s work, along with an ability to specify and coordinate the use of such materials.",
+   "must": [
+    "the behaviour and structural properties (including strength, stiffness, ductility, and directionality) for different materials and their common grades/subgrades, and how these impact design and detailing requirements",
+    "the effects on carbon emissions related to production methods, material sourcing and supply chains",
+    "durability requirements",
+    "detailing requirements, including an appreciation of how these affect end -of-life disassembly and reuse",
+    "movement behaviour including creep, drying, and thermal movement Whilst candidates often choose to specialise in one or two materials (and thus will have developed an ability in determining their behaviour) they must still have some knowledge of the carbon credentials, availability, behaviour, cost, manufacture, princip al engineering properties and potential applications of a wider range of construction materials."
+   ]
+  },
+  {
+   "num": "6",
+   "title": "SUSTAINABILITY",
+   "level": "Experience",
+   "intro": "This objective is intended to demonstrate experience in applying structural engineering in a way that minimises (and ultimately, reverses) negative environmental impacts whilst maximising societal benefit.",
+   "must": [
+    "communicating the environmental impact of a structural design to the design and client team",
+    "questioning the brief to reduce negative impacts whilst achieving the client\u2019s desired outcomes",
+    "advocating for reuse and \u2018build less\u2019 design approaches",
+    "considering wider sustainability aspects within their work"
+   ]
+  },
+  {
+   "num": "7",
+   "title": "CONSTRUCTION",
+   "level": "Experience",
+   "intro": "This objective is intended to demonstrate a candidate\u2019s experience of the practical process to convert design work into completed structures and should demonstrate that they are able to contribute to this in a meaningful way. Practical experience of site c onditions and working practices is essential to the safe design and specification of projects.",
+   "must": [
+    "construction techniques, construction plant and machinery",
+    "designing, specifying, or reviewing temporary systems",
+    "reviewing construction programmes and construction sequencing",
+    "reviewing or producing fabrication or shop drawings",
+    "erection methodologies",
+    "identification and correction of potential errors",
+    "how their observations of construction/fabrication have informed their approach to design/buildability"
+   ]
+  },
+  {
+   "num": "8",
+   "title": "HEALTH, SAFETY AND RISK MANAGEMENT",
+   "level": "Experience",
+   "intro": "This objective is intended to demonstrate a candidate\u2019s experience in meeting health and safety requirements and legislation.",
+   "must": [
+    "using appropriate health and safety standards",
+    "engagement with CROSS (Collaborative Reporting for Safer Structures) https://www.cross -safety.org/uk",
+    "reviewing and applying learning from CROSS publications",
+    "producing risk and hazard assessments",
+    "designing out risk",
+    "safety on construction sites"
+   ]
+  },
+  {
+   "num": "9",
+   "title": "MANAGEMENT",
+   "level": "Experience",
+   "intro": "This objective is intended to demonstrate a candidate\u2019s experience of management skills for programming and control.",
+   "must": [
+    "management of individuals, teams, and data/information",
+    "leadership",
+    "programming and project control",
+    "interdisciplinary/inter team liaison and interface management",
+    "working within a quality management system",
+    "contributing to and working within a quality plan"
+   ]
+  },
+  {
+   "num": "10",
+   "title": "COMMERCIAL AND LEGAL",
+   "level": "Knowledge",
+   "intro": "This objective is intended to demonstrate a candidate\u2019s knowledge of commercial, financial, contractual, and legal matters relevant to the country and industry in which they work.",
+   "must": [
+    "commercial pressures within the construction industry including the effects of national and international current affairs on costs",
+    "the methods of calculating construction costs including estimating and monitoring the cost of design work",
+    "sensitivity of cost variations in construction techniques",
+    "relevant forms of contract used in projects for which they are involved, for both design and construction",
+    "the procurement routes relevant to the work in which they are involved and appropriate procurement issues including dispute resolution",
+    "statutory legislation, negligence/liability laws, health, and safety legislation",
+    "decarbonisation and sustainability legislation",
+    "contract law"
+   ]
+  }
+ ],
+ "im": [
+  {
+   "num": "1",
+   "title": "PROFESSIONAL STANDARDS AND ENGINEERING RESPONSIBILITY",
+   "level": "Knowledge",
+   "intro": "This objective is intended to demonstrate knowledge of professional conduct, a commitment to continuous professional development and engagement with the Institution and wider industry.",
+   "must": [
+    "the structure and purpose of the Institution of Structural Engineers, together with an awareness of the Institution\u2019s Code of Conduct.",
+    "an involvement in Institution affairs appropriate to their individual circumstances and location.",
+    "the limits of their technical competency in recognising complexity in problems and solution methods.",
+    "the importance of CPD, the Institution requirements for CPD and a record of appropriate training.",
+    "their need to plan for an ongoing commitment to CPD.",
+    "being supportive of the needs and concerns of others, especially where this relates to diversity and inclusion.",
+    "the ethical issues that may arise in their role and how they should carry out their responsibilities in an ethical manner."
+   ]
+  },
+  {
+   "num": "2",
+   "title": "COMMUNICATION",
+   "level": "Ability",
+   "intro": "This objective is intended to demonstrate candidates have an ability to communicate effectively in a variety of situations and demonstrate appropriate interpersonal skills.",
+   "must": [
+    "produce appropriate drawings, sketches, or models (physical or digital) to communicate ideas.",
+    "produce formal reports.",
+    "produce both formal and informal communications appropriately.",
+    "communicate verbally and demonstrate effective inter-personal skills.",
+    "prepare and deliver presentations.",
+    "produce documents suitable for a variety of appropriate audiences.",
+    "create, maintain and enhance productive working relationships, and resolve conflicts.",
+    "evaluate and provide positive critical feedback on the work of others.",
+    "exchange information and provide advice to technical and non-technical colleagues."
+   ]
+  },
+  {
+   "num": "3",
+   "title": "CONCEPT CREATION AND DESIGN",
+   "level": "Experience",
+   "intro": "This objective is intended to demonstrate a candidate\u2019s experience of producing structural solutions in response to a brief. This would account for key aspects of a structural engineer\u2019s skillset such as designing for safety, carbon, durability, reuse, aesthetics and cost.",
+   "must": [
+    "understanding and interrogating the brief to identify possible solutions",
+    "producing and comparing a variety of options to a single brief",
+    "determining appropriate loading and design criteria",
+    "designing load transfer and stability systems, both superstructure and substructure",
+    "considering robustness and accidental actions including fire",
+    "estimating and communicating the embodied carbon (both upfront and whole-life) in the structure as part of the decision making process, and minimising this as far as possible",
+    "considering construction issues (e.g. detailing, constructability, phasing, site constraints)",
+    "driving collaboration across the project team through an appreciation of wider objectives",
+    "coordinating the structural design with other disciplines (e.g. civils, drainage, facades)"
+   ]
+  },
+  {
+   "num": "4",
+   "title": "ANALYSIS AND SIZING",
+   "level": "Ability",
+   "intro": "This objective is intended to demonstrate an understanding of structural behaviour and the ability to assess behaviour using appropriate methods of analysis. This objective is also intended to demonstrate competency of interpreting that analysis and using it to size structural elements and details, using the minimum amount of necessary material.",
+   "must": [
+    "Analysis: understanding structural behaviour at all scales, from a single element to an entire frame",
+    "Analysis: using the appropriate analysis tools for each purpose (e.g. hand calcs and models to the appropriate level of detail)",
+    "Analysis: using suitable modelling assumptions for each purpose",
+    "Analysis: applying appropriate design criteria including loading, utilisation targets, serviceability and user comfort (e.g. vibration)",
+    "Analysis: understanding the limitations of the model and its outputs (approximations, simplifications, etc)",
+    "Analysis: verifying results through hand checks, simple approximation, and engineering judgement validation and verification of analysis or design methods",
+    "Analysis: identification of limitations in analysis and/or design methods either in terms of accuracy or capability",
+    "Sizing and detailing: sizing structures to minimise material usage within the agreed design criteria (eg. strength, stiffness, durability/maintenance, buildability, etc.)",
+    "Sizing and detailing: designing structural details such as connections and reinforcement to the appropriate level of detail at each stage of design",
+    "Sizing and detailing: contributing to the determination and utilisation of the capacity of existing structures and components through collection and analysis of appropriate information or data where relevant",
+    "Sizing and detailing: using appropriate standards, codes of practice, specifications, Institution publications, technical agency publications, bulletins, reports, commercial and relevant publications from other professional institutions etc., and applying the requirements or recommendations of these documents within specification or design criteria"
+   ]
+  },
+  {
+   "num": "5",
+   "title": "MATERIALS",
+   "level": "Ability",
+   "intro": "This objective is intended to demonstrate an in-depth understanding of the structural materials used in the candidate\u2019s work, along with an ability to specify and coordinate the use of such materials.",
+   "must": [
+    "The behaviour and structural properties (including strength, stiffness, ductility, and directionality) for different materials and their common grades/subgrades; and how these impact design and detailing requirements.",
+    "The effects on carbon emissions related to production methods, material sourcing and supply chains.",
+    "Durability requirements.",
+    "Detailing requirements, including an appreciation of how these affect end-of-life disassembly and reuse.",
+    "Movement behaviour including creep, drying, and thermal movement. Whilst the candidate often chooses to specialise in one or two materials (and thus have developed an ability in determining their behaviour) they must still have some knowledge of the carbon credentials, availability, behaviour, cost, manufacture, principal engineering properties and potential applications of a wider range of construction materials."
+   ]
+  },
+  {
+   "num": "6",
+   "title": "SUSTAINABILITY",
+   "level": "Experience",
+   "intro": "This objective is intended to demonstrate experience in applying structural engineering in a way that minimises (and ultimately, reverses) negative environmental impacts whilst maximising societal benefit.",
+   "must": [
+    "communicating the impact of a structural design to the design and client team",
+    "contributing to questioning the brief to reduce negative impacts whilst achieving the client\u2019s desired outcomes.",
+    "contributing to advocating for reuse and \u2018build less\u2019 design approaches.",
+    "considering the wider sustainability aspects within their work."
+   ]
+  },
+  {
+   "num": "7",
+   "title": "CONSTRUCTION",
+   "level": "Experience",
+   "intro": "This objective is intended to demonstrate a candidate\u2019s experience of the practical process to convert design work into completed structures and should demonstrate that they are able to contribute to this in a meaningful way. Practical experience of site conditions and working practices is essential to the safe design and specification of projects.",
+   "must": [
+    "construction techniques, construction plant and machinery.",
+    "designing, specifying, or reviewing temporary systems.",
+    "reviewing construction programmes and construction sequencing.",
+    "reviewing or producing fabrication or shop drawings.",
+    "erection methodologies",
+    "identification and correction of potential errors",
+    "how their observations of construction/fabrication have informed their approach to design/buildability"
+   ]
+  },
+  {
+   "num": "8",
+   "title": "HEALTH, SAFETY AND RISK MANAGEMENT",
+   "level": "Experience",
+   "intro": "This objective is intended to demonstrate a candidate\u2019s experience in meeting health and safety requirements and legislation.",
+   "must": [
+    "using appropriate health and safety standards",
+    "engagement with CROSS (Collaborative Reporting for Safer Structures) https://www.cross-safety.org/uk",
+    "reviewing and applying learning from CROSS publications",
+    "producing risk and hazard assessments",
+    "designing out risk",
+    "safety on construction sites"
+   ]
+  },
+  {
+   "num": "9",
+   "title": "MANAGEMENT",
+   "level": "Experience",
+   "intro": "This objective is intended to demonstrate a candidate\u2019s experience of management skills for programming and control.",
+   "must": [
+    "management of individuals, teams, and data/information",
+    "leadership at an appropriate level",
+    "programming and project control",
+    "interdisciplinary/inter team liaison and interface management",
+    "working within a quality management system",
+    "contributing to and working within a quality plan"
+   ]
+  },
+  {
+   "num": "10",
+   "title": "COMMERCIAL AND LEGAL",
+   "level": "Knowledge",
+   "intro": "This objective is intended to demonstrate a candidate\u2019s knowledge of commercial, financial, contractual, and legal matters relevant to the country and industry in which they work.",
+   "must": [
+    "commercial pressures within the construction industry including the effects of national and international current affairs on costs",
+    "the methods of calculating construction costs including estimating and monitoring the cost of design work",
+    "sensitivity of cost variations in construction techniques",
+    "relevant forms of contract used in projects for which they are involved, for both design and construction",
+    "the procurement routes relevant to the work in which they are involved and appropriate procurement issues including dispute resolution",
+    "competitive tendering",
+    "statutory legislation, negligence/liability laws, health, and safety legislation",
+    "decarbonisation and sustainability legislation",
+    "contract law"
+   ]
+  }
+ ],
+ "tm": [
+  {
+   "num": "1",
+   "title": "PROFESSIONAL STANDARDS AND ENGINEERING RESPONSIBILITY",
+   "level": "Knowledge",
+   "intro": "This objective is intended to demonstrate knowledge of professional conduct, a commitment to continuous professional development and engagement with the Institution and wider industry.",
+   "must": [
+    "the structure and purpose of the Institution of Structural Engineers, together with an awareness of the Institution\u2019s Code of Conduct",
+    "an involvement in Institution affairs appropriate to their individual circumstances and location",
+    "the limits of their technical competency in recognising complexity in problems and solution methods",
+    "the importance of sharing knowledge and data across the industry",
+    "the importance of CPD, the Institution requirements for CPD and a record of appropriate training",
+    "their need to plan for an ongoing commitment to CPD",
+    "being supportive of the needs and concerns of others, especially where this relates to diversity and inclusion",
+    "the ethical issues that may arise in their role and how they should carry out their responsibilities in an ethical manner"
+   ]
+  },
+  {
+   "num": "2",
+   "title": "COMMUNICATION",
+   "level": "Ability",
+   "intro": "This objective is intended to demonstrate candidates have an ability to communicate effectively in a variety of situations and demonstrate appropriate interpersonal skills.",
+   "must": [
+    "produce appropriate drawings, sketches, or 3D models (physical or digital) to communicate ideas",
+    "contribute to the production of formal reports",
+    "produce both formal and informal communications appropriately",
+    "communicate verbally and demonstrate effective inter -personal skills",
+    "prepare and deliver presentations",
+    "produce documents suitable for a variety of appropriate audiences",
+    "create, maintain and enhance productive working relationships, and resolve conflicts",
+    "evaluate and provide positive critical feedback on the work of others",
+    "exchang e information and provid e advice to technical and non -technical colleagues"
+   ]
+  },
+  {
+   "num": "3",
+   "title": "CONCEPT CREATION AND DESIGN",
+   "level": "Appreciation",
+   "intro": "This objective is intended to demonstrate an appreciation of the process of concept creation and design. This would include designing for safety, carbon, durability, reuse aesthetics and cost .",
+   "must": [
+    "the assessment of the brief to identify possible solutions",
+    "determining appropriate loading and design criteria",
+    "establishing load paths and stability systems",
+    "considering robustness and accidental actions, including fire",
+    "the process to estimate embodied carbon",
+    "the way construction issues impact on design choices",
+    "collaboration and coordination with other disciplines"
+   ]
+  },
+  {
+   "num": "4",
+   "title": "DESIGN AND ANALYSIS",
+   "level": "Knowledge",
+   "intro": "This objective is intended to demonstrate knowledge of the processes involved in the analysis and design of structures .",
+   "must": [
+    "the processes involved with the design of individual components in at least one primary structural material (i.e. derivation of forces/stresses/deflections and maintaining equilibrium)",
+    "the application of appropriate loading criteria",
+    "the use of appropriate design standards, codes of practice etc",
+    "the elements within a structure which determine overall stability, robustness and structural integrity",
+    "limits of the structural model and its outputs (approximations, simplifications etc)",
+    "the verification of analysis using hand checks, simple approximation and engineering judgment"
+   ]
+  },
+  {
+   "num": "5",
+   "title": "MATERIALS",
+   "level": "Knowledge",
+   "intro": "This objective is intended to demonstrate knowledge of how materials are specified and incorporated into the structure.",
+   "must": [
+    "the behaviour and structural properties (including strength, stiffness, ductility, and directionality) for different materials and their common grades/subgrades; and how these impact design and detailing requirements",
+    "the effects on carbon emissions related to production methods, material sourcing and supply chains",
+    "durability requirements",
+    "detailing requirements, including an appreciation of how these affect end -of-life disassembly and reuse",
+    "movement behaviour including creep, drying, and thermal movement. Whilst candidates often choose to specialise in one or two materials (and thus will have developed knowledge in determining their behaviour) they must still have some appreciation of the carbon credentials, availability, behaviour, cost, manufacture, princ ipal engineering properties and potential applications of a wider range of construction materials."
+   ]
+  },
+  {
+   "num": "6",
+   "title": "SUSTAINABILITY",
+   "level": "Knowledge",
+   "intro": "This objective is intended to demonstrate knowledge in applying structural engineering in a way that minimises (and ultimately, reverses) negative environmental impacts whilst maximising societal benefit .",
+   "must": [
+    "contributing to the communication of the impact of a structural design within the context of climate and biodiversity issues.",
+    "contributing to the questioning of the brief to reduce negative impacts whilst achieving the client\u2019s desired outcomes.",
+    "working with the wider design team to reduce the overall project carbon.",
+    "considering wider sustainability aspects within their work"
+   ]
+  },
+  {
+   "num": "7",
+   "title": "CONSTRUCTION",
+   "level": "Experience",
+   "intro": "This objective is intended to demonstrate candidate\u2019s experience of the practical process to convert design work into completed structures and should demonstrate that they are able to contribute to this in a meaningful way. Practical experience of site con ditions and working practices is essential to the safe design and specification of projects.",
+   "must": [
+    "construction sites . This may include site visits, undertaking surveys, visiting fabrication/manufacturing locations, responding to site queries, communicating sequence and buildability matter s",
+    "construction techniques, construction plant and machinery",
+    "reviewing temporary support systems",
+    "reviewing construction programmes and construction sequencing",
+    "reviewing or producing fabrication or shop drawings",
+    "erection methodologies",
+    "identification and correction of potential errors",
+    "how their observations of construction/fabrication has informed their approach to design/buildability"
+   ]
+  },
+  {
+   "num": "8",
+   "title": "HEALTH       AND SAFETY",
+   "level": "Knowledge",
+   "intro": "This objective is intended to demonstrate a candidate\u2019s knowledge of meeting health and safety requirements and legislation.",
+   "must": [
+    "using appropriate health and safety standards",
+    "reviewing CROSS (Collaborative Reporting for Safer Structures) publications",
+    "communicating risk and hazard assessments",
+    "designing out risk",
+    "safety on construction/fabrication sites"
+   ]
+  },
+  {
+   "num": "9",
+   "title": "MANAGEMENT",
+   "level": "Knowledge",
+   "intro": "This objective is intended to demonstrate a candidate\u2019s knowledge of management skills and responsibility.",
+   "must": [
+    "contributing to the management of individuals/self and/or teams and data/information",
+    "cooperation with team leadership and management",
+    "programming and project control.",
+    "interdisciplinary/inter team liaison and interface management."
+   ]
+  },
+  {
+   "num": "10",
+   "title": "COMMERCIAL",
+   "level": "Appreciation",
+   "intro": "This objective is intended to demonstrate a candidate\u2019s appreciation of commercial, financial, and contractual matters relevant to the country and industry in which they work.",
+   "must": [
+    "commercial pressures within the construction industry, including the effects of national and international current affairs on the costs.",
+    "the methods of calculating construction costs, including estimating and monitoring the cost of design work.",
+    "sensitivity of cost variations in construction techniques.",
+    "relevant forms of contract used in projects for which they are involved, for both design and construction.",
+    "the procurement routes relevant to the work in which they are involved and the impact on their scope of work",
+    "the role of the expert witness In preparing their Summary Report Forms the candidate should be prepared to discuss their understanding of commercial matters and how they have affected the projects they have worked on."
+   ]
+  },
+  {
+   "num": "11",
+   "title": "TECHNOLOGY, DOCUMENTATION & PROCESS",
+   "level": "Ability",
+   "intro": "This objective is intended to demonstrate ability in the production, control and management of engineering documentation and systems.",
+   "must": [
+    "the production of general arrangement drawings",
+    "the creation of detail drawings showing the interface between components and materials",
+    "the coordination of details and information received from other parts of the design team with the structural information",
+    "the control and documentation of information received from and issued to third parties",
+    "the use of standard procedures and drawing standards, either company specific or based on industry standards",
+    "the production of appropriate schedules (such as bar bending schedules, lintel schedules, beams schedules, pile schedules, material take offs for use in pricing or embodied carbon calculations)",
+    "the communication of risks and hazards",
+    "the implementation of and compliance with Project Quality Plans"
+   ]
+  }
+ ]
+}

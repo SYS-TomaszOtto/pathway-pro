@@ -61,8 +61,10 @@ VIEWS.settings = async () => {
         <button id="linkOther">${S.other ? 'Pick a different ' : 'Link '}${otherLabel}…</button>${S.other ? '<button id="unlinkOther">Unlink</button>' : ''}</div>
       <p class="small muted" style="margin-top:1rem">The tool never writes into the linked folder. To protect your own files from changes by others, share your folder with them as <b>Can view</b> in OneDrive.</p>
       <button id="switchFolder" style="margin-top:.5rem">Open a different folder of my own…</button></div>
+    <div class="card"><h2>Framework</h2><p>Assessing against <b>${esc(FRAMEWORK.name)}</b>: ${plural(SUBS.length, 'requirement')}, ${plural(LEVELS.length, 'level')}${KSBS.length ? `, ${plural(KSBS.length, 'standard')}` : ''}.</p>
+      <p class="small muted">${mentor ? 'Set by the apprentice; shown here read-only.' : 'Edit the requirements, levels, evidence folders and folder names to match your institution or level, or start from a blank one.'}</p><a class="btn" href="#framework">${mentor ? 'View' : 'Edit'} framework</a></div>
     ${mentor ? '' : `<div class="card"><h2>Targets</h2>
-      ${d.mode !== 'cpd' ? `<label>Evidence goal per level (Knowledge, Experience, Ability) for each sub-attribute</label><input type="number" min="1" max="9" id="setGoal" value="${d.settings.goal}">` : ''}
+      ${d.mode !== 'cpd' ? `<label>Evidence goal per level (${LEVELS.map((l) => LEVEL_NAME[l]).join(', ')}) for each sub-attribute</label><input type="number" min="1" max="9" id="setGoal" value="${d.settings.goal}">` : ''}
       <label>CPD hours a year</label><input type="number" min="0" id="setTarget" value="${d.settings.cpdTarget}">
       <label>CPD year starts in</label><select id="setYearStart">${['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map((m, i) => `<option value="${i + 1}" ${d.settings.cpdYearStart === i + 1 ? 'selected' : ''}>${m}</option>`).join('')}</select>
       <label>ICE CPD Framework themes, one per line (start a line with * for a mandatory theme)</label>
@@ -76,7 +78,7 @@ VIEWS.settings = async () => {
 VIEWS.settings.after = () => {
   const d = S.data;
   $('#setName').addEventListener('input', (e) => { d.name = e.target.value; changed(); });
-  if ($('#setMode')) $('#setMode').addEventListener('change', async (e) => { d.mode = e.target.value; if (d.mode === 'ice') for (const f of Object.values(FOLDERS)) await subDir(S.own, f, true); changed(); render(); });
+  if ($('#setMode')) $('#setMode').addEventListener('change', async (e) => { d.mode = e.target.value; if (d.mode === 'ice') await ensureFolders(S.own, 'ice'); changed(); render(); });
   if ($('#setGoal')) $('#setGoal').addEventListener('input', (e) => { d.settings.goal = Math.max(1, +e.target.value || 3); changed(); });
   if ($('#setTarget')) $('#setTarget').addEventListener('input', (e) => { d.settings.cpdTarget = +e.target.value || 0; changed(); });
   if ($('#setYearStart')) $('#setYearStart').addEventListener('change', (e) => { d.settings.cpdYearStart = +e.target.value; changed(); });
@@ -122,10 +124,10 @@ async function exportMatrix() {
       rows: [['Code', 'Title', 'Project', 'Date', ...SUBS.map((a) => a.id), 'KSBs', 'File'],
         ...items.map((it) => [it.code, it.title, (it.rec && it.rec.project) || '', (it.rec && it.rec.date) || '', ...SUBS.map((a) => levelCell(it, a.id)),
           [...new Set(((it.rec && it.rec.maps) || []).flatMap((m) => m.ksbs || []))].sort(natural).join(', '), it.path])] },
-    { name: 'Summary', freeze: { rows: 1 }, filter: true, widths: [6, 30, 6, 60, 7, 7, 7, 10, 12, 10, 14, 40],
-      rows: [['Attr.', 'Attribute', 'Sub', 'Sub-attribute', 'K', 'E', 'A', 'Slots', 'PRR', 'Open comments', 'Mentor', 'Evidence'],
-        ...SUBS.map((a) => [a.group, a.group_title, a.id, { v: a.text, s: 'wrap' }, status(cov[a.id].knowledge.length), status(cov[a.id].experience.length), status(cov[a.id].ability.length),
-          `${slots(cov[a.id])}/${3 * g}`, prr[a.id].state, fb.filter((f) => f.sub === a.id && f.status === 'open').length, M() ? MENTOR_STATUS[(M().subs[a.id] || {}).status || ''] : '',
+    { name: 'Summary', freeze: { rows: 1 }, filter: true, widths: [6, 30, 6, 60, ...LEVELS.map(() => 7), 10, 12, 10, 14, 40],
+      rows: [['Attr.', 'Attribute', 'Sub', 'Sub-attribute', ...LEVELS.map((l) => LEVEL_SHORT[l]), 'Slots', 'PRR', 'Open comments', 'Mentor', 'Evidence'],
+        ...SUBS.map((a) => [a.group, a.group_title, a.id, { v: a.text, s: 'wrap' }, ...LEVELS.map((l) => status(cov[a.id][l].length)),
+          `${slots(cov[a.id])}/${slotMax(cov[a.id])}`, prr[a.id].state, fb.filter((f) => f.sub === a.id && f.status === 'open').length, M() ? MENTOR_STATUS[(M().subs[a.id] || {}).status || ''] : '',
           [...new Set(LEVELS.flatMap((l) => cov[a.id][l].map(label)))].sort(natural).join(', ')])] },
     { name: 'KSBs', freeze: { rows: 1 }, widths: [6, 80, 16, 30], rows: [['KSB', 'Description', 'Sub-attributes', 'Evidence (ticked)'],
       ...KSBS.map((k) => { const c = ksbCoverage()[k.id]; return [k.id, { v: k.text, s: 'wrap' }, k.attributes.join(', '), [...c.direct].map(label).join(', ')]; })] },
@@ -135,22 +137,22 @@ async function exportMatrix() {
       ...allActions().map((a) => [a.meeting.date, a.meeting.title, { v: a.text, s: 'wrap' }, a.sub, a.due, a.status === 'done' ? 'Done' : 'Open'])] },
     ...cpdSheets('all'),
   ];
-  const path = `${FOLDERS.exports}/ICE evidence matrix ${today()}.xlsx`;
+  const path = `${FOLDERS.matrix}/ICE evidence matrix ${today()}.xlsx`;
   await writeFile(S.own, path, makeXlsx(sheets));
   return path;
 }
 
 // ---------- help ----------
-VIEWS.help = async () => (P() && P().mode === 'cpd' ? `<h1>How to use the ICE Tool</h1><div class="grid">
+VIEWS.help = async () => (P() && P().mode === 'cpd' ? `<h1>How to use the Portfolio Tool</h1><div class="grid">
   <div class="card"><h2>CPD record</h2><p>This follows ICE's CPD guidance. Review your learning needs at least once a year (a SWOT works well), set objectives with reference codes in the <b>Development plan</b>, and record what you do in the <b>Development record</b> with its effective learning time and what you learned.</p>
     <p>Keep an <b>Unplanned</b> objective for learning you did not plan. ICE advises no more than 6 hours for a day and 30 hours for one activity.</p>
     <p><b>Export</b> makes Word or Excel files in the layout of ICE's CPD templates, ready for an application or the annual CPD audit.</p></div>
   <div class="card"><h2>Good to know</h2><ul>
     <li>Your folder holds <b>${FOLDERS.cpd}</b> (attached certificates and notes), <b>${FOLDERS.exports}</b> and <b>${DATA_DIR}</b> (the record itself: do not edit by hand).</li>
     <li>It saves as you type, and keeps one copy a day in <code>${DATA_DIR}/backups</code>.</li>
-    <li>To track a Professional Review as well, switch in <a href="#settings">Settings</a>.</li></ul></div></div>` : '') || `<h1>How to use the ICE Tool</h1><div class="grid">
+    <li>To track a Professional Review as well, switch in <a href="#settings">Settings</a>.</li></ul></div></div>` : '') || `<h1>How to use the Portfolio Tool</h1><div class="grid">
   <div class="card"><h2>The idea</h2><p>One HTML file that keeps a tracker of your ICE Professional Review in your OneDrive folder. It does no thinking for you (no AI): it lists, links, counts and checks, so nothing gets missed.</p>
-    <p>Your folder holds: <b>${FOLDERS.evidence}</b> (any sub-folders), <b>${FOLDERS.prr}</b> (your Word PRRs), <b>${FOLDERS.meetings}</b>, <b>${FOLDERS.cpd}</b>, <b>${FOLDERS.exports}</b>, and <b>${DATA_DIR}</b> (the tracker itself: do not edit by hand).</p></div>
+    <p>Your folder holds: <b>${FOLDERS.prr}</b> (your Word PRRs), <b>${FOLDERS.matrix}</b> (the Excel matrix), <b>${FOLDERS.evidence}</b> (one sub-folder per kind of evidence), <b>${FOLDERS.feedback}</b> (response tables), <b>${FOLDERS.meetings}</b>, <b>${FOLDERS.cpd}</b>, <b>${FOLDERS.exports}</b>, and <b>${DATA_DIR}</b> (the tracker itself: do not edit by hand).</p></div>
   <div class="card"><h2>1. Evidence</h2><ol><li>Save evidence files into <b>${FOLDERS.evidence}</b>. Start file names with a code such as <code>CO-14</code> to have it picked up (or use <b>Number files…</b>).</li>
     <li>Open each one and click <b>K</b>, <b>E</b> or <b>A</b> against every sub-attribute it shows. Add a note on why.</li>
     <li><b>Attributes</b> shows what is covered; the goal is ${P() ? goal() : 3} pieces at each level for every sub-attribute. <b>Home</b> lists the biggest gaps.</li></ol></div>

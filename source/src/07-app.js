@@ -3,19 +3,20 @@
 const VIEWS = {};      // name -> function(arg, query) that renders into #main
 const canEdit = () => !isMentor();   // the portfolio data belongs to the apprentice
 
-function tabsFor() {
+function tabsFor() { return tabsAll().filter((t) => t[0] !== 'ksbs' || KSBS.length); }
+function tabsAll() {
   if (!S.data) return [];
-  if (isMentor()) return [['home', 'Home'], ['evidence', 'Evidence'], ['attributes', 'Attributes'], ['ksbs', 'KSBs'], ['reports', 'Reports'], ['feedback', 'Feedback'], ['meetings', 'Meetings'], ['mentor', 'Assessment'], ['cpd', 'CPD'], ['settings', 'Settings'], ['help', 'Help']];
+  if (isMentor()) return [['home', 'Home'], ['evidence', 'Evidence'], ['attributes', LABEL.attr], ['ksbs', LABEL.ksb], ['reports', 'Reports'], ['feedback', 'Feedback'], ['meetings', 'Meetings'], ['mentor', 'Assessment'], ['cpd', 'CPD'], ['settings', 'Settings'], ['help', 'Help']];
   if (P().mode === 'cpd') return [['cpd', 'CPD'], ['settings', 'Settings'], ['help', 'Help']];
-  return [['home', 'Home'], ['evidence', 'Evidence'], ['attributes', 'Attributes'], ['ksbs', 'KSBs'], ['reports', 'Reports'], ['feedback', 'Feedback'], ['meetings', 'Meetings'], ['cpd', 'CPD'], ['mentor', 'Mentor'], ['settings', 'Settings'], ['help', 'Help']];
+  return [['home', 'Home'], ['evidence', 'Evidence'], ['attributes', LABEL.attr], ['ksbs', LABEL.ksb], ['reports', 'Reports'], ['feedback', 'Feedback'], ['meetings', 'Meetings'], ['cpd', 'CPD'], ['mentor', 'Mentor'], ['settings', 'Settings'], ['help', 'Help']];
 }
-const ACTIVE_TAB = { item: 'evidence', sub: 'attributes', report: 'reports', meeting: 'meetings', ksb: 'ksbs' };
+const ACTIVE_TAB = { framework: 'settings', item: 'evidence', sub: 'attributes', report: 'reports', meeting: 'meetings', ksb: 'ksbs' };
 
 function renderHeader(active) {
   const who = S.data ? (isMentor() ? `Mentor: ${esc(S.data.name)} · apprentice: ${esc((P() && P().name) || S.data.apprentice || '?')}` : esc(S.data.name)) : '';
   const openFb = S.data && P() ? feedbackItems().filter((f) => f.status === 'open').length : 0;
   $('#top').innerHTML = `<div class="bar">
-    <a class="brand" href="#${S.data && P() && P().mode === 'cpd' ? 'cpd' : 'home'}">ICE Tool<small>${who}</small></a>
+    <a class="brand" href="#${S.data && P() && P().mode === 'cpd' ? 'cpd' : 'home'}">Portfolio Tool<small>${who}</small></a>
     <nav class="tabs">${tabsFor().map(([id, name]) => `<a href="#${id}" class="${active === id ? 'active' : ''}"${active === id ? ' aria-current="page"' : ''}>${name}${
       id === 'feedback' && openFb ? `<span class="count" title="open comments">${openFb}</span>` : ''}</a>`).join('')}</nav>
     <div class="top-right">${S.data ? `<div class="search-wrap"><input id="search" type="search" placeholder="Search (Ctrl+K)" autocomplete="off"><div id="searchResults" hidden></div></div>
@@ -51,7 +52,7 @@ async function render() {
     console.error(err);
     main.innerHTML = banners + `<div class="banner bad">This page failed to load: ${esc(err.message)}</div>`;
   }
-  document.title = `ICE Tool · ${$('nav.tabs a.active') ? $('nav.tabs a.active').firstChild.textContent : ''}`;
+  document.title = `Portfolio Tool · ${$('nav.tabs a.active') ? $('nav.tabs a.active').firstChild.textContent : ''}`;
 }
 window.addEventListener('hashchange', () => { closePreview(); render(); window.scrollTo(0, 0); });
 
@@ -85,6 +86,10 @@ const chip = (text, cls = '') => `<span class="chip ${cls}">${esc(text)}</span>`
 const prrChip = (state) => chip(...(PRR_STATE[state] || [state, '']));
 const meter = (frac, cls = '') => `<div class="bar-meter ${cls}" title="${Math.round(frac * 100)}%"><span style="width:${Math.round(Math.min(1, frac) * 100)}%"></span></div>`;
 function slotsHtml(cell) {
+  if (cell._need) {
+    const n = distinctNeeded(cell), lv = cell._need[0];
+    return `<span class="slots" title="needs ${esc(LEVEL_NAME[lv])} or above: ${n}"><span class="lvl"><b>${esc(LEVEL_SHORT[lv])}+</b>${Array.from({ length: goal() }, (_, i) => `<i class="${i < n ? 'on' : ''}"></i>`).join('')}</span></span>`;
+  }
   return `<span class="slots" title="${LEVELS.map((l) => `${l}: ${cell[l].length}`).join(', ')}">${LEVELS.map((l) =>
     `<span class="lvl"><b>${LEVEL_SHORT[l]}</b>${Array.from({ length: goal() }, (_, n) => `<i class="${n < cell[l].length ? 'on' : ''}"></i>`).join('')}</span>`).join('')}</span>`;
 }
@@ -225,8 +230,8 @@ function showConflict() {
 async function start() {
   if (!supported()) {
     $('#main').innerHTML = `<div class="welcome card"><h1>Please open this in Microsoft Edge or Google Chrome</h1>
-      <p>The ICE Tool keeps your files in a folder on your computer (your OneDrive folder). Only Edge and Chrome on a computer let a page do that.</p>
-      <p class="muted">Right-click <b>ICE Tool.html</b> → <b>Open with</b> → <b>Microsoft Edge</b>.</p></div>`;
+      <p>The Portfolio Tool keeps your files in a folder on your computer (your OneDrive folder). Only Edge and Chrome on a computer let a page do that.</p>
+      <p class="muted">Right-click <b>Portfolio Tool.html</b> → <b>Open with</b> → <b>Microsoft Edge</b>.</p></div>`;
     return;
   }
   S.own = await recall('own');
@@ -238,8 +243,9 @@ async function start() {
 
 async function openAll() {
   S.warnings = [];
-  if (!(await loadOwn())) return welcome(`The folder "${esc(S.own.name)}" has no ICE Tool data yet.`);
+  if (!(await loadOwn())) return welcome(`The folder "${esc(S.own.name)}" has no Portfolio Tool data yet.`);
   await loadOther();
+  applyFramework(P() && P().framework);
   if (isMentor() && !S.other) S.warnings.push('Link the apprentice\'s portfolio folder in Settings to see their work.');
   if (isMentor() && S.other && !S.otherData) S.warnings.push('The apprentice\'s folder needs permission again: open Settings and press Reconnect.');
   const copies = await conflictCopies();
@@ -266,9 +272,9 @@ function reconnect() {
 function welcome(note = '') {
   renderHeader('');
   $('#main').innerHTML = `<div class="welcome">
-    <h1>ICE Tool</h1>
-    <p>A tracker for the ICE Professional Review: evidence mapped to the attributes with Knowledge, Experience and Ability levels,
-    checks on your Word PRRs, your mentor's comments, meeting notes and CPD. No AI, no internet, no install: everything stays in your OneDrive folder.</p>
+    <h1>Portfolio Tool</h1>
+    <p>A tracker for a professional review or apprenticeship portfolio: evidence mapped to the attributes or requirements of your own framework (ICE IEng is built in; you can edit it or write your own for any institution or level),
+    checks on your Word reports, your mentor's comments, meeting notes and CPD. No AI, no internet, no install: everything stays in your OneDrive folder.</p>
     ${note ? `<div class="banner">${note}</div>` : ''}
     <div class="choices">
       <button class="choice card" id="wNew"><b>Start my portfolio</b><span class="muted">Pick (or make) an empty folder in your OneDrive, e.g. <i>ICE Portfolio - Your Name</i>. The tool creates the Evidence, PRR, Meetings and CPD folders in it.</span></button>
@@ -308,7 +314,14 @@ async function setupPortfolio(mode) {
   const name = await askText('Your name', 'Name (as on your ICE application)', '', 'Shown on exports and to your mentor.');
   if (!name) return;
   S.data = newPortfolio(name, mode);
-  for (const f of mode === 'cpd' ? [FOLDERS.cpd, FOLDERS.exports] : Object.values(FOLDERS)) await subDir(dir, f, true);
+  if (mode !== 'cpd') {
+    const key = await choosePreset();
+    if (!key) { S.data = null; return; }
+    S.data.framework = key === 'ice' ? null : clone(PRESETS[key].fw);
+    if (PRESETS[key].fw.goal) S.data.settings.goal = PRESETS[key].fw.goal;
+  }
+  applyFramework(S.data.framework);
+  await ensureFolders(dir, mode);
   await subDir(dir, DATA_DIR, true);
   await save(true);
   await remember('own', dir);
@@ -345,5 +358,5 @@ async function setupMentor() {
 window.addEventListener('error', (e) => toast('Something went wrong: ' + e.message, 'error'));
 window.addEventListener('unhandledrejection', (e) => toast('Something went wrong: ' + ((e.reason && e.reason.message) || e.reason), 'error'));
 document.addEventListener('DOMContentLoaded', () => start().catch((err) => {
-  $('#main').innerHTML = `<div class="welcome card"><h1>The ICE Tool could not start</h1><p class="bad">${esc(err.message || err)}</p><p>Try opening it in Microsoft Edge or Google Chrome.</p></div>`;
+  $('#main').innerHTML = `<div class="welcome card"><h1>The Portfolio Tool could not start</h1><p class="bad">${esc(err.message || err)}</p><p>Try opening it in Microsoft Edge or Google Chrome.</p></div>`;
 }));

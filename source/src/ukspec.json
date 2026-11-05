@@ -1,0 +1,454 @@
+{
+ "ukspec4-engtech": {
+  "name": "UK-SPEC 4th edition: Engineering Technician (EngTech)",
+  "source": "Engineering Council, UK-SPEC 4th edition, Competence and Commitment Standard",
+  "attrs": [
+   [
+    "A1",
+    "A",
+    "Review and select appropriate techniques, procedures and methods to undertake tasks."
+   ],
+   [
+    "A2",
+    "A",
+    "Use appropriate scientific, technical or engineering principles."
+   ],
+   [
+    "B1",
+    "B",
+    "Identify problems and apply appropriate methods to identify causes and achieve satisfactory solutions."
+   ],
+   [
+    "B2",
+    "B",
+    "Identify, organise and use resources effectively to complete tasks, with consideration for cost, quality, safety, security and environmental impact."
+   ],
+   [
+    "C1",
+    "C",
+    "Work reliably and effectively without close supervision, to the appropriate codes of practice."
+   ],
+   [
+    "C2",
+    "C",
+    "Accept responsibility for the work of themselves or others."
+   ],
+   [
+    "C3",
+    "C",
+    "Accept, allocate and supervise technical and other tasks."
+   ],
+   [
+    "D1",
+    "D",
+    "Communicate effectively with others, at all levels, in English."
+   ],
+   [
+    "D2",
+    "D",
+    "Work effectively with colleagues, clients, suppliers or the public."
+   ],
+   [
+    "D3",
+    "D",
+    "Demonstrate personal and social skills and awareness of diversity and inclusion issues."
+   ],
+   [
+    "E1",
+    "E",
+    "Understand and comply with relevant codes of conduct."
+   ],
+   [
+    "E2",
+    "E",
+    "Understand the safety implications of their role and apply safe systems of work."
+   ],
+   [
+    "E3",
+    "E",
+    "Understand the principles of sustainable development and apply them in their work."
+   ],
+   [
+    "E4",
+    "E",
+    "Carry out and record the Continuing Professional Development (CPD) necessary to maintain and enhance competence in their own area of practice."
+   ],
+   [
+    "E5",
+    "E",
+    "Understand the ethical issues that may arise in their role and carry out their responsibilities in an ethical manner."
+   ]
+  ]
+ },
+ "ukspec4-ieng": {
+  "name": "UK-SPEC 4th edition: Incorporated Engineer (IEng)",
+  "source": "Engineering Council, UK-SPEC 4th edition, Competence and Commitment Standard",
+  "attrs": [
+   [
+    "A1",
+    "A",
+    "Have maintained and extended a sound theoretical approach to the application of technology in engineering practice."
+   ],
+   [
+    "A2",
+    "A",
+    "Use a sound evidence-based approach to problem-solving and contribute to continuous improvement."
+   ],
+   [
+    "B1",
+    "B",
+    "Identify, review and select techniques, procedures and methods to undertake engineering tasks."
+   ],
+   [
+    "B2",
+    "B",
+    "Contribute to the design and development of engineering solutions."
+   ],
+   [
+    "B3",
+    "B",
+    "Implement design solutions for equipment or processes and contribute to their evaluation."
+   ],
+   [
+    "C1",
+    "C",
+    "Plan the work and resources needed to enable effective implementation of engineering tasks and projects."
+   ],
+   [
+    "C2",
+    "C",
+    "Manage (organise, direct and control), programme or schedule, budget and resource elements of engineering tasks or projects."
+   ],
+   [
+    "C3",
+    "C",
+    "Manage teams, or the input of others, into own work and assist others to meet changing technical and management needs."
+   ],
+   [
+    "C4",
+    "C",
+    "Take an active role in continuous quality improvement."
+   ],
+   [
+    "D1",
+    "D",
+    "Communicate effectively with others, at all levels, in English."
+   ],
+   [
+    "D2",
+    "D",
+    "Clearly present and discuss proposals, justifications and conclusions."
+   ],
+   [
+    "D3",
+    "D",
+    "Demonstrate personal and social skills and awareness of diversity and inclusion issues."
+   ],
+   [
+    "E1",
+    "E",
+    "Understand and comply with relevant codes of conduct."
+   ],
+   [
+    "E2",
+    "E",
+    "Understand the safety implications of their role and manage, apply and improve safe systems of work."
+   ],
+   [
+    "E3",
+    "E",
+    "Understand the principles of sustainable development and apply them in their work."
+   ],
+   [
+    "E4",
+    "E",
+    "Carry out and record the Continuing Professional Development (CPD) necessary to maintain and enhance competence in their own area of practice."
+   ],
+   [
+    "E5",
+    "E",
+    "Understand the ethical issues that may arise in their role and carry out their responsibilities in an ethical manner."
+   ]
+  ]
+ },
+ "ukspec4-ceng": {
+  "name": "UK-SPEC 4th edition: Chartered Engineer (CEng)",
+  "source": "Engineering Council, UK-SPEC 4th edition, Competence and Commitment Standard",
+  "attrs": [
+   [
+    "A1",
+    "A",
+    "Have maintained and extended a sound theoretical approach to enable them to develop their particular role."
+   ],
+   [
+    "A2",
+    "A",
+    "Are developing technological solutions to unusual or challenging problems, using their knowledge and understanding and/or dealing with complex technical issues or situations with significant levels of risk."
+   ],
+   [
+    "B1",
+    "B",
+    "Take an active role in the identification and definition of project requirements, problems and opportunities."
+   ],
+   [
+    "B2",
+    "B",
+    "Can identify the appropriate investigations and research needed to undertake the design, development and analysis required to complete an engineering task and conduct these activities effectively."
+   ],
+   [
+    "B3",
+    "B",
+    "Can implement engineering tasks and evaluate the effectiveness of engineering solutions."
+   ],
+   [
+    "C1",
+    "C",
+    "Plan the work and resources needed to enable effective implementation of a significant engineering task or project."
+   ],
+   [
+    "C2",
+    "C",
+    "Manage (organise, direct and control), programme or schedule, budget and resource elements of a significant engineering task or project."
+   ],
+   [
+    "C3",
+    "C",
+    "Lead teams or technical specialisms and assist others to meet changing technical and managerial needs."
+   ],
+   [
+    "C4",
+    "C",
+    "Bring about continuous quality improvement and promote best practice."
+   ],
+   [
+    "D1",
+    "D",
+    "Communicate effectively with others, at all levels, in English."
+   ],
+   [
+    "D2",
+    "D",
+    "Clearly present and discuss proposals, justifications and conclusions."
+   ],
+   [
+    "D3",
+    "D",
+    "Demonstrate personal and social skills and awareness of diversity and inclusion issues."
+   ],
+   [
+    "E1",
+    "E",
+    "Understand and comply with relevant codes of conduct."
+   ],
+   [
+    "E2",
+    "E",
+    "Understand the safety implications of their role and manage, apply and improve safe systems of work."
+   ],
+   [
+    "E3",
+    "E",
+    "Understand the principles of sustainable development and apply them in their work."
+   ],
+   [
+    "E4",
+    "E",
+    "Carry out and record the Continuing Professional Development (CPD) necessary to maintain and enhance competence in their own area of practice."
+   ],
+   [
+    "E5",
+    "E",
+    "Understand the ethical issues that may arise in their role and carry out their responsibilities in an ethical manner."
+   ]
+  ]
+ },
+ "ukspec3-ceng": {
+  "name": "UK-SPEC 3rd edition wording: Chartered Engineer (CEng)",
+  "source": "Engineering Council UK-SPEC 3rd edition competences, as listed on the Society of Operations Engineers application form",
+  "attrs": [
+   [
+    "A1",
+    "A",
+    "Maintain and extend a sound theoretical approach in enabling the introduction and exploitation of new and advancing technology."
+   ],
+   [
+    "A2",
+    "A",
+    "Engage in the creative and innovative development of engineering technology and continuous improvement systems."
+   ],
+   [
+    "B1",
+    "B",
+    "Identify potential projects and opportunities."
+   ],
+   [
+    "B2",
+    "B",
+    "Conduct appropriate research, and undertake the design and development of engineering solutions."
+   ],
+   [
+    "B3",
+    "B",
+    "Manage implementation of design solutions, and evaluate their effectiveness."
+   ],
+   [
+    "C1",
+    "C",
+    "Plan for effective project implementation."
+   ],
+   [
+    "C2",
+    "C",
+    "Plan, budget, organise, direct and control tasks, people and resources."
+   ],
+   [
+    "C3",
+    "C",
+    "Lead teams and develop staff to meet changing technical and managerial needs."
+   ],
+   [
+    "C4",
+    "C",
+    "Bring about continuous improvement through quality management."
+   ],
+   [
+    "D1",
+    "D",
+    "Communicate in English with others at all levels."
+   ],
+   [
+    "D2",
+    "D",
+    "Present and discuss proposals."
+   ],
+   [
+    "D3",
+    "D",
+    "Demonstrate personal and social skills."
+   ],
+   [
+    "E1",
+    "E",
+    "Comply with relevant codes of conduct."
+   ],
+   [
+    "E2",
+    "E",
+    "Manage and apply safe systems of work."
+   ],
+   [
+    "E3",
+    "E",
+    "Undertake engineering activities in a way that contributes to sustainable development."
+   ],
+   [
+    "E4",
+    "E",
+    "Carry out and record CPD necessary to maintain and enhance competence in your own area of practice."
+   ],
+   [
+    "E5",
+    "E",
+    "Exercise responsibilities in an ethical manner."
+   ]
+  ]
+ },
+ "ukspec3-ieng": {
+  "name": "UK-SPEC 3rd edition wording: Incorporated Engineer (IEng)",
+  "source": "Engineering Council UK-SPEC 3rd edition competences, as listed on the Society of Operations Engineers application form",
+  "attrs": [
+   [
+    "A1",
+    "A",
+    "Maintain and extend a sound theoretical approach to the application of technology in engineering practice."
+   ],
+   [
+    "A2",
+    "A",
+    "Use a sound evidence-based approach to problem-solving and contribute to continuous improvement."
+   ],
+   [
+    "B1",
+    "B",
+    "Identify, review and select techniques, procedures and methods to undertake engineering tasks."
+   ],
+   [
+    "B2",
+    "B",
+    "Contribute to the design and development of engineering solutions."
+   ],
+   [
+    "B3",
+    "B",
+    "Implement design solutions and contribute to their evaluation."
+   ],
+   [
+    "C1",
+    "C",
+    "Plan for effective project implementation."
+   ],
+   [
+    "C2",
+    "C",
+    "Manage tasks, people and resources to plan and budget."
+   ],
+   [
+    "C3",
+    "C",
+    "Manage teams and develop staff to meet changing technical and managerial needs."
+   ],
+   [
+    "C4",
+    "C",
+    "Manage continuous quality improvement."
+   ],
+   [
+    "D1",
+    "D",
+    "Communicate in English with others at all levels."
+   ],
+   [
+    "D2",
+    "D",
+    "Present and discuss proposals."
+   ],
+   [
+    "D3",
+    "D",
+    "Demonstrate personal and social skills."
+   ],
+   [
+    "E1",
+    "E",
+    "Comply with relevant codes of conduct."
+   ],
+   [
+    "E2",
+    "E",
+    "Manage and apply safe systems of work."
+   ],
+   [
+    "E3",
+    "E",
+    "Undertake engineering activities in a way that contributes to sustainable development."
+   ],
+   [
+    "E4",
+    "E",
+    "Carry out and record CPD necessary to maintain and enhance competence in own area of practice."
+   ],
+   [
+    "E5",
+    "E",
+    "Exercise responsibilities in an ethical manner."
+   ]
+  ]
+ },
+ "_titles": {
+  "A": "Knowledge and understanding",
+  "B": "Design, development and solving engineering problems",
+  "C": "Responsibility, management and leadership",
+  "D": "Communication and interpersonal skills",
+  "E": "Personal and professional commitment"
+ }
+}
