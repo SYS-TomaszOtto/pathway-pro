@@ -1,4 +1,4 @@
-"""Write "How to use ICE Tool.docx": the guide that travels with the tool, for any apprentice or mentor."""
+"""Write "How to use Portfolio Tool.docx": the guide that travels with the tool, for any apprentice or mentor."""
 import pathlib, sys, zipfile
 
 W = 'xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"'
@@ -25,53 +25,62 @@ def para(text, style=None, indent=False):
 
 
 GUIDE = [
-    ('title', 'ICE Tool: how to use it'),
-    ('p', 'A tracker for the ICE Professional Review (IEng apprenticeship) and for CPD. It is one file, **ICE Tool.html**, that runs in Microsoft Edge or Google Chrome. There is nothing to install, it needs no internet and no AI, and your files stay in your own OneDrive folder.'),
+    ('title', 'Portfolio Tool: how to use it'),
+    ('p', 'A tracker for a professional review or apprenticeship portfolio, and for CPD. It is one file, **Portfolio Tool.html**, that runs in Microsoft Edge or Google Chrome. There is nothing to install, it needs no internet and it has no AI: it lists, links, counts and checks, so nothing gets missed. Your files stay in a folder you choose, such as your OneDrive folder.'),
+    ('h1', 'Choose what you are assessed against (the framework)'),
+    ('p', 'When you start, you pick a built-in framework: ICE IEng (apprenticeship), the current ICE Incorporated or Chartered Professional Review attributes, IStructE (Chartered, Incorporated or Technician Member), the Engineering Council UK-SPEC competences (CEng, IEng, EngTech), or lists for IChemE, CIBSE, IMechE, RINA, IHE (RITTech) and CIHT. Or start blank and write your own.'),
+    ('b', '**Everything can be edited**: in **Settings → Framework** you can change the levels, groups, requirements, standards, tab names, folder names and evidence folders. The lists were read from the institutions’ published documents and may contain mistakes or be out of date, so correct anything that is wrong.'),
+    ('b', 'Write one item per line, with columns separated by **|** or a tab, so you can paste a table straight from Excel or Word. A requirement can end with **| needs: K** to say it is met by evidence at that level or above.'),
+    ('b', '**Export as file** saves your framework so someone else can **Import** it.'),
     ('h1', 'What it does'),
-    ('b', '**Evidence**: lists every file in your Evidence folder. You map each one to the ICE sub-attributes at a level: Knowledge, Experience or Ability, with the KSBs it covers and a note.'),
-    ('b', '**Attributes and KSBs**: shows what is covered and what is missing. The goal is 3 pieces of evidence at each level for every sub-attribute (you can change the number).'),
-    ('b', '**Reports**: reads your Word PRRs and checks them: evidence listed but not written about, codes that do not exist, very short write-ups, evidence not yet mapped. It never changes your Word files.'),
-    ('b', '**Feedback**: lists every comment and tracked change your mentor makes in your Word PRR, under the right sub-attribute. You write your response, mark it done, and export a "Response to feedback" table.'),
+    ('b', '**Evidence**: lists every file in your evidence folder. You map each one to the requirements at a level (for ICE IEng: Knowledge, Experience or Ability), with the standards it covers and a note.'),
+    ('b', '**Requirements and standards** (the tab names follow your framework): show what is covered and what is missing against your goal (you can change the number of items per level).'),
+    ('b', '**Reports**: reads your Word reports and checks them: evidence listed but not written about, codes that do not exist, very short write-ups, evidence not yet mapped. It never changes your Word files.'),
+    ('b', '**Feedback**: lists every comment and tracked change your mentor makes in your Word report, under the right requirement. You write your response, mark it done, and export a "Response to feedback" table.'),
     ('b', '**Meetings**: import a Teams transcript and tag each line as Done, To do or Teaching. To-dos become actions; it writes tidy meeting notes in Word.'),
-    ('b', '**CPD**: ICE’s Development Action Plan and Personal Development Record, with hours per year, and Word exports in the layout of ICE’s CPD templates.'),
-    ('b', '**Mentor**: your mentor uses the same file to record an assessment per sub-attribute and notes on your evidence, in their own folder.'),
-    ('h1', 'Getting started (apprentice)'),
-    ('n', '1. In OneDrive, make a folder such as **ICE Portfolio - Your Name** and put **ICE Tool.html** in it.'),
-    ('n', '2. Right-click ICE Tool.html → **Open with** → **Microsoft Edge**.'),
-    ('n', '3. Click **Start my portfolio** and pick that folder. Edge asks whether the page may view and save files there: allow it. The tool makes the folders Evidence, PRR, Meetings, CPD, Exports and ice-data.'),
-    ('n', '4. Save your evidence into **Evidence** (sub-folders are fine). Start file names with a code such as **CO-14** so they are picked up, or use **Number files…** on the Evidence page.'),
-    ('n', '5. Open each piece of evidence and click **K**, **E** or **A** against each sub-attribute it shows.'),
+    ('b', '**CPD**: a Development Action Plan and Personal Development Record in the layout of ICE’s CPD templates, with hours per year and Word exports.'),
+    ('b', '**Mentor**: your mentor uses the same file to record an assessment per requirement and notes on your evidence, in their own folder.'),
+    ('h1', 'Getting started (apprentice or candidate)'),
+    ('n', '1. In OneDrive, make a folder such as **Portfolio - Your Name** and put **Portfolio Tool.html** in it.'),
+    ('n', '2. Right-click Portfolio Tool.html → **Open with** → **Microsoft Edge**.'),
+    ('n', '3. Click **Start my portfolio**, enter your name, choose your framework and pick that folder. Edge asks whether the page may view and save files there: allow it.'),
+    ('n', '4. The tool makes these folders: **0 - Reports** (your Word reports), **1 - Evidence Matrix** (the Excel matrix it writes), **2 - Evidence** (with one sub-folder per kind of evidence), **4 - Feedback, Compliance and Status** (response tables), and **Meetings**, **CPD**, **Exports** and **ice-data** (the tracker itself: do not edit it by hand).'),
+    ('n', '5. **There is no upload button.** Save each piece of evidence into the matching sub-folder of **2 - Evidence** in your OneDrive, then press **Refresh** on the Evidence page. Start file names with a code such as **CO-14**, or use **Number files…**, which suggests the code letters from the folder name (for example a folder ending in "- CA" gives CA codes).'),
+    ('n', '6. Open each piece of evidence and click the level buttons against each requirement it shows. Add a note on why.'),
     ('p', 'Next time, open the file again and press **Continue**: Edge asks once per session to use the folder again.'),
-    ('h1', 'Writing your PRR so the checks work'),
-    ('b', 'Start each sub-attribute with a heading line such as **2b – Contribute to the design and development of engineering solutions** (number, letter, dash, then any text).'),
+    ('h1', 'Writing your report so the checks work'),
+    ('b', 'Start each requirement with a heading line made of its id, a dash, then any text, for example **2b – Contribute to the design and development of engineering solutions** (or **A1 – …**, or **3 – …**, whatever ids your framework uses).'),
     ('b', 'Under it, list the evidence on one line: **Evidence: CO-14, DD-00 to DD-05**.'),
     ('b', 'Before you write about a piece of evidence, put its code in curly brackets: **{CO-14}** I checked the… The write-up runs until the next tag or heading.'),
-    ('b', '**Reports → New PRR from template** makes a Word file with these headings ready to fill in.'),
+    ('b', '**Reports → New PRR from template** makes a Word file with these headings ready to fill in, in the **0 - Reports** folder.'),
     ('h1', 'Working with your mentor'),
     ('p', 'Each person can only change their own folder. OneDrive enforces this, so neither of you can alter the other’s records, and nobody needs an extra login.'),
-    ('n', '1. **Apprentice**: in OneDrive, share your portfolio folder with your mentor as **Can view**. Share the **PRR** folder (or the PRR files) as **Can edit** so they can comment in Word.'),
+    ('n', '1. **Apprentice**: in OneDrive, share your portfolio folder with your mentor as **Can view**. Share the **0 - Reports** folder (or just the report files) as **Can edit** so they can comment in Word.'),
     ('n', '2. **Mentor**: in OneDrive, go to **Shared**, find the folder and choose **Add shortcut to My files** so it appears on your computer.'),
-    ('n', '3. **Mentor**: make an empty folder of your own, e.g. **ICE Mentoring - Apprentice Name**. Open ICE Tool.html (the copy in the apprentice’s folder is fine), click **I am a mentor**, pick your own folder, then pick the apprentice’s folder.'),
+    ('n', '3. **Mentor**: make an empty folder of your own, e.g. **Mentoring - Apprentice Name**. Open Portfolio Tool.html (the copy in the apprentice’s folder is fine), click **I am a mentor**, pick your own folder, then pick the apprentice’s folder to read it. The mentor sees the apprentice’s framework read-only.'),
     ('n', '4. **Mentor**: share your mentoring folder with the apprentice as **Can view**.'),
     ('n', '5. **Apprentice**: add the mentor’s folder to your OneDrive the same way, then in the tool go to **Settings → Link mentor’s folder**.'),
-    ('p', 'Your mentor comments in your Word PRR as usual (Review → New Comment, or Track Changes). Their comments appear on the Feedback page; their assessment appears on the Mentor page.'),
+    ('p', 'Your mentor comments in your Word report as usual (Review → New Comment, or Track Changes). Their comments appear on the Feedback page; their assessment appears on the Mentor page.'),
     ('h1', 'Meetings'),
     ('n', '1. After a Teams meeting with transcription on, open the meeting chat → **Recap** → **Transcript** → **Download** (.vtt or .docx).'),
     ('n', '2. **Meetings → Import transcript…** and pick the file (or save it into the Meetings folder first: the tool offers to import it).'),
-    ('n', '3. Tag lines with the buttons or keys: **D** done, **T** to do, **L** teaching, **X** clear, **J/K** to move. Add a sub-attribute or due date to to-dos.'),
+    ('n', '3. Tag lines with the buttons or keys: **D** done, **T** to do, **L** teaching, **X** clear, **J/K** to move. Add a requirement or due date to to-dos.'),
     ('n', '4. **Write notes to Word** saves the meeting notes in the Meetings folder.'),
     ('h1', 'CPD'),
-    ('p', 'Following ICE’s CPD guidance: review your learning needs at least once a year (a SWOT works well), set objectives with reference codes (the Development plan), and record each activity with its effective learning time, the objective it supports and what you learned (the Development record). ICE asks for at least 30 hours a year up to the Professional Review, no more than 6 hours for a day and 30 for one activity. **CPD → Export** makes Word files in the layout of ICE’s Appendix A and B templates. If you only want CPD, choose **CPD record only** when you start.'),
+    ('p', 'Following ICE’s CPD guidance: review your learning needs at least once a year (a SWOT works well), set objectives with reference codes (the Development plan), and record each activity with its effective learning time and what you learned (the Development record). Export makes Word and Excel files. There is also a "CPD record only" mode.'),
     ('h1', 'Good to know'),
     ('b', 'It saves as you type. One copy of your data is kept per day in **ice-data/backups** (the last 30). Do not edit the files in ice-data by hand.'),
     ('b', 'If the data file was changed on another computer while the tool was open, it asks which copy to keep. If OneDrive makes a copy named like "portfolio-LAPTOP.json", the tool tells you.'),
     ('b', 'Press **Ctrl+K** to search everything. Click a code or file name to preview it beside the page (PDFs, pictures, Word files and text).'),
-    ('b', 'Exports (Excel matrix, response tables, meeting notes, CPD records) go into the Exports or Meetings folder.'),
+    ('b', 'Exports go to **1 - Evidence Matrix** (the Excel matrix), **4 - Feedback, Compliance and Status** (response tables), **Exports** (CPD records) and **Meetings** (meeting notes).'),
+    ('b', 'Changing the framework later creates any new folders but never renames or moves your existing ones. Mappings to a requirement or level you delete are kept but no longer counted.'),
     ('b', 'It only works in Edge or Chrome on a computer: other browsers cannot use a folder on your computer.'),
+    ('b', 'This is an independent tool: it is not made or endorsed by ICE, IStructE, the Engineering Council or any other institution.'),
     ('h1', 'If something goes wrong'),
     ('b', '**"Please open this in Microsoft Edge or Google Chrome"**: right-click the file → Open with → Microsoft Edge.'),
     ('b', '**The page asks for permission every time**: that is normal for Edge; press Continue.'),
     ('b', '**A file shows "file missing"**: it was moved or renamed. Open it and choose the new location, so its mappings follow it.'),
+    ('b', '**A built-in list has a mistake or is out of date**: correct it in Settings → Framework.'),
     ('b', '**Restore yesterday’s data**: close the tool, copy the backup from ice-data/backups over ice-data/portfolio.json (keep the name portfolio.json), and open the tool again.'),
 ]
 
@@ -102,6 +111,6 @@ def build(out_path):
 
 
 if __name__ == '__main__':
-    out = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else pathlib.Path(__file__).parent / 'dist' / 'How to use ICE Tool.docx')
+    out = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else pathlib.Path(__file__).parent / 'dist' / 'How to use Portfolio Tool.docx')
     build(out)
     print(out)

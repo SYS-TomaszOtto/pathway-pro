@@ -1014,5 +1014,347 @@
    ]
   ],
   "note": "The guidance also asks you to choose three technical units, in addition to Data, to show Proficiency, and one additional unit (T7-T10) at Experience. Edit the minimum levels to match the units you choose."
+ },
+ "ice-ipr": {
+  "name": "ICE Incorporated Professional Review (IEng MICE): attributes",
+  "source": "ICE, Incorporated and Chartered Professional Review Guidance, Version 3 Revision 14 (11 June 2026), Appendix A",
+  "groups": [
+   [
+    "1",
+    "1. Understanding and Practical Application of Engineering"
+   ],
+   [
+    "2",
+    "2. Management and Leadership"
+   ],
+   [
+    "3",
+    "3. Commercial Ability"
+   ],
+   [
+    "4",
+    "4. Health, Safety and Welfare"
+   ],
+   [
+    "5",
+    "5. Sustainable Development"
+   ],
+   [
+    "6",
+    "6. Interpersonal Skills and Communication"
+   ],
+   [
+    "7",
+    "7. Professional Commitment"
+   ]
+  ],
+  "attrs": [
+   [
+    "1a",
+    "1",
+    "Maintain and extend knowledge of engineering theory and practice, and how technology assists its application."
+   ],
+   [
+    "1b",
+    "1",
+    "Solve engineering problems using a sound theoretical approach, based on evidence, and contribute to continuous improvement."
+   ],
+   [
+    "1c",
+    "1",
+    "Identify, review and select techniques, procedures and methods to undertake engineering tasks."
+   ],
+   [
+    "1d",
+    "1",
+    "Contribute to the design and development of engineering solutions, implement those solutions, and evaluate their effectiveness in the context of the whole project life cycle."
+   ],
+   [
+    "1e",
+    "1",
+    "Exercise sound independent engineering judgement."
+   ],
+   [
+    "2a",
+    "2",
+    "Plan the work and resources needed to enable effective implementation of engineering tasks and projects."
+   ],
+   [
+    "2b",
+    "2",
+    "Manage the planning and organisation of tasks and resources."
+   ],
+   [
+    "2c",
+    "2",
+    "Manage teams or technical specialisms."
+   ],
+   [
+    "2d",
+    "2",
+    "Assist others to meet changing technical and managerial needs."
+   ],
+   [
+    "2e",
+    "2",
+    "Manage quality processes and contribute to quality improvements."
+   ],
+   [
+    "3a",
+    "3",
+    "Manage, prepare and control costs/budgets of engineering tasks or projects."
+   ],
+   [
+    "3b",
+    "3",
+    "Use sound knowledge of statutory and commercial frameworks within their own area of responsibility and have an appreciation of other commercial arrangements."
+   ],
+   [
+    "4a",
+    "4",
+    "Demonstrate a sound knowledge of legislation, hazards and safe systems of work."
+   ],
+   [
+    "4b",
+    "4",
+    "Manage risks."
+   ],
+   [
+    "4c",
+    "4",
+    "Manage health, safety and welfare within their own area of responsibility."
+   ],
+   [
+    "4d",
+    "4",
+    "Contribute to improvements in health, safety and welfare."
+   ],
+   [
+    "5a",
+    "5",
+    "Understand the principles of sustainable development and apply them in work."
+   ],
+   [
+    "5b",
+    "5",
+    "Manage engineering activities that contribute to sustainable development and the United Nations Sustainable Development Goals (UNSDGs)."
+   ],
+   [
+    "6a",
+    "6",
+    "Communicate well with others at all levels including effective use of English, orally and in writing."
+   ],
+   [
+    "6b",
+    "6",
+    "Discuss ideas and plans competently and with confidence."
+   ],
+   [
+    "6c",
+    "6",
+    "Demonstrate effective personal and social skills."
+   ],
+   [
+    "6d",
+    "6",
+    "Demonstrate awareness of diversity and inclusion."
+   ],
+   [
+    "7a",
+    "7",
+    "Understand and comply with the ICE Code of Conduct."
+   ],
+   [
+    "7b",
+    "7",
+    "Understand the ethical issues that may arise in their role and carry out their responsibilities in an ethical manner."
+   ],
+   [
+    "7c",
+    "7",
+    "Plan, carry out and record Continuing Professional Development necessary to maintain and enhance competence in their own area of practice."
+   ],
+   [
+    "7d",
+    "7",
+    "Identify the limits of their personal knowledge and skills."
+   ],
+   [
+    "7e",
+    "7",
+    "Engage with ICE activities."
+   ]
+  ]
+ },
+ "ice-cpr": {
+  "name": "ICE Chartered Professional Review (CEng MICE): attributes",
+  "source": "ICE, Incorporated and Chartered Professional Review Guidance, Version 3 Revision 14 (11 June 2026), Appendix A",
+  "groups": [
+   [
+    "1",
+    "1. Understanding and Practical Application of Engineering"
+   ],
+   [
+    "2",
+    "2. Management and Leadership"
+   ],
+   [
+    "3",
+    "3. Commercial Ability"
+   ],
+   [
+    "4",
+    "4. Health, Safety and Welfare"
+   ],
+   [
+    "5",
+    "5. Sustainable Development"
+   ],
+   [
+    "6",
+    "6. Interpersonal Skills and Communication"
+   ],
+   [
+    "7",
+    "7. Professional Commitment"
+   ]
+  ],
+  "attrs": [
+   [
+    "1a",
+    "1",
+    "Maintain and extend knowledge of engineering theory and practice, and how technology assists its application."
+   ],
+   [
+    "1b",
+    "1",
+    "Solve engineering problems using a sound theoretical approach, based on evidence, and contribute to continuous improvement. And engage in the creation and/or introduction of new, advancing or improved techniques and technology."
+   ],
+   [
+    "1c",
+    "1",
+    "Identify, review and select techniques, procedures and methods to undertake engineering tasks. And take an active role in the identification and definition of requirements, challenges, risks, and opportunities and undertake appropriate investigation and action."
+   ],
+   [
+    "1d",
+    "1",
+    "Contribute to the design and development of engineering solutions, implement those solutions, and evaluate their effectiveness in the context of the whole project life cycle. And undertake the design, development and implementation of engineering solutions and evaluate their effectiveness in the context of the whole project life cycle."
+   ],
+   [
+    "1e",
+    "1",
+    "Exercise sound independent engineering judgement."
+   ],
+   [
+    "2a",
+    "2",
+    "Plan the work and resources needed to enable effective implementation of engineering tasks and projects."
+   ],
+   [
+    "2b",
+    "2",
+    "Manage the planning and organisation of tasks and resources. And manage (organise, direct and control), programme or schedule, tasks and resources."
+   ],
+   [
+    "2c",
+    "2",
+    "Manage teams or technical specialisms. And lead or influence teams / technical specialisms, understanding the limits of their skills and knowledge."
+   ],
+   [
+    "2d",
+    "2",
+    "Assist others to meet changing technical and managerial needs. And develop others to meet changing technical and managerial needs."
+   ],
+   [
+    "2e",
+    "2",
+    "Manage quality processes and contribute to quality improvements. And demonstrate continuous quality improvement and promote best practice."
+   ],
+   [
+    "3a",
+    "3",
+    "Manage, prepare and control costs/budgets of engineering tasks or projects. And manage, prepare and control costs/budgets of a significant engineering task or project."
+   ],
+   [
+    "3b",
+    "3",
+    "Use sound knowledge of statutory and commercial frameworks within their own area of responsibility and have an appreciation of other commercial arrangements. And demonstrate sound judgement on statutory, contractual and commercial issues in relation to own area of responsibility."
+   ],
+   [
+    "4a",
+    "4",
+    "Demonstrate a sound knowledge of legislation, hazards and safe systems of work."
+   ],
+   [
+    "4b",
+    "4",
+    "Manage risks."
+   ],
+   [
+    "4c",
+    "4",
+    "Manage health, safety and welfare within their own area of responsibility."
+   ],
+   [
+    "4d",
+    "4",
+    "Contribute to improvements in health, safety and welfare. And demonstrate leadership by promoting good practice and improvements in health, safety and welfare."
+   ],
+   [
+    "5a",
+    "5",
+    "Understand the principles of sustainable development and apply them in work."
+   ],
+   [
+    "5b",
+    "5",
+    "Manage engineering activities that contribute to sustainable development and the United Nations Sustainable Development Goals (UNSDGs). And take a professional and responsible role in improvements that support sustainable development and reduce resource demand, set in the context of a whole project life cycle."
+   ],
+   [
+    "6a",
+    "6",
+    "Communicate well with others at all levels including effective use of English, orally and in writing."
+   ],
+   [
+    "6b",
+    "6",
+    "Discuss ideas and plans competently and with confidence. And communicate new concepts and ideas to technical and non-technical stakeholders."
+   ],
+   [
+    "6c",
+    "6",
+    "Demonstrate effective personal and social skills."
+   ],
+   [
+    "6d",
+    "6",
+    "Demonstrate awareness of diversity and inclusion. And proactively manage diversity and inclusion."
+   ],
+   [
+    "7a",
+    "7",
+    "Understand and comply with the ICE Code of Conduct."
+   ],
+   [
+    "7b",
+    "7",
+    "Understand the ethical issues that may arise in their role and carry out their responsibilities in an ethical manner."
+   ],
+   [
+    "7c",
+    "7",
+    "Plan, carry out and record Continuing Professional Development necessary to maintain and enhance competence in their own area of practice."
+   ],
+   [
+    "7d",
+    "7",
+    "Identify the limits of their personal knowledge and skills. And exercise sound holistic independent judgement and accept responsibility."
+   ],
+   [
+    "7e",
+    "7",
+    "Engage with ICE activities."
+   ]
+  ]
  }
 }

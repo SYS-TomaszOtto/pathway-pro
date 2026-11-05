@@ -1,8 +1,8 @@
-# ICE Tool for Windows: design
+# Portfolio Tool: design
 
-A single HTML file (`ICE Tool.html`), opened in Microsoft Edge (or Chrome), with no install, no server, no AI
+A single HTML file (`Portfolio Tool.html`, published as `index.html`), opened in Microsoft Edge (or Chrome), with no install, no server, no AI
 and no internet. It reads and writes a folder the person picks (their OneDrive folder) through the browser's
-File System Access API. Everything it needs (ICE sub-attributes, KSBs, zip, Word and Excel writers) is
+File System Access API. Everything it needs (the built-in frameworks, zip, Word and Excel writers) is
 inside the file.
 
 ## Folders
@@ -36,8 +36,9 @@ permission only. OneDrive's sharing is what actually stops one person changing t
 ## Data (apprentice.json)
 
 ```
-{ format: 'ice-tool/1', role: 'apprentice', name, created, saved,
-  settings: { goal: 3, folders: {evidence, prr, meetings, exports} },
+{ format: 'ice-tool/1', role: 'apprentice', name, created, saved, mode: 'ice'|'cpd',
+  framework: null | { name, source, labels, levels, groups, attributes, ksbs, folders, evidenceFolders },  // null = built-in ICE IEng
+  settings: { goal: 3, cpdTarget, cpdYearStart, themes },
   evidence: { "<path relative to Evidence>": { code, title, date, project, notes, size, mtime,
               maps: [{ sub: '2b', level: 'knowledge'|'experience'|'ability', ksbs: ['K1'], note }] } },
   comments: { "<comment key>": { status: 'open'|'done'|'wont', response, updated } },
@@ -50,13 +51,14 @@ evidence: {code: {comment, date}}, actions: [{id, text, due, status}] }`
 
 ## Coverage
 
-For each of the 28 sub-attributes, distinct evidence items mapped at each level (Knowledge, Experience,
-Ability), goal 3 each (9 slots). Completion = evidence slots 50%, PRR sections written and passing checks 35%,
+For each requirement of the framework, distinct evidence items mapped at each level of the framework
+(for ICE IEng: Knowledge, Experience, Ability), goal 3 each. A requirement with a minimum level needs `goal` items
+at that level or above. Completion = evidence slots 50%, PRR sections written and passing checks 35%,
 mentor comments answered 15% (evidence counts most).
 
 ## PRR (Word is the master)
 
-Read only. Sections start at a heading such as `2b – Contribute to…`; `Evidence: CO-14, DD-00 to DD-05`
+Read only. Sections start at a heading made of a requirement id and a dash, such as `2b – Contribute to…` or `A1 – …`; `Evidence: CO-14, DD-00 to DD-05`
 lines list evidence; `{CO-14}` starts the write-up about that item. The checks are listed in the Reports page help.
 Mentor comments (comments.xml, replies and resolved state from commentsExtended.xml) and tracked changes
 are listed per section; the apprentice marks each one done / won't do with a response, and can export a
