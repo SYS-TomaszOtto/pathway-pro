@@ -51,7 +51,7 @@ GUIDE = [
     ('h1', 'Writing your report so the checks work'),
     ('b', 'Start each requirement with a heading line made of its id, a dash, then any text, for example **2b – Contribute to the design and development of engineering solutions** (or **A1 – …**, or **3 – …**, whatever ids your framework uses).'),
     ('b', 'Under it, list the evidence on one line: **Evidence: CO-14, DD-00 to DD-05**.'),
-    ('b', 'Before you write about a piece of evidence, put its code in curly brackets: **{CO-14}** I checked the… The write-up runs until the next tag or heading.'),
+    ('b', 'Before you write about a piece of evidence, put its code in curly brackets, for example **{CO-14}**, then write about it ("I checked the…"). The write-up runs until the next tag or heading.'),
     ('b', '**Reports → New PRR from template** makes a Word file with these headings ready to fill in, in the **0 - Reports** folder.'),
     ('h1', 'Working with your mentor'),
     ('p', 'Each person can only change their own folder. OneDrive enforces this, so neither of you can alter the other’s records, and nobody needs an extra login.'),

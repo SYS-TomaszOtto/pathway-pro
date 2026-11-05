@@ -43,7 +43,7 @@ const PRR_HELP = `<h2>Writing a PRR the tool can check</h2>
   <ol>
     <li>Start each sub-attribute with a heading line such as <b>2b – Contribute to the design and development of engineering solutions</b> (number, letter, dash, then any text). Use Word's Heading style if you like; it is not required.</li>
     <li>Under it, list the evidence on one line: <b>Evidence: CO-14, DD-00 to DD-05</b>.</li>
-    <li>Before you write about a piece of evidence, put its code in curly brackets: <b>{CO-14}</b> I checked the… The write-up runs until the next tag or heading.</li>
+    <li>Before you write about a piece of evidence, put its code in curly brackets, for example <b>{CO-14}</b>, then write about it (&ldquo;I checked the…&rdquo;). The write-up runs until the next tag or heading.</li>
     <li>Your mentor comments in Word as normal (Review → New Comment, or Track Changes). The tool lists every comment under the right sub-attribute.</li>
   </ol>
   <p class="small muted">The checks: evidence listed but not written about, written about but not listed, codes that are not in your Evidence folder, very short write-ups, and evidence not yet mapped to that sub-attribute.</p>`;
