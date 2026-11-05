@@ -1,0 +1,502 @@
+{
+ "attributes": [
+  {
+   "id": "1a",
+   "group": 1,
+   "group_title": "Knowledge and Understanding of Engineering",
+   "text": "Maintain and extend knowledge of engineering theory and practice, and how technology assists its application.",
+   "new_ids": [
+    "1a"
+   ]
+  },
+  {
+   "id": "1b",
+   "group": 1,
+   "group_title": "Knowledge and Understanding of Engineering",
+   "text": "Solve engineering problems using a sound theoretical approach, based on evidence, and contribute to continuous improvement.",
+   "new_ids": [
+    "1b"
+   ]
+  },
+  {
+   "id": "2a",
+   "group": 2,
+   "group_title": "Technical and practical application of engineering",
+   "text": "Identify, review and select techniques, procedures and methods to undertake engineering tasks.",
+   "new_ids": [
+    "1c"
+   ]
+  },
+  {
+   "id": "2b",
+   "group": 2,
+   "group_title": "Technical and practical application of engineering",
+   "text": "Contribute to the design and development of engineering solutions",
+   "new_ids": [
+    "1d"
+   ]
+  },
+  {
+   "id": "2c",
+   "group": 2,
+   "group_title": "Technical and practical application of engineering",
+   "text": "Implement engineering solutions, and evaluate their effectiveness in the context of the whole project life cycle.",
+   "new_ids": []
+  },
+  {
+   "id": "3a",
+   "group": 3,
+   "group_title": "Management and leadership",
+   "text": "Plan the work and resources needed to enable effective implementation of engineering tasks and projects.",
+   "new_ids": [
+    "2a"
+   ]
+  },
+  {
+   "id": "3b",
+   "group": 3,
+   "group_title": "Management and leadership",
+   "text": "Manage the planning and organisation of tasks and resources.",
+   "new_ids": [
+    "2b"
+   ]
+  },
+  {
+   "id": "3c",
+   "group": 3,
+   "group_title": "Management and leadership",
+   "text": "Assist others to meet changing technical and managerial needs.",
+   "new_ids": [
+    "2c",
+    "2d"
+   ]
+  },
+  {
+   "id": "3d",
+   "group": 3,
+   "group_title": "Management and leadership",
+   "text": "Manage teams or technical specialisms.",
+   "new_ids": []
+  },
+  {
+   "id": "3e",
+   "group": 3,
+   "group_title": "Management and leadership",
+   "text": "Manage quality processes and contribute to quality improvements.",
+   "new_ids": [
+    "2e"
+   ]
+  },
+  {
+   "id": "4a",
+   "group": 4,
+   "group_title": "Independent judgement and responsibility",
+   "text": "Identify the limits of personal knowledge and skills.",
+   "new_ids": [
+    "7d"
+   ]
+  },
+  {
+   "id": "4b",
+   "group": 4,
+   "group_title": "Independent judgement and responsibility",
+   "text": "Exercise sound independent engineering judgement and take responsibility.",
+   "new_ids": [
+    "1e"
+   ]
+  },
+  {
+   "id": "5a",
+   "group": 5,
+   "group_title": "Commercial ability",
+   "text": "Manage, prepare and control costs/budgets of engineering tasks or projects.",
+   "new_ids": [
+    "3a"
+   ]
+  },
+  {
+   "id": "5b",
+   "group": 5,
+   "group_title": "Commercial ability",
+   "text": "Use sound knowledge of statutory and commercial frameworks within their own area of responsibility and have an appreciation of other commercial arrangements.",
+   "new_ids": [
+    "3b"
+   ]
+  },
+  {
+   "id": "6a",
+   "group": 6,
+   "group_title": "Health, safety and welfare",
+   "text": "Demonstrate a sound knowledge of legislation, hazards and safe systems of work.",
+   "new_ids": [
+    "4a"
+   ]
+  },
+  {
+   "id": "6b",
+   "group": 6,
+   "group_title": "Health, safety and welfare",
+   "text": "Manage risks",
+   "new_ids": [
+    "4b"
+   ]
+  },
+  {
+   "id": "6c",
+   "group": 6,
+   "group_title": "Health, safety and welfare",
+   "text": "Manage health, safety and welfare within their own area of responsibility. Contribute to improvements in health, safety and welfare.",
+   "new_ids": [
+    "4c",
+    "4d"
+   ]
+  },
+  {
+   "id": "7a",
+   "group": 7,
+   "group_title": "Sustainable development",
+   "text": "Understand the principles of sustainable development and apply them in work.",
+   "new_ids": [
+    "5a"
+   ]
+  },
+  {
+   "id": "7b",
+   "group": 7,
+   "group_title": "Sustainable development",
+   "text": "Manage engineering activities that contribute to sustainable development and the United Nations\u2019 Sustainable Development Goals (UNSDGs).",
+   "new_ids": [
+    "5b"
+   ]
+  },
+  {
+   "id": "8a",
+   "group": 8,
+   "group_title": "Interpersonal skills and communication",
+   "text": "Communicate well with others at all levels including effective use of English, orally and in writing.",
+   "new_ids": [
+    "6a"
+   ]
+  },
+  {
+   "id": "8b",
+   "group": 8,
+   "group_title": "Interpersonal skills and communication",
+   "text": "Discuss ideas and plans competently and with confidence.",
+   "new_ids": [
+    "6b"
+   ]
+  },
+  {
+   "id": "8c",
+   "group": 8,
+   "group_title": "Interpersonal skills and communication",
+   "text": "Demonstrate effective personal and social skills.",
+   "new_ids": [
+    "6c"
+   ]
+  },
+  {
+   "id": "8d",
+   "group": 8,
+   "group_title": "Interpersonal skills and communication",
+   "text": "Demonstrate awareness of diversity and inclusion.",
+   "new_ids": [
+    "6d"
+   ]
+  },
+  {
+   "id": "9a",
+   "group": 9,
+   "group_title": "Professional commitment",
+   "text": "Understand and comply with the ICE Code of Conduct.",
+   "new_ids": [
+    "7a"
+   ]
+  },
+  {
+   "id": "9b",
+   "group": 9,
+   "group_title": "Professional commitment",
+   "text": "Plan, carry out and record Continuing Professional Development (CPD) necessary to maintain and enhance competence in their own area of practice.",
+   "new_ids": [
+    "7c"
+   ]
+  },
+  {
+   "id": "9c",
+   "group": 9,
+   "group_title": "Professional commitment",
+   "text": "Engage with ICE activities.",
+   "new_ids": [
+    "7e"
+   ]
+  },
+  {
+   "id": "9d",
+   "group": 9,
+   "group_title": "Professional commitment",
+   "text": "Demonstration of appropriate professional standards, recognising obligations to society, the profession and the environment.",
+   "new_ids": []
+  },
+  {
+   "id": "9e",
+   "group": 9,
+   "group_title": "Professional commitment",
+   "text": "Understand the ethical issues that may arise in their role and carry out their responsibilities in an ethical manner.",
+   "new_ids": [
+    "7b"
+   ]
+  }
+ ],
+ "ksbs": [
+  {
+   "id": "K1",
+   "kind": "Knowledge",
+   "text": "The principles and techniques used to evaluate the impact of civil engineering infrastructure on society and the environment taking account business, client and end user needs in its construction, management and use. This includes the importance of the tools used to measure welfare, health, safety, and sustainability.",
+   "attributes": [
+    "2a"
+   ]
+  },
+  {
+   "id": "K2",
+   "kind": "Knowledge",
+   "text": "The mathematical, scientific and engineering principles, methods and modelling that underpin the design and construction of civil engineering infrastructure. This will include understanding structural and ground responses, properties of materials and their predicted behaviour as part of integrated systems.",
+   "attributes": [
+    "1a",
+    "1b"
+   ]
+  },
+  {
+   "id": "K3",
+   "kind": "Knowledge",
+   "text": "The use and validation of digital solutions to model, evaluate, design, test. Build and manage civil engineering infrastructure refining as required and applied to integrated solutions.",
+   "attributes": [
+    "1b",
+    "2a"
+   ]
+  },
+  {
+   "id": "K4",
+   "kind": "Knowledge",
+   "text": "A range of research techniques used to develop innovative solutions to civil engineering problems and the use of current and emerging technologies and products.",
+   "attributes": [
+    "1b",
+    "2a"
+   ]
+  },
+  {
+   "id": "K5",
+   "kind": "Knowledge",
+   "text": "The design and quality standards, codes of practice, legal and regulatory frameworks, such as those of asset owners and regulatory bodies, that govern the life cycle of civil engineering infrastructure",
+   "attributes": [
+    "2a",
+    "2b"
+   ]
+  },
+  {
+   "id": "K6",
+   "kind": "Knowledge",
+   "text": "The principles and techniques of effective project management including resources, cost management and risk assessment.",
+   "attributes": [
+    "3a",
+    "3b",
+    "5a"
+   ]
+  },
+  {
+   "id": "K7",
+   "kind": "Knowledge",
+   "text": "How to manage teams and develop staff to meet changing technical and managerial needs.",
+   "attributes": [
+    "3c"
+   ]
+  },
+  {
+   "id": "K8",
+   "kind": "Knowledge",
+   "text": "How to communicate effectively and provide guidance to others through design models, calculations, reports, drawings, specifications, presentations, digital media, and discussions with those both inside and outside the industry.",
+   "attributes": [
+    "8a"
+   ]
+  },
+  {
+   "id": "K9",
+   "kind": "Knowledge",
+   "text": "The professional and ethical codes of conduct and associated responsibilities as set out by the relevant professional engineering institution.",
+   "attributes": [
+    "9a",
+    "9d"
+   ]
+  },
+  {
+   "id": "S1",
+   "kind": "Skill",
+   "text": "Evaluate the impact of civil engineering infrastructure on society and the environment taking account of business, client and end user needs in its construction, management and use.",
+   "attributes": [
+    "2b",
+    "7b"
+   ]
+  },
+  {
+   "id": "S2",
+   "kind": "Skill",
+   "text": "Proactively consider welfare, health, safety, and sustainability in the life cycle of civil engineering infrastructure using tools such as CEEQUAL and environmental impact assessments",
+   "attributes": [
+    "6a",
+    "6b",
+    "6c",
+    "7a"
+   ]
+  },
+  {
+   "id": "S3",
+   "kind": "Skill",
+   "text": "Apply mathematical, scientific and engineering principles, methods and modelling to the design and construction of civil engineering infrastructure.",
+   "attributes": [
+    "1a",
+    "1b"
+   ]
+  },
+  {
+   "id": "S4",
+   "kind": "Skill",
+   "text": "Use and validate digital solutions to model, evaluate, design, test, build and manage civil engineering infrastructure defining engineering and other constraints, identifying risks and how these may be resolved through design.",
+   "attributes": [
+    "2a",
+    "2b"
+   ]
+  },
+  {
+   "id": "S5",
+   "kind": "Skill",
+   "text": "Develop innovative, safe, technical solutions to civil engineering problems through the use of research techniques, market intelligence and best practice.",
+   "attributes": [
+    "2a",
+    "2b"
+   ]
+  },
+  {
+   "id": "S6",
+   "kind": "Skill",
+   "text": "Interpret and apply design and quality standards including codes of practice, legal and regulatory frameworks, in the development of civil engineering solutions, the determination of construction methods and the technical aspects of site activities.",
+   "attributes": [
+    "2b",
+    "3d"
+   ]
+  },
+  {
+   "id": "S7",
+   "kind": "Skill",
+   "text": "Manage and apply safe systems of work including taking responsibility for own obligations for health, safety, and welfare issues, assessing and controlling risk, working with health, safety and welfare legislation and best practice.",
+   "attributes": [
+    "6a",
+    "6b",
+    "6c"
+   ]
+  },
+  {
+   "id": "S8",
+   "kind": "Skill",
+   "text": "Manage the planning, budgeting and organisation of tasks, people and resources through the use of appropriate management systems, working to agreed quality standards, project programme and budget, within legal contractual and statutory requirements.",
+   "attributes": [
+    "5a",
+    "5b"
+   ]
+  },
+  {
+   "id": "S9",
+   "kind": "Skill",
+   "text": "Manage teams and develop staff to meet changing technical and managerial needs.",
+   "attributes": [
+    "3c"
+   ]
+  },
+  {
+   "id": "S10",
+   "kind": "Skill",
+   "text": "Communicate effectively and provide guidance to others through design models, calculations, reports, drawings, specifications, presentations, digital media, and discussions with those both inside and outside the industry.",
+   "attributes": [
+    "8a",
+    "8b"
+   ]
+  },
+  {
+   "id": "S11",
+   "kind": "Skill",
+   "text": "Carry out and record the continuing professional development necessary to maintain and enhance knowledge and competence as a civil engineer.",
+   "attributes": [
+    "9b"
+   ]
+  },
+  {
+   "id": "B1",
+   "kind": "Behaviour",
+   "text": "Be aware of the needs and concerns of others, especially in relation to diversity and equality.",
+   "attributes": [
+    "8c",
+    "8d"
+   ]
+  },
+  {
+   "id": "B2",
+   "kind": "Behaviour",
+   "text": "Demonstrate reliability, integrity, and respect for confidentiality.",
+   "attributes": [
+    "9e"
+   ]
+  },
+  {
+   "id": "B3",
+   "kind": "Behaviour",
+   "text": "Demonstrate confidence and flexibility in dealing with new and changing interpersonal situations",
+   "attributes": [
+    "8c",
+    "8d"
+   ]
+  },
+  {
+   "id": "B4",
+   "kind": "Behaviour",
+   "text": "Be conscious of the need to create, maintain and enhance productive working relationships.",
+   "attributes": [
+    "3c",
+    "8c"
+   ]
+  },
+  {
+   "id": "B5",
+   "kind": "Behaviour",
+   "text": "Demonstrate a strong commitment to health, safety and welfare",
+   "attributes": [
+    "6c"
+   ]
+  },
+  {
+   "id": "B6",
+   "kind": "Behaviour",
+   "text": "Demonstrate a personal commitment to professional and ethical standards, recognising your obligations to society, the profession and the environment.",
+   "attributes": [
+    "9a",
+    "9e"
+   ]
+  },
+  {
+   "id": "B7",
+   "kind": "Behaviour",
+   "text": "Demonstrate self-awareness of knowledge and skills and only undertake work that you are competent to do.",
+   "attributes": [
+    "4a",
+    "4b"
+   ]
+  },
+  {
+   "id": "B8",
+   "kind": "Behaviour",
+   "text": "Reflect on their personal development needs and place a strong emphasis on addressing them.",
+   "attributes": [
+    "9b"
+   ]
+  }
+ ]
+}
