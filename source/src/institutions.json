@@ -1356,5 +1356,136 @@
     "Engage with ICE activities."
    ]
   ]
+ },
+ "ice-tpr": {
+  "name": "ICE Technician Professional Review (EngTech MICE): attributes",
+  "source": "ICE, Technician Professional Review Guidance, Version 3 Revision 7 (10 July 2024), Appendix A",
+  "groups": [
+   [
+    "1",
+    "1. Understanding and Practical Application of Engineering"
+   ],
+   [
+    "2",
+    "2. Management and Leadership"
+   ],
+   [
+    "3",
+    "3. Commercial Ability"
+   ],
+   [
+    "4",
+    "4. Health, Safety and Welfare"
+   ],
+   [
+    "5",
+    "5. Sustainable Development"
+   ],
+   [
+    "6",
+    "6. Interpersonal Skills and Communications"
+   ],
+   [
+    "7",
+    "7. Professional Commitment"
+   ]
+  ],
+  "attrs": [
+   [
+    "1a",
+    "1",
+    "Use appropriate scientific, technical, or engineering principles."
+   ],
+   [
+    "1b",
+    "1",
+    "Review and select appropriate techniques, procedures, and methods to undertake tasks."
+   ],
+   [
+    "1c",
+    "1",
+    "Identify problems and apply appropriate methods to identify causes and achieve satisfactory solutions."
+   ],
+   [
+    "2a",
+    "2",
+    "Identify tasks and organise resources to complete them effectively."
+   ],
+   [
+    "2b",
+    "2",
+    "Work reliably and accept responsibility for their work or the work of others."
+   ],
+   [
+    "2c",
+    "2",
+    "Complete tasks with due consideration for quality."
+   ],
+   [
+    "3a",
+    "3",
+    "Identify, organise, and use resources with consideration of cost."
+   ],
+   [
+    "4a",
+    "4",
+    "Understand the safety implications of the role."
+   ],
+   [
+    "4b",
+    "4",
+    "Complete tasks with due consideration for safety."
+   ],
+   [
+    "4c",
+    "4",
+    "Comply with safe systems of work."
+   ],
+   [
+    "5a",
+    "5",
+    "Understand the principles of sustainable development and apply them in work."
+   ],
+   [
+    "5b",
+    "5",
+    "Complete tasks with consideration for their environmental impact."
+   ],
+   [
+    "6a",
+    "6",
+    "Communicate effectively with others, at all levels, in English."
+   ],
+   [
+    "6b",
+    "6",
+    "Work effectively with colleagues, clients, suppliers, or the public."
+   ],
+   [
+    "6c",
+    "6",
+    "Demonstrate personal and social skills."
+   ],
+   [
+    "6d",
+    "6",
+    "Demonstrate awareness of diversity and inclusion."
+   ],
+   [
+    "7a",
+    "7",
+    "Understand and comply with the ICE Code of Conduct."
+   ],
+   [
+    "7b",
+    "7",
+    "Understand the ethical issues that may arise in their role and carry out their responsibilities in an ethical manner."
+   ],
+   [
+    "7c",
+    "7",
+    "Carry out and record the Continuing Professional Development (CPD) necessary to maintain and enhance competence in their own area of practice."
+   ]
+  ]
  }
 }

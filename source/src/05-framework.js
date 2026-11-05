@@ -107,6 +107,7 @@ const PRESETS = {
   'istructe-tm': { group: 'IStructE', name: 'IStructE Technician Member (TIStructE): 11 core objectives', about: IPD_ABOUT, fw: ipdFramework('tm', 'IStructE Technician Member (TIStructE)') },
   'ice-ipr': { group: 'ICE', name: 'Incorporated Professional Review (IEng MICE): the seven areas of attributes', about: INST_ABOUT + ' The current ICE professional review attributes (not the apprenticeship list above).', fw: instFramework('ice-ipr') },
   'ice-cpr': { group: 'ICE', name: 'Chartered Professional Review (CEng MICE): the seven areas of attributes', about: INST_ABOUT + ' Each Chartered item is the Incorporated statement plus the extra "And …" requirement.', fw: instFramework('ice-cpr') },
+  'ice-tpr': { group: 'ICE', name: 'Technician Professional Review (EngTech MICE): the seven areas of attributes', about: INST_ABOUT + ' From the Technician Professional Review Guidance (July 2024).', fw: instFramework('ice-tpr') },
   'icheme': { group: 'IChemE', name: 'Chartered Member: IPD submission sections A to D', about: INST_ABOUT, fw: instFramework('icheme') },
   'cibse-mcibse': { group: 'CIBSE', name: 'Member (MCIBSE): competence criteria A1 to E5', about: INST_ABOUT, fw: instFramework('cibse-mcibse') },
   'cibse-acibse': { group: 'CIBSE', name: 'Associate (ACIBSE): competence criteria A1 to E5', about: INST_ABOUT, fw: instFramework('cibse-acibse') },
