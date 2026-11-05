@@ -16,7 +16,7 @@ function renderHeader(active) {
   const who = S.data ? (isMentor() ? `Mentor: ${esc(S.data.name)} · apprentice: ${esc((P() && P().name) || S.data.apprentice || '?')}` : esc(S.data.name)) : '';
   const openFb = S.data && P() ? feedbackItems().filter((f) => f.status === 'open').length : 0;
   $('#top').innerHTML = `<div class="bar">
-    <a class="brand" href="#${S.data && P() && P().mode === 'cpd' ? 'cpd' : 'home'}">Portfolio Tool<small>${who}</small></a>
+    <a class="brand" href="#${S.data && P() && P().mode === 'cpd' ? 'cpd' : 'home'}">Pathway Pro<small>${who}</small></a>
     <nav class="tabs">${tabsFor().map(([id, name]) => `<a href="#${id}" class="${active === id ? 'active' : ''}"${active === id ? ' aria-current="page"' : ''}>${name}${
       id === 'feedback' && openFb ? `<span class="count" title="open comments">${openFb}</span>` : ''}</a>`).join('')}</nav>
     <div class="top-right">${S.data ? `<div class="search-wrap"><input id="search" type="search" placeholder="Search (Ctrl+K)" autocomplete="off"><div id="searchResults" hidden></div></div>
@@ -52,7 +52,7 @@ async function render() {
     console.error(err);
     main.innerHTML = banners + `<div class="banner bad">This page failed to load: ${esc(err.message)}</div>`;
   }
-  document.title = `Portfolio Tool · ${$('nav.tabs a.active') ? $('nav.tabs a.active').firstChild.textContent : ''}`;
+  document.title = `Pathway Pro · ${$('nav.tabs a.active') ? $('nav.tabs a.active').firstChild.textContent : ''}`;
 }
 window.addEventListener('hashchange', () => { closePreview(); render(); window.scrollTo(0, 0); });
 
@@ -230,8 +230,8 @@ function showConflict() {
 async function start() {
   if (!supported()) {
     $('#main').innerHTML = `<div class="welcome card"><h1>Please open this in Microsoft Edge or Google Chrome</h1>
-      <p>The Portfolio Tool keeps your files in a folder on your computer (your OneDrive folder). Only Edge and Chrome on a computer let a page do that.</p>
-      <p class="muted">Right-click <b>Portfolio Tool.html</b> → <b>Open with</b> → <b>Microsoft Edge</b>.</p></div>`;
+      <p>The Pathway Pro keeps your files in a folder on your computer (your OneDrive folder). Only Edge and Chrome on a computer let a page do that.</p>
+      <p class="muted">Right-click <b>Pathway Pro.html</b> → <b>Open with</b> → <b>Microsoft Edge</b>.</p></div>`;
     return;
   }
   S.own = await recall('own');
@@ -243,7 +243,7 @@ async function start() {
 
 async function openAll() {
   S.warnings = [];
-  if (!(await loadOwn())) return welcome(`The folder "${esc(S.own.name)}" has no Portfolio Tool data yet.`);
+  if (!(await loadOwn())) return welcome(`The folder "${esc(S.own.name)}" has no Pathway Pro data yet.`);
   await loadOther();
   applyFramework(P() && P().framework);
   if (isMentor() && !S.other) S.warnings.push('Link the apprentice\'s portfolio folder in Settings to see their work.');
@@ -272,7 +272,7 @@ function reconnect() {
 function welcome(note = '') {
   renderHeader('');
   $('#main').innerHTML = `<div class="welcome">
-    <h1>Portfolio Tool</h1>
+    <h1>Pathway Pro</h1>
     <p>A tracker for a professional review or apprenticeship portfolio: evidence mapped to the attributes or requirements of your own framework (ICE IEng is built in; you can edit it or write your own for any institution or level),
     checks on your Word reports, your mentor's comments, meeting notes and CPD. No AI, no internet, no install: everything stays in your OneDrive folder.</p>
     ${note ? `<div class="banner">${note}</div>` : ''}
@@ -358,5 +358,5 @@ async function setupMentor() {
 window.addEventListener('error', (e) => toast('Something went wrong: ' + e.message, 'error'));
 window.addEventListener('unhandledrejection', (e) => toast('Something went wrong: ' + ((e.reason && e.reason.message) || e.reason), 'error'));
 document.addEventListener('DOMContentLoaded', () => start().catch((err) => {
-  $('#main').innerHTML = `<div class="welcome card"><h1>The Portfolio Tool could not start</h1><p class="bad">${esc(err.message || err)}</p><p>Try opening it in Microsoft Edge or Google Chrome.</p></div>`;
+  $('#main').innerHTML = `<div class="welcome card"><h1>The Pathway Pro could not start</h1><p class="bad">${esc(err.message || err)}</p><p>Try opening it in Microsoft Edge or Google Chrome.</p></div>`;
 }));

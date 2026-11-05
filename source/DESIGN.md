@@ -1,6 +1,6 @@
-# Portfolio Tool: design
+# Pathway Pro: design
 
-A single HTML file (`Portfolio Tool.html`, published as `index.html`), opened in Microsoft Edge (or Chrome), with no install, no server, no AI
+A single HTML file (`Pathway Pro.html`, published as `index.html`), opened in Microsoft Edge (or Chrome), with no install, no server, no AI
 and no internet. It reads and writes a folder the person picks (their OneDrive folder) through the browser's
 File System Access API. Everything it needs (the built-in frameworks, zip, Word and Excel writers) is
 inside the file.
@@ -69,4 +69,4 @@ A requirement may have `min` (a level id): it is then met by `goal` distinct evi
 (IStructE core objectives each have a minimum standard). Without `min`, every level needs `goal` items.
 Built-in frameworks: ICE IEng, IStructE Chartered / Incorporated / Technician Member (generated at build time from
 `src/ipd.json`, which was extracted from the Institution's IPD guidance PDFs), and a blank one. The tool is named
-"Portfolio Tool" (output `dist/Portfolio Tool.html`).
+"Pathway Pro" (output `dist/Pathway Pro.html`).

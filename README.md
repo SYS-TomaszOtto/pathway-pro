@@ -1,10 +1,10 @@
-# Portfolio Tool
+# Pathway Pro
 
 A free tracker for professional review portfolios and **CPD**, for apprentices, candidates and their mentors. It has built-in frameworks for **ICE** (IEng apprenticeship, and the current Incorporated, Chartered and Technician Professional Review attributes), **IStructE** (Chartered, Incorporated and Technician Member) and the Engineering Council's **UK-SPEC** competences (CEng, IEng and EngTech, in the 4th edition and, for CEng and IEng, the older 3rd edition wording that some institutions' forms still use). There are also lists for **IChemE** (Chartered Member), **CIBSE** (MCIBSE, ACIBSE), **IMechE** (CEng and IEng application questions), **RINA** (CEng and IEng experiential learning outcomes), **IHE** (RITTech) and **CIHT** (Transport Planning Professional units, with minimum levels). Every list can be edited, and you can write your own for any institution or level.
 
 It is a single web page. There is nothing to install, no account, no server and no AI. Your files never leave your computer: the tool reads and saves them in a folder you choose, such as your OneDrive folder.
 
-**[Open the Portfolio Tool](https://SYS-TomaszOtto.github.io/ice-tool/)**, or **[download it (Portfolio-Tool.zip)](https://github.com/SYS-TomaszOtto/ice-tool/raw/main/Portfolio-Tool.zip)** to use it offline.
+**[Open Pathway Pro](https://SYS-TomaszOtto.github.io/ice-tool/)**, or **[download it (Pathway-Pro.zip)](https://github.com/SYS-TomaszOtto/ice-tool/raw/main/Pathway-Pro.zip)** to use it offline.
 
 Use **Microsoft Edge** or **Google Chrome** on a computer. Other browsers cannot use a folder on your computer.
 
@@ -26,10 +26,10 @@ Use **Microsoft Edge** or **Google Chrome** on a computer. Other browsers cannot
 ## Getting started
 
 1. Make a folder in OneDrive, such as **Portfolio - Your Name**. The tool creates its folders inside it: reports, evidence matrix, evidence (one folder per kind of evidence), feedback, meetings and CPD.
-2. Open the Portfolio Tool, either from the link above or from the downloaded `index.html` (right-click → Open with → Microsoft Edge).
+2. Open the Pathway Pro, either from the link above or from the downloaded `index.html` (right-click → Open with → Microsoft Edge).
 3. Click **Start my portfolio**, pick the folder, and allow Edge to use it.
 
-The full guide is in **[How to use Portfolio Tool.docx](How%20to%20use%20Portfolio%20Tool.docx)**. It covers choosing and editing a framework, the folders, writing reports the tool can check, and how to set up sharing with your mentor. The download zip contains the tool and the guide.
+The full guide is in **[How to use Pathway Pro.docx](How%20to%20use%20Pathway%20Pro.docx)**. It covers choosing and editing a framework, the folders, writing reports the tool can check, and how to set up sharing with your mentor. The download zip contains the tool and the guide.
 
 ## Privacy
 
@@ -41,8 +41,8 @@ The page is built from the files in `source/`:
 
 ```
 cd source
-python3 build.py        # writes dist/Portfolio Tool.html
-python3 make_howto.py   # writes dist/How to use Portfolio Tool.docx
+python3 build.py        # writes dist/Pathway Pro.html
+python3 make_howto.py   # writes dist/How to use Pathway Pro.docx
 ```
 
 `DESIGN.md` explains the folder layout and the data format.

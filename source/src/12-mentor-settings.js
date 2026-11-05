@@ -143,14 +143,14 @@ async function exportMatrix() {
 }
 
 // ---------- help ----------
-VIEWS.help = async () => (P() && P().mode === 'cpd' ? `<h1>How to use the Portfolio Tool</h1><div class="grid">
+VIEWS.help = async () => (P() && P().mode === 'cpd' ? `<h1>How to use the Pathway Pro</h1><div class="grid">
   <div class="card"><h2>CPD record</h2><p>This follows ICE's CPD guidance. Review your learning needs at least once a year (a SWOT works well), set objectives with reference codes in the <b>Development plan</b>, and record what you do in the <b>Development record</b> with its effective learning time and what you learned.</p>
     <p>Keep an <b>Unplanned</b> objective for learning you did not plan. ICE advises no more than 6 hours for a day and 30 hours for one activity.</p>
     <p><b>Export</b> makes Word or Excel files in the layout of ICE's CPD templates, ready for an application or the annual CPD audit.</p></div>
   <div class="card"><h2>Good to know</h2><ul>
     <li>Your folder holds <b>${FOLDERS.cpd}</b> (attached certificates and notes), <b>${FOLDERS.exports}</b> and <b>${DATA_DIR}</b> (the record itself: do not edit by hand).</li>
     <li>It saves as you type, and keeps one copy a day in <code>${DATA_DIR}/backups</code>.</li>
-    <li>To track a Professional Review as well, switch in <a href="#settings">Settings</a>.</li></ul></div></div>` : '') || `<h1>How to use the Portfolio Tool</h1><div class="grid">
+    <li>To track a Professional Review as well, switch in <a href="#settings">Settings</a>.</li></ul></div></div>` : '') || `<h1>How to use the Pathway Pro</h1><div class="grid">
   <div class="card"><h2>The idea</h2><p>One HTML file that keeps a tracker of your ICE Professional Review in your OneDrive folder. It does no thinking for you (no AI): it lists, links, counts and checks, so nothing gets missed.</p>
     <p>Your folder holds: <b>${FOLDERS.prr}</b> (your Word PRRs), <b>${FOLDERS.matrix}</b> (the Excel matrix), <b>${FOLDERS.evidence}</b> (one sub-folder per kind of evidence), <b>${FOLDERS.feedback}</b> (response tables), <b>${FOLDERS.meetings}</b>, <b>${FOLDERS.cpd}</b>, <b>${FOLDERS.exports}</b>, and <b>${DATA_DIR}</b> (the tracker itself: do not edit by hand).</p></div>
   <div class="card"><h2>1. Evidence</h2><ol><li>Save evidence files into <b>${FOLDERS.evidence}</b>. Start file names with a code such as <code>CO-14</code> to have it picked up (or use <b>Number files…</b>).</li>

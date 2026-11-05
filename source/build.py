@@ -1,5 +1,5 @@
-"""Build the single-file Portfolio Tool: src/*.js + style.css + reference data -> dist/Portfolio Tool.html.
-python3 build.py [--test]  (--test also writes dist/Portfolio Tool.test.html with the test harness)"""
+"""Build the single-file Pathway Pro: src/*.js + style.css + reference data -> dist/Pathway Pro.html.
+python3 build.py [--test]  (--test also writes dist/Pathway Pro.test.html with the test harness)"""
 import datetime, json, pathlib, sys
 
 root = pathlib.Path(__file__).parent
@@ -24,9 +24,9 @@ page = page.replace('__CSS__', (src / 'style.css').read_text()).replace('__VERSI
 out = root / 'dist'
 out.mkdir(exist_ok=True)
 main = page.replace('__JS__', '\n'.join(js))
-(out / 'Portfolio Tool.html').write_text(main.replace('__TEST__', ''))
-print('dist/Portfolio Tool.html', len(main) // 1024, 'KB')
+(out / 'Pathway Pro.html').write_text(main.replace('__TEST__', ''))
+print('dist/Pathway Pro.html', len(main) // 1024, 'KB')
 if '--test' in sys.argv:
     harness = (root / 'test' / 'harness.js').read_text()
-    (out / 'Portfolio Tool.test.html').write_text(main.replace('__TEST__', f'<script>\n{harness}\n</script>'))
-    print('dist/Portfolio Tool.test.html')
+    (out / 'Pathway Pro.test.html').write_text(main.replace('__TEST__', f'<script>\n{harness}\n</script>'))
+    print('dist/Pathway Pro.test.html')

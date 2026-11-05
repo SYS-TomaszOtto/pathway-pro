@@ -1,4 +1,4 @@
-"""Write "How to use Portfolio Tool.docx": the guide that travels with the tool, for any apprentice or mentor."""
+"""Write "How to use Pathway Pro.docx": the guide that travels with the tool, for any apprentice or mentor."""
 import pathlib, sys, zipfile
 
 W = 'xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"'
@@ -25,8 +25,8 @@ def para(text, style=None, indent=False):
 
 
 GUIDE = [
-    ('title', 'Portfolio Tool: how to use it'),
-    ('p', 'A tracker for a professional review or apprenticeship portfolio, and for CPD. It is one file, **Portfolio Tool.html**, that runs in Microsoft Edge or Google Chrome. There is nothing to install, it needs no internet and it has no AI: it lists, links, counts and checks, so nothing gets missed. Your files stay in a folder you choose, such as your OneDrive folder.'),
+    ('title', 'Pathway Pro: how to use it'),
+    ('p', 'A tracker for a professional review or apprenticeship portfolio, and for CPD. It is one file, **Pathway Pro.html**, that runs in Microsoft Edge or Google Chrome. There is nothing to install, it needs no internet and it has no AI: it lists, links, counts and checks, so nothing gets missed. Your files stay in a folder you choose, such as your OneDrive folder.'),
     ('h1', 'Choose what you are assessed against (the framework)'),
     ('p', 'When you start, you pick a built-in framework: ICE IEng (apprenticeship), the current ICE Incorporated, Chartered or Technician Professional Review attributes, IStructE (Chartered, Incorporated or Technician Member), the Engineering Council UK-SPEC competences (CEng, IEng, EngTech), or lists for IChemE, CIBSE, IMechE, RINA, IHE (RITTech) and CIHT. Or start blank and write your own.'),
     ('b', '**Everything can be edited**: in **Settings → Framework** you can change the levels, groups, requirements, standards, tab names, folder names and evidence folders. The lists were read from the institutions’ published documents and may contain mistakes or be out of date, so correct anything that is wrong.'),
@@ -41,8 +41,8 @@ GUIDE = [
     ('b', '**CPD**: a Development Action Plan and Personal Development Record in the layout of ICE’s CPD templates, with hours per year and Word exports.'),
     ('b', '**Mentor**: your mentor uses the same file to record an assessment per requirement and notes on your evidence, in their own folder.'),
     ('h1', 'Getting started (apprentice or candidate)'),
-    ('n', '1. In OneDrive, make a folder such as **Portfolio - Your Name** and put **Portfolio Tool.html** in it.'),
-    ('n', '2. Right-click Portfolio Tool.html → **Open with** → **Microsoft Edge**.'),
+    ('n', '1. In OneDrive, make a folder such as **Portfolio - Your Name** and put **Pathway Pro.html** in it.'),
+    ('n', '2. Right-click Pathway Pro.html → **Open with** → **Microsoft Edge**.'),
     ('n', '3. Click **Start my portfolio**, enter your name, choose your framework and pick that folder. Edge asks whether the page may view and save files there: allow it.'),
     ('n', '4. The tool makes these folders: **0 - Reports** (your Word reports), **1 - Evidence Matrix** (the Excel matrix it writes), **2 - Evidence** (with one sub-folder per kind of evidence), **4 - Feedback, Compliance and Status** (response tables), and **Meetings**, **CPD**, **Exports** and **ice-data** (the tracker itself: do not edit it by hand).'),
     ('n', '5. **There is no upload button.** Save each piece of evidence into the matching sub-folder of **2 - Evidence** in your OneDrive, then press **Refresh** on the Evidence page. Start file names with a code such as **CO-14**, or use **Number files…**, which suggests the code letters from the folder name (for example a folder ending in "- CA" gives CA codes).'),
@@ -57,7 +57,7 @@ GUIDE = [
     ('p', 'Each person can only change their own folder. OneDrive enforces this, so neither of you can alter the other’s records, and nobody needs an extra login.'),
     ('n', '1. **Apprentice**: in OneDrive, share your portfolio folder with your mentor as **Can view**. Share the **0 - Reports** folder (or just the report files) as **Can edit** so they can comment in Word.'),
     ('n', '2. **Mentor**: in OneDrive, go to **Shared**, find the folder and choose **Add shortcut to My files** so it appears on your computer.'),
-    ('n', '3. **Mentor**: make an empty folder of your own, e.g. **Mentoring - Apprentice Name**. Open Portfolio Tool.html (the copy in the apprentice’s folder is fine), click **I am a mentor**, pick your own folder, then pick the apprentice’s folder to read it. The mentor sees the apprentice’s framework read-only.'),
+    ('n', '3. **Mentor**: make an empty folder of your own, e.g. **Mentoring - Apprentice Name**. Open Pathway Pro.html (the copy in the apprentice’s folder is fine), click **I am a mentor**, pick your own folder, then pick the apprentice’s folder to read it. The mentor sees the apprentice’s framework read-only.'),
     ('n', '4. **Mentor**: share your mentoring folder with the apprentice as **Can view**.'),
     ('n', '5. **Apprentice**: add the mentor’s folder to your OneDrive the same way, then in the tool go to **Settings → Link mentor’s folder**.'),
     ('p', 'Your mentor comments in your Word report as usual (Review → New Comment, or Track Changes). Their comments appear on the Feedback page; their assessment appears on the Mentor page.'),
@@ -111,6 +111,6 @@ def build(out_path):
 
 
 if __name__ == '__main__':
-    out = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else pathlib.Path(__file__).parent / 'dist' / 'How to use Portfolio Tool.docx')
+    out = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else pathlib.Path(__file__).parent / 'dist' / 'How to use Pathway Pro.docx')
     build(out)
     print(out)
