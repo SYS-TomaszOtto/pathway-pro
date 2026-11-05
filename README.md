@@ -4,7 +4,7 @@ A free tracker for the **ICE Professional Review** (IEng apprenticeship) and for
 
 It is a single web page. There is nothing to install, no account, no server and no AI. Your files never leave your computer: the tool reads and saves them in a folder you choose, such as your OneDrive folder.
 
-**[Open the ICE Tool](https://YOUR-USERNAME.github.io/ice-tool/)**, or **[download it (ICE-Tool.zip)](https://github.com/YOUR-USERNAME/ice-tool/raw/main/ICE-Tool.zip)** to use it offline.
+**[Open the ICE Tool](https://SYS-TomaszOtto.github.io/ice-tool/)**, or **[download it (ICE-Tool.zip)](https://github.com/SYS-TomaszOtto/ice-tool/raw/main/ICE-Tool.zip)** to use it offline.
 
 Use **Microsoft Edge** or **Google Chrome** on a computer. Other browsers cannot use a folder on your computer.
 
@@ -28,7 +28,7 @@ Use **Microsoft Edge** or **Google Chrome** on a computer. Other browsers cannot
 2. Open the ICE Tool, either from the link above or from the downloaded `ICE Tool.html` (right-click → Open with → Microsoft Edge).
 3. Click **Start my portfolio**, pick the folder, and allow Edge to use it.
 
-The full guide is in **[How to use ICE Tool.docx](How%20to%20use%20ICE%20Tool.docx)**. It also covers how to set up sharing with your mentor.
+The full guide is in **[How to use ICE Tool.docx](How to use ICE Tool.docx)**. It also covers how to set up sharing with your mentor.
 
 ## Privacy
 
