@@ -4,7 +4,7 @@ A free tracker for professional review portfolios and **CPD**, for apprentices, 
 
 It is a single web page. There is nothing to install, no account, no server and no AI. Your files never leave your computer: the tool reads and saves them in a folder you choose, such as your OneDrive folder.
 
-**[Open Pathway Pro](https://SYS-TomaszOtto.github.io/ice-tool/)**, or **[download it (Pathway-Pro.zip)](https://github.com/SYS-TomaszOtto/ice-tool/raw/main/Pathway-Pro.zip)** to use it offline.
+**[Open Pathway Pro](https://SYS-TomaszOtto.github.io/pathway-pro/)**, or **[download it (Pathway-Pro.zip)](https://github.com/SYS-TomaszOtto/pathway-pro/raw/main/Pathway-Pro.zip)** to use it offline.
 
 Use **Microsoft Edge** or **Google Chrome** on a computer. Other browsers cannot use a folder on your computer.
 
