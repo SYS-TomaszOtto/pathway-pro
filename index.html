@@ -1572,7 +1572,7 @@ const itemLink = (it) => it.missing ? `<span class="chip bad" title="file missin
 const fileLink = (path, text) => `<a href="#" data-preview="${esc(path)}">${esc(text || path.split('/').pop())}</a>`;
 const linkify = (text) => esc(text)
   .replace(/\b([A-Z]{2,3}-\d{2,3})\b/g, (m) => (itemByCode(m) ? codeLink(m) : m))
-  .replace(/(^|[\s(,;])([1-9][a-e])(?=[\s),.;:]|$)/g, (m, pre, id) => pre + subLink(id));
+  .replace(/(^|[\s(,;])([A-Za-z0-9][A-Za-z0-9.\-]{0,11})(?=[\s),.;:]|$)/g, (m, pre, id) => (SUB[id] ? pre + subLink(id) : m));
 const chip = (text, cls = '') => `<span class="chip ${cls}">${esc(text)}</span>`;
 const prrChip = (state) => chip(...(PRR_STATE[state] || [state, '']));
 const meter = (frac, cls = '') => `<div class="bar-meter ${cls}" title="${Math.round(frac * 100)}%"><span style="width:${Math.round(Math.min(1, frac) * 100)}%"></span></div>`;
