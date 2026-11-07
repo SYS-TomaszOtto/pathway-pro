@@ -71,7 +71,7 @@ function cpdRecord(id, q) {
   const total = list.reduce((n, a) => n + (+a.hours || 0), 0);
   return `<div class="row" style="margin-bottom:8px"><label style="margin:0">CPD year</label><select id="cpdYear">${cpdYears().map((y) => `<option value="${y}" ${String(y) === year ? 'selected' : ''}>${cpdYearLabel(y)}</option>`).join('')}<option value="all" ${year === 'all' ? 'selected' : ''}>All years</option></select>
       <span class="muted">${plural(list.length, 'activity', 'activities')} · ${total} hours</span></div>
-    ${list.length ? `<div class="card table-wrap"><table><thead><tr><th>Dates</th><th>Activity</th><th>Type</th><th>Hours</th><th>Plan ref.</th><th>Theme</th><th></th></tr></thead><tbody>
+    ${list.length ? `<div class="card table-wrap" tabindex="0" role="region" aria-label="Table"><table><thead><tr><th>Dates</th><th>Activity</th><th>Type</th><th>Hours</th><th>Plan ref.</th><th>Theme</th><th></th></tr></thead><tbody>
       ${list.map((a) => { const o = objectiveOf(a); const w = cpdWarnings(a); return `<tr class="click" data-href="#cpd/activity/${a.id}"><td class="nowrap small">${fmtDate(a.dateFrom)}${a.dateTo && a.dateTo !== a.dateFrom ? ' – ' + fmtDate(a.dateTo) : ''}</td>
         <td>${esc(a.details || '(no details)')}${a.documents && a.documents.length ? ' 📎' : ''}</td><td class="small">${esc(a.type)}</td><td class="right">${esc(a.hours)}</td><td>${o ? esc(o.ref) : ''}</td><td class="small">${esc(a.theme)}</td>
         <td>${w.length ? `<span class="part" title="${esc(w.join('\n'))}">!</span>` : ''}</td></tr>`; }).join('')}</tbody></table></div>`

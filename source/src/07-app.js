@@ -295,7 +295,7 @@ function welcome(note = '') {
 
 function askText(title, labelText, value = '', help = '') {
   return new Promise((resolve) => {
-    const d = dialog(`<h2>${title}</h2>${help ? `<p class="muted small">${help}</p>` : ''}<label>${labelText}</label><input id="askInput" style="width:100%" value="${esc(value)}">
+    const d = dialog(`<h2>${title}</h2>${help ? `<p class="muted small">${help}</p>` : ''}<label for="askInput">${labelText}</label><input id="askInput" style="width:100%" value="${esc(value)}">
       <div class="row" style="justify-content:flex-end;margin-top:1rem"><button value="">Cancel</button><button class="primary" value="ok">OK</button></div>`);
     const input = $('#askInput', d);
     input.focus();

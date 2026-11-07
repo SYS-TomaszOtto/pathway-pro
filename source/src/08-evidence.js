@@ -24,7 +24,7 @@ VIEWS.home = async () => {
       ${ms !== null ? `<div class="kpi"><div class="label">Mentor: met</div><div class="big-number">${ms}<small style="font-size:1rem"> / ${SUBS.length}</small></div><div class="small muted"><a href="#mentor">assessment</a></div></div>` : ''}
     </div>
     <div class="grid">
-      <div class="card"><h2>Next steps</h2>${steps.length ? `<ol>${steps.map((s) => `<li><a href="${s.href}">${linkify(s.text)}</a></li>`).join('')}</ol>` : '<p class="good">Nothing outstanding. 🎉</p>'}</div>
+      <div class="card"><h2>Next steps</h2>${steps.length ? `<ol>${steps.map((s) => `<li><a href="${s.href}">${esc(s.text)}</a></li>`).join('')}</ol>` : '<p class="good">Nothing outstanding. 🎉</p>'}</div>
       <div class="card"><h2>Open actions from meetings</h2>${actions.length ? `<ul class="list-plain">${actions.slice(0, 10).map((a) => `<li>${a.due ? `<span class="chip ${a.due < today() ? 'bad' : ''}">${fmtDate(a.due)}</span> ` : ''}${linkify(a.text)} <span class="small muted">· <a href="#meeting/${a.meeting.id}">${fmtDate(a.meeting.date)}</a></span></li>`).join('')}</ul>` : '<p class="muted">None. Actions come from tagging "To do" in a meeting.</p>'}</div>
       <div class="card"><h2>By attribute</h2><table><tbody>${GROUPS.map((g) => {
         const subs = SUBS.filter((a) => a.group === g.group);
@@ -59,9 +59,9 @@ VIEWS.evidence = async (arg, q) => {
       <button id="exportXlsx" class="primary">Export Excel matrix</button></div></div>
     <p class="muted small">Every file in <code>${FOLDERS.evidence}</code> (and its sub-folders) is listed. Save each file in the folder for its kind (correspondence, markups, calculations…). Put a code such as <code>CO-14</code> at the start of a file name and it is picked up; otherwise type one in. Click a row to map it.</p>
     <div class="sub-tabs">${['all', 'unmapped', 'mapped', 'missing'].map((s) => `<a href="${qs({ show: s })}" class="${show === s ? 'active' : ''}">${{ all: 'All', unmapped: 'Not mapped', mapped: 'Mapped', missing: 'File missing' }[s]} (${counts[s]})</a>`).join('')}
-      <select id="folderSel"><option value="">All folders</option>${folders.map((f) => `<option ${f === folder ? 'selected' : ''}>${esc(f)}</option>`).join('')}</select>
+      <select id="folderSel" aria-label="Folder"><option value="">All folders</option>${folders.map((f) => `<option ${f === folder ? 'selected' : ''}>${esc(f)}</option>`).join('')}</select>
       <input id="evFilter" type="search" placeholder="Filter…" value="${esc(q.get('q') || '')}"></div>
-    ${list.length ? `<div class="card table-wrap"><table><thead><tr><th>Code</th><th>Title</th><th>Folder</th><th>Mapped to</th><th>Date</th><th></th></tr></thead><tbody>
+    ${list.length ? `<div class="card table-wrap" tabindex="0" role="region" aria-label="Table"><table><thead><tr><th>Code</th><th>Title</th><th>Folder</th><th>Mapped to</th><th>Date</th><th></th></tr></thead><tbody>
       ${list.map((i) => `<tr class="click" data-href="${itemHref(i)}"><td class="nowrap"><b>${esc(i.code) || '<span class="muted">–</span>'}</b></td>
         <td>${esc(i.title)}${i.missing ? ' ' + chip('file missing', 'bad') : ''}${M() && i.code && M().evidence[i.code] ? ' ' + chip('mentor note', 'accent') : ''}</td>
         <td class="small muted">${esc(i.folder)}</td>
@@ -234,7 +234,7 @@ VIEWS.attributes = async (arg, q) => {
   const only = q.get('g');
   return `<h1>${esc(LABEL.attr)}</h1>
     <p class="muted small">Goal: ${goal()} different pieces of evidence at each level (${LEVELS.map((l) => LEVEL_NAME[l]).join(', ')}) for every sub-attribute. Click a row for everything about it.</p>
-    ${GROUPS.filter((g) => !only || String(g.group) === only).map((g) => `<div class="card"><h2>${g.group}. ${esc(g.title)}</h2><div class="table-wrap"><table class="attr">
+    ${GROUPS.filter((g) => !only || String(g.group) === only).map((g) => `<div class="card"><h2>${g.group}. ${esc(g.title)}</h2><div class="table-wrap" tabindex="0" role="region" aria-label="Table"><table class="attr">
       <thead><tr><th>Sub</th><th>Description</th><th>${LEVELS.map((l) => LEVEL_SHORT[l]).join(' / ')}</th><th>Evidence</th><th>PRR</th><th>Comments</th>${M() ? '<th>Mentor</th>' : ''}</tr></thead><tbody>
       ${SUBS.filter((a) => a.group === g.group).map((a) => {
         const cell = cov[a.id];
@@ -289,7 +289,7 @@ VIEWS.ksbs = async (arg, q) => {
   const focus = q.get('k');
   return `<h1>Knowledge, Skills and Behaviours</h1>
     <p class="muted small">From the apprenticeship standard. <b>Direct</b>: evidence where you ticked the KSB on a mapping. <b>Via sub-attribute</b>: evidence mapped to a sub-attribute this KSB is linked to.</p>
-    <div class="card table-wrap"><table><thead><tr><th>KSB</th><th>Description</th><th>Sub-attributes</th><th>Direct</th><th>Via sub-attribute</th></tr></thead><tbody>
+    <div class="card table-wrap" tabindex="0" role="region" aria-label="Table"><table><thead><tr><th>KSB</th><th>Description</th><th>Sub-attributes</th><th>Direct</th><th>Via sub-attribute</th></tr></thead><tbody>
     ${KSBS.map((k) => `<tr id="ksb-${k.id}" ${focus === k.id ? 'style="outline:2px solid var(--accent)"' : ''}><td><b>${k.id}</b><div class="small muted">${esc(k.kind)}</div></td><td class="small">${esc(k.text)}</td>
       <td>${k.attributes.map(subLink).join(' ')}</td>
       <td>${[...cov[k.id].direct].map(itemLink).join(' ') || '<span class="muted">–</span>'}</td>

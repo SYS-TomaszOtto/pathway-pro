@@ -21,7 +21,7 @@ VIEWS.reports = async () => {
         <span class="small muted">${r.doc.title ? esc(r.doc.title) + ' · ' : ''}changed ${new Date(r.mtime).toLocaleString('en-GB')}${open ? ' · ' + `<a href="#feedback?file=${encodeURIComponent(r.path)}">${plural(open, 'open comment')}</a>` : ''}</span></div>
         ${r.error ? `<div class="banner bad">Could not read this file: ${esc(r.error)}</div>` : ''}
         ${expected.length ? `<div class="issue warn">No heading for ${expected.map((a) => a.id).join(', ')} (expected in Attribute ${group})</div>` : ''}
-        ${r.doc.sections.length ? `<div class="table-wrap"><table><thead><tr><th>Sub</th><th>Heading</th><th>State</th><th>Words</th><th>Evidence line</th><th>Written about</th><th>Checks</th></tr></thead><tbody>
+        ${r.doc.sections.length ? `<div class="table-wrap" tabindex="0" role="region" aria-label="Table"><table><thead><tr><th>Sub</th><th>Heading</th><th>State</th><th>Words</th><th>Evidence line</th><th>Written about</th><th>Checks</th></tr></thead><tbody>
           ${r.doc.sections.map((s) => {
             const issues = (bySub[s.id].sections.find((x) => x.file === r.path && x.section === s) || { issues: [] }).issues;
             return `<tr><td><b>${subLink(s.id)}</b></td><td class="small">${esc(s.heading)}</td>
@@ -101,7 +101,7 @@ VIEWS.feedback = async (arg, q) => {
       <button id="exportResp" class="primary">Export “Response to feedback” (Word)</button></div></div>
     <p class="muted small">Comments and tracked changes from the Word files in <code>${FOLDERS.prr}</code>, sorted by sub-attribute. ${canEdit() ? 'Write what you changed under each one and mark it done: that becomes your response table for the mentor.' : 'The apprentice’s responses are shown under each comment.'}</p>
     <div class="sub-tabs">${['open', 'done', 'wont', 'all'].map((s) => `<a href="${qs({ status: s, i: 0 })}" class="${status === s ? 'active' : ''}">${s === 'all' ? 'All' : FB_STATUS[s]} (${count(s)})</a>`).join('')}
-      <select id="fbSub"><option value="">All sub-attributes</option>${subs.map((s) => `<option ${s === sub ? 'selected' : ''}>${s}</option>`).join('')}</select>
+      <select id="fbSub" aria-label="Sub-attribute"><option value="">All sub-attributes</option>${subs.map((s) => `<option ${s === sub ? 'selected' : ''}>${s}</option>`).join('')}</select>
       <a href="${qs({ focus: focus ? '' : '1', i: 0 })}" class="${focus ? 'active' : ''}" title="Show one comment at a time">One at a time</a></div>
     ${focus && list.length ? `<div class="row" style="margin-bottom:8px"><a class="btn small" href="${qs({ i: Math.max(0, at - 1) })}">‹ Previous</a><span>${at + 1} of ${list.length}</span><a class="btn small" href="${qs({ i: Math.min(list.length - 1, at + 1) })}">Next ›</a></div>` : ''}
     ${shown.length ? shown.map(fbCard).join('') : `<div class="empty">${all.length ? 'Nothing here.' : 'No comments found yet. When your mentor comments in your Word PRR, they appear here.'}</div>`}`;

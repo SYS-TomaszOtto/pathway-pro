@@ -52,8 +52,8 @@ VIEWS.settings = async () => {
   const otherOk = S.other && (await permission(S.other, 'read', false));
   const otherLabel = mentor ? 'apprentice’s portfolio folder' : 'mentor’s folder';
   return `<h1>Settings</h1><div class="grid">
-    <div class="card"><h2>You</h2><label>Name</label><input id="setName" value="${esc(d.name)}" style="width:100%">
-      ${mentor ? '' : `<label>What to use</label><select id="setMode"><option value="ice" ${d.mode !== 'cpd' ? 'selected' : ''}>Professional Review portfolio and CPD</option><option value="cpd" ${d.mode === 'cpd' ? 'selected' : ''}>CPD record only</option></select>`}</div>
+    <div class="card"><h2>You</h2><label for="setName">Name</label><input id="setName" value="${esc(d.name)}" style="width:100%">
+      ${mentor ? '' : `<label for="setMode">What to use</label><select id="setMode"><option value="ice" ${d.mode !== 'cpd' ? 'selected' : ''}>Professional Review portfolio and CPD</option><option value="cpd" ${d.mode === 'cpd' ? 'selected' : ''}>CPD record only</option></select>`}</div>
     <div class="card"><h2>Folders</h2>
       <p>Your folder: <b>${esc(S.own.name)}</b> <span class="small muted">(you can change things here)</span></p>
       <p>Linked ${otherLabel}: ${S.other ? `<b>${esc(S.other.name)}</b> ${otherOk ? chip('read only', 'good') : chip('needs permission', 'bad')}` : '<span class="muted">none</span>'}</p>
@@ -64,9 +64,9 @@ VIEWS.settings = async () => {
     <div class="card"><h2>Framework</h2><p>Assessing against <b>${esc(FRAMEWORK.name)}</b>: ${plural(SUBS.length, 'requirement')}, ${plural(LEVELS.length, 'level')}${KSBS.length ? `, ${plural(KSBS.length, 'standard')}` : ''}.</p>
       <p class="small muted">${mentor ? 'Set by the apprentice; shown here read-only.' : 'Edit the requirements, levels, evidence folders and folder names to match your institution or level, or start from a blank one.'}</p><a class="btn" href="#framework">${mentor ? 'View' : 'Edit'} framework</a></div>
     ${mentor ? '' : `<div class="card"><h2>Targets</h2>
-      ${d.mode !== 'cpd' ? `<label>Evidence goal per level (${LEVELS.map((l) => LEVEL_NAME[l]).join(', ')}) for each sub-attribute</label><input type="number" min="1" max="9" id="setGoal" value="${d.settings.goal}">` : ''}
-      <label>CPD hours a year</label><input type="number" min="0" id="setTarget" value="${d.settings.cpdTarget}">
-      <label>CPD year starts in</label><select id="setYearStart">${['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map((m, i) => `<option value="${i + 1}" ${d.settings.cpdYearStart === i + 1 ? 'selected' : ''}>${m}</option>`).join('')}</select>
+      ${d.mode !== 'cpd' ? `<label for="setGoal">Evidence goal per level (${LEVELS.map((l) => LEVEL_NAME[l]).join(', ')}) for each sub-attribute</label><input type="number" min="1" max="9" id="setGoal" value="${d.settings.goal}">` : ''}
+      <label for="setTarget">CPD hours a year</label><input type="number" min="0" id="setTarget" value="${d.settings.cpdTarget}">
+      <label for="setYearStart">CPD year starts in</label><select id="setYearStart">${['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map((m, i) => `<option value="${i + 1}" ${d.settings.cpdYearStart === i + 1 ? 'selected' : ''}>${m}</option>`).join('')}</select>
       <label>ICE CPD Framework themes, one per line (start a line with * for a mandatory theme)</label>
       <textarea id="setThemes" rows="5" placeholder="Copy the theme names from the ICE website">${esc((d.settings.themes || []).join('\n'))}</textarea></div>`}
     <div class="card"><h2>Your data</h2>
