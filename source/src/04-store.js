@@ -24,6 +24,7 @@ const S = {
   loadedStamp: 0,     // lastModified of my data file when loaded, to spot an edit from another device
   files: [],          // evidence files in the portfolio: {path, name, size, mtime, handle}
   saving: false,
+  demo: false,        // true while looking around with sample data (19-demo.js): in memory only, every write is blocked
   dirty: false,
   warnings: [],
 };
@@ -41,6 +42,7 @@ function idb() {
   });
 }
 async function remember(key, value) {
+  if (S.demo) return;
   let db;
   try { db = await idb(); } catch (_) { return; }
   await new Promise((resolve, reject) => {
@@ -70,6 +72,7 @@ async function permission(handle, mode, ask) {
 }
 
 async function pickFolder(id, mode) {
+  if (demoBlocked()) throw new Error('Not available with sample data');
   return window.showDirectoryPicker({ id, mode, startIn: 'documents' });
 }
 
@@ -91,6 +94,7 @@ async function readJson(dir, path) {
   return { json: JSON.parse(await file.text()), stamp: file.lastModified };
 }
 async function writeFile(dir, path, content) {
+  if (S.demo) throw new Error('Not available with sample data');
   const h = await fileHandle(dir, path, true);
   const w = await h.createWritable();
   await w.write(content);
@@ -165,6 +169,7 @@ function upgrade(d) {
   d.evidence = d.evidence || {}; d.comments = d.comments || {}; d.meetings = d.meetings || [];
   d.cpd = d.cpd || { objectives: [], activities: [], reviews: [] };
   d.cpd.reviews = d.cpd.reviews || [];
+  d.ksbRatings = d.ksbRatings || {};
   return d;
 }
 
@@ -193,6 +198,7 @@ async function loadOther() {
 }
 
 async function scanEvidence() {
+  if (S.demo) return;   // the sample files are made up and live only in S.files
   const root = portfolioRoot();
   S.files = root ? (await listDir(root, FOLDERS.evidence)).map((f) => ({ ...f, path: `${FOLDERS.evidence}/${f.path}` })) : [];
   S.files.sort((a, b) => natural(a.path, b.path));
@@ -211,13 +217,54 @@ async function conflictCopies() {
 }
 
 const saveSoon = debounce(() => save(), 700);
+// Undo: one snapshot per burst of changes (changes less than 1.5 seconds apart count as one step), up to 25 steps.
+const UNDO = { stack: [], redo: [], base: null, pending: false, timer: null, bytes: 0 };
+function undoReset() { UNDO.stack = []; UNDO.redo = []; UNDO.pending = false; UNDO.base = S.data ? JSON.stringify(S.data) : null; refreshUndo(); }
+function refreshUndo() {
+  const u = $('#undoBtn'), r = $('#redoBtn');
+  if (u) u.hidden = !UNDO.stack.length;
+  if (r) r.hidden = !UNDO.redo.length;
+}
+function noteChange() {
+  if (!UNDO.base) return;
+  if (!UNDO.pending) {
+    UNDO.stack.push(UNDO.base);
+    UNDO.redo = [];
+    UNDO.pending = true;
+    UNDO.bytes += UNDO.base.length;
+    while (UNDO.stack.length > 25 || (UNDO.bytes > 40e6 && UNDO.stack.length > 1)) UNDO.bytes -= UNDO.stack.shift().length;
+  }
+  clearTimeout(UNDO.timer);
+  UNDO.timer = setTimeout(() => { UNDO.base = JSON.stringify(S.data); UNDO.pending = false; refreshUndo(); }, 1500);
+  refreshUndo();
+}
+async function undoStep(redo = false) {
+  const from = redo ? UNDO.redo : UNDO.stack, to = redo ? UNDO.stack : UNDO.redo;
+  if (!from.length || !S.data) return;
+  clearTimeout(UNDO.timer);
+  UNDO.pending = false;
+  const now = JSON.stringify(S.data);
+  const snap = from.pop();
+  to.push(now);
+  S.data = upgrade(JSON.parse(snap));
+  UNDO.base = snap;
+  applyFramework(P() && P().framework);
+  S.dirty = true;
+  setSaveState('Saving…');
+  saveSoon();
+  await render();
+  toast(redo ? 'Redone' : 'Undone');
+}
+
 function changed() {
+  noteChange();
   S.dirty = true;
   setSaveState('Saving…');
   saveSoon();
 }
 
 async function save(force = false) {
+  if (S.demo) { S.dirty = false; setSaveState('Not saved (sample)'); return; }
   if (!S.data || S.saving) { if (S.saving) saveSoon(); return; }
   S.saving = true;
   try {
@@ -247,6 +294,7 @@ async function save(force = false) {
 
 // One copy a day in ice-data/backups, the newest 30 kept.
 async function dailyBackup(text) {
+  if (S.demo) return;
   const base = isMentor() ? 'mentor' : 'portfolio';
   const path = `${DATA_DIR}/backups/${base}-${today()}.json`;
   if (await exists(S.own, path)) return;

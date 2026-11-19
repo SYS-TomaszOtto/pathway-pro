@@ -54,6 +54,7 @@ VIEWS.settings = async () => {
   return `<h1>Settings</h1><div class="grid">
     <div class="card"><h2>You</h2><label for="setName">Name</label><input id="setName" value="${esc(d.name)}" style="width:100%">
       ${mentor ? '' : `<label for="setMode">What to use</label><select id="setMode"><option value="ice" ${d.mode !== 'cpd' ? 'selected' : ''}>Professional Review portfolio and CPD</option><option value="cpd" ${d.mode === 'cpd' ? 'selected' : ''}>CPD record only</option></select>`}</div>
+      ${mentor || d.mode === 'cpd' ? '' : `<label class="check"><input type="checkbox" id="setAllTabs" ${d.settings.showAllTabs ? 'checked' : ''}> Show every tab (otherwise pages appear when you have something to put in them)</label>`}
     <div class="card"><h2>Folders</h2>
       <p>Your folder: <b>${esc(S.own.name)}</b> <span class="small muted">(you can change things here)</span></p>
       <p>Linked ${otherLabel}: ${S.other ? `<b>${esc(S.other.name)}</b> ${otherOk ? chip('read only', 'good') : chip('needs permission', 'bad')}` : '<span class="muted">none</span>'}</p>
@@ -64,14 +65,17 @@ VIEWS.settings = async () => {
     <div class="card"><h2>Framework</h2><p>Assessing against <b>${esc(FRAMEWORK.name)}</b>: ${plural(SUBS.length, 'requirement')}, ${plural(LEVELS.length, 'level')}${KSBS.length ? `, ${plural(KSBS.length, 'standard')}` : ''}.</p>
       <p class="small muted">${mentor ? 'Set by the apprentice; shown here read-only.' : 'Edit the requirements, levels, evidence folders and folder names to match your institution or level, or start from a blank one.'}</p><a class="btn" href="#framework">${mentor ? 'View' : 'Edit'} framework</a></div>
     ${mentor ? '' : `<div class="card"><h2>Targets</h2>
-      ${d.mode !== 'cpd' ? `<label for="setGoal">Evidence goal per level (${LEVELS.map((l) => LEVEL_NAME[l]).join(', ')}) for each sub-attribute</label><input type="number" min="1" max="9" id="setGoal" value="${d.settings.goal}">` : ''}
+      ${d.mode !== 'cpd' ? `<label for="setGoal">Evidence goal per level (${LEVELS.map((l) => LEVEL_NAME[l]).join(', ')}) for each ${LABEL.item}</label><input type="number" min="1" max="9" id="setGoal" value="${d.settings.goal}">` : ''}
+      ${d.mode !== 'cpd' ? `<label for="setKeyDateLabel">Key date (optional): what is it?</label><input id="setKeyDateLabel" value="${esc(d.settings.keyDateLabel || '')}" placeholder="e.g. Submission, Gateway, Professional Review interview" style="width:100%">
+      <label for="setKeyDate">Key date</label><input type="date" id="setKeyDate" value="${esc(d.settings.keyDate || '')}">` : ''}
       <label for="setTarget">CPD hours a year</label><input type="number" min="0" id="setTarget" value="${d.settings.cpdTarget}">
       <label for="setYearStart">CPD year starts in</label><select id="setYearStart">${['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map((m, i) => `<option value="${i + 1}" ${d.settings.cpdYearStart === i + 1 ? 'selected' : ''}>${m}</option>`).join('')}</select>
       <label>ICE CPD Framework themes, one per line (start a line with * for a mandatory theme)</label>
       <textarea id="setThemes" rows="5" placeholder="Copy the theme names from the ICE website">${esc((d.settings.themes || []).join('\n'))}</textarea></div>`}
     <div class="card"><h2>Your data</h2>
       <p class="small">Saved as <code>${esc(myDataPath())}</code> in your folder, last at ${d.saved ? new Date(d.saved).toLocaleString('en-GB') : '–'}. A copy is kept each day in <code>${DATA_DIR}/backups</code> (the last 30).</p>
-      <p class="small muted">To restore a backup: close this page, rename the backup to <code>${esc(myDataPath().split('/').pop())}</code> and put it in <code>${DATA_DIR}</code>.</p>
+      <p class="small muted">Something went wrong? <b>Restore from a backup</b> gives back an earlier copy. Your current data is kept first, so a restore can itself be undone.</p>
+      <button id="restoreBackup">Restore from a backup…</button>
       ${!mentor && d.mode !== 'cpd' ? '<button id="exportAll" class="primary">Export everything to Excel</button>' : ''}</div>
   </div>`;
 };
@@ -80,6 +84,10 @@ VIEWS.settings.after = () => {
   $('#setName').addEventListener('input', (e) => { d.name = e.target.value; changed(); });
   if ($('#setMode')) $('#setMode').addEventListener('change', async (e) => { d.mode = e.target.value; if (d.mode === 'ice') await ensureFolders(S.own, 'ice'); changed(); render(); });
   if ($('#setGoal')) $('#setGoal').addEventListener('input', (e) => { d.settings.goal = Math.max(1, +e.target.value || 3); changed(); });
+  if ($('#restoreBackup')) $('#restoreBackup').addEventListener('click', restoreFromBackup);
+  if ($('#setKeyDate')) $('#setKeyDate').addEventListener('change', (e) => { d.settings.keyDate = e.target.value; changed(); });
+  if ($('#setKeyDateLabel')) $('#setKeyDateLabel').addEventListener('input', (e) => { d.settings.keyDateLabel = e.target.value; changed(); });
+  if ($('#setAllTabs')) $('#setAllTabs').addEventListener('change', (e) => { d.settings.showAllTabs = e.target.checked; changed(); renderHeader('settings'); });
   if ($('#setTarget')) $('#setTarget').addEventListener('input', (e) => { d.settings.cpdTarget = +e.target.value || 0; changed(); });
   if ($('#setYearStart')) $('#setYearStart').addEventListener('change', (e) => { d.settings.cpdYearStart = +e.target.value; changed(); });
   if ($('#setThemes')) $('#setThemes').addEventListener('input', (e) => { d.settings.themes = e.target.value.split('\n').map((t) => t.trim()).filter(Boolean); changed(); });
@@ -125,12 +133,12 @@ async function exportMatrix() {
         ...items.map((it) => [it.code, it.title, (it.rec && it.rec.project) || '', (it.rec && it.rec.date) || '', ...SUBS.map((a) => levelCell(it, a.id)),
           [...new Set(((it.rec && it.rec.maps) || []).flatMap((m) => m.ksbs || []))].sort(natural).join(', '), it.path])] },
     { name: 'Summary', freeze: { rows: 1 }, filter: true, widths: [6, 30, 6, 60, ...LEVELS.map(() => 7), 10, 12, 10, 14, 40],
-      rows: [['Attr.', 'Attribute', 'Sub', 'Sub-attribute', ...LEVELS.map((l) => LEVEL_SHORT[l]), 'Slots', 'PRR', 'Open comments', 'Mentor', 'Evidence'],
+      rows: [['Attr.', 'Attribute', 'Sub', cap1(LABEL.item), ...LEVELS.map((l) => LEVEL_SHORT[l]), 'Slots', 'PRR', 'Open comments', 'Mentor', 'Evidence'],
         ...SUBS.map((a) => [a.group, a.group_title, a.id, { v: a.text, s: 'wrap' }, ...LEVELS.map((l) => status(cov[a.id][l].length)),
           `${slots(cov[a.id])}/${slotMax(cov[a.id])}`, prr[a.id].state, fb.filter((f) => f.sub === a.id && f.status === 'open').length, M() ? MENTOR_STATUS[(M().subs[a.id] || {}).status || ''] : '',
           [...new Set(LEVELS.flatMap((l) => cov[a.id][l].map(label)))].sort(natural).join(', ')])] },
-    { name: 'KSBs', freeze: { rows: 1 }, widths: [6, 80, 16, 30], rows: [['KSB', 'Description', 'Sub-attributes', 'Evidence (ticked)'],
-      ...KSBS.map((k) => { const c = ksbCoverage()[k.id]; return [k.id, { v: k.text, s: 'wrap' }, k.attributes.join(', '), [...c.direct].map(label).join(', ')]; })] },
+    { name: 'KSBs', freeze: { rows: 1 }, widths: [6, 80, 16, 30, 22], rows: [['KSB', 'Description', cap1(LABEL.items), 'Evidence (ticked)', 'My rating'],
+      ...KSBS.map((k) => { const c = ksbCoverage()[k.id]; return [k.id, { v: k.text, s: 'wrap' }, k.attributes.join(', '), [...c.direct].map(label).join(', '), ratingText(k.id)]; })] },
     { name: 'Mentor feedback', freeze: { rows: 1 }, filter: true, widths: [6, 16, 12, 60, 60, 12, 30], rows: [['Sub', 'From', 'Date', 'Comment', 'Response', 'Status', 'File'],
       ...fb.map((f) => [f.sub, f.author, (f.date || '').slice(0, 10), { v: f.text, s: 'wrap' }, { v: f.response, s: 'wrap' }, FB_STATUS[f.status], f.file])] },
     { name: 'Actions', freeze: { rows: 1 }, filter: true, widths: [12, 30, 70, 6, 12, 8], rows: [['Meeting', 'Title', 'Action', 'Sub', 'Due', 'Status'],
@@ -150,17 +158,19 @@ VIEWS.help = async () => (P() && P().mode === 'cpd' ? `<h1>How to use the Pathwa
   <div class="card"><h2>Good to know</h2><ul>
     <li>Your folder holds <b>${FOLDERS.cpd}</b> (attached certificates and notes), <b>${FOLDERS.exports}</b> and <b>${DATA_DIR}</b> (the record itself: do not edit by hand).</li>
     <li>It saves as you type, and keeps one copy a day in <code>${DATA_DIR}/backups</code>.</li>
-    <li>To track a Professional Review as well, switch in <a href="#settings">Settings</a>.</li></ul></div></div>` : '') || `<h1>How to use the Pathway Pro</h1><div class="grid">
-  <div class="card"><h2>The idea</h2><p>One HTML file that keeps a tracker of your ICE Professional Review in your OneDrive folder. It does no thinking for you (no AI): it lists, links, counts and checks, so nothing gets missed.</p>
-    <p>Your folder holds: <b>${FOLDERS.prr}</b> (your Word PRRs), <b>${FOLDERS.matrix}</b> (the Excel matrix), <b>${FOLDERS.evidence}</b> (one sub-folder per kind of evidence), <b>${FOLDERS.feedback}</b> (response tables), <b>${FOLDERS.meetings}</b>, <b>${FOLDERS.cpd}</b>, <b>${FOLDERS.exports}</b>, and <b>${DATA_DIR}</b> (the tracker itself: do not edit by hand).</p></div>
+    <li>To track a Professional Review as well, switch in <a href="#settings">Settings</a>.</li></ul></div></div>` : '') || `<h1>How to use the Pathway Pro</h1>
+  <p>New to it? Start with the <a href="#help" onclick="jumpTo('guideFolders');return false">suggested folder layout</a> and the <a href="#help" onclick="jumpTo('guideSteps');return false">worked example</a> below.</p><div class="grid">
+  <div class="card wide"><h2>The idea</h2><p>One HTML file that keeps a tracker of your ${esc(P() && P().framework ? P().framework.name : 'ICE IEng')} in your OneDrive folder. It does no thinking for you (no AI): it lists, links, counts and checks, so nothing gets missed. Your files stay in your folder, laid out as shown below.</p></div>
+  <div class="card wide guide">${FOLDER_GUIDE_HTML()}</div>
+  <div class="card wide guide">${walkthroughHtml()}</div>
   <div class="card"><h2>1. Evidence</h2><ol><li>Save evidence files into <b>${FOLDERS.evidence}</b>. Start file names with a code such as <code>CO-14</code> to have it picked up (or use <b>Number files…</b>).</li>
-    <li>Open each one and click <b>K</b>, <b>E</b> or <b>A</b> against every sub-attribute it shows. Add a note on why.</li>
-    <li><b>Attributes</b> shows what is covered; the goal is ${P() ? goal() : 3} pieces at each level for every sub-attribute. <b>Home</b> lists the biggest gaps.</li></ol></div>
+    <li>Open each one and click <b>K</b>, <b>E</b> or <b>A</b> against every ${LABEL.item} it shows. Add a note on why.</li>
+    <li><b>${esc(LABEL.attr)}</b> shows what is covered; the goal is ${P() ? goal() : 3} pieces at each level for every ${LABEL.item}. <b>Home</b> lists the biggest gaps.</li></ol></div>
   <div class="card">${PRR_HELP}</div>
-  <div class="card"><h2>3. Mentor feedback</h2><p>Your mentor comments in your Word PRR as usual. <b>Feedback</b> lists every comment and suggested edit under its sub-attribute. Write what you changed, mark it Done (or Won't change), and export the <b>Response to feedback</b> table for your mentor. Use <b>One at a time</b> when there are lots.</p></div>
+  <div class="card"><h2>3. Mentor feedback</h2><p>Your mentor comments in your Word PRR as usual. <b>Feedback</b> lists every comment and suggested edit under its ${LABEL.item}. Write what you changed, mark it Done (or Won't change), and export the <b>Response to feedback</b> table for your mentor. Use <b>One at a time</b> when there are lots.</p></div>
   <div class="card"><h2>4. Meetings</h2><p>Download the Teams transcript (.vtt or .docx), import it, and tag each line with <kbd>D</kbd> done, <kbd>T</kbd> to do, <kbd>L</kbd> teaching. To-dos become actions; <b>Write notes to Word</b> makes tidy minutes in the Meetings folder.</p></div>
   <div class="card"><h2>5. CPD</h2><p>Follows ICE's CPD guidance: a <b>Development plan</b> (objectives with reference codes, after a yearly review of your learning needs) and a <b>Development record</b> (activities with effective learning time and an evaluation). <b>Export</b> makes Word files in the layout of ICE's templates.</p></div>
-  <div class="card"><h2>Working with your mentor</h2><ol>
+  <div class="card" id="help-mentor"><h2>Working with your mentor</h2><ol>
     <li>Share your portfolio folder with your mentor in OneDrive as <b>Can view</b>, and the <b>${FOLDERS.prr}</b> folder (or just the PRR files) as <b>Can edit</b> so they can comment in Word.</li>
     <li>Your mentor adds it to their OneDrive (Shared → <b>Add shortcut to My files</b>), opens this same file and picks <b>I am a mentor</b>: they make a folder of their own for their assessment and share it back with you as <b>Can view</b>.</li>
     <li>You add theirs to your OneDrive the same way, then <b>Settings → Link mentor's folder</b>.</li></ol>
@@ -171,3 +181,49 @@ VIEWS.help = async () => (P() && P().mode === 'cpd' ? `<h1>How to use the Pathwa
     <li><kbd>Ctrl</kbd>+<kbd>K</kbd> searches everything. Click any code or file name to preview it beside the page.</li>
     <li>One copy of the tracker is kept per day in <code>${DATA_DIR}/backups</code>.</li></ul></div>
 </div>`;
+
+
+// Give back an earlier daily copy from ice-data/backups. The current data is saved beside the backups first.
+async function restoreFromBackup() {
+  if (demoBlocked()) return;
+  const base = isMentor() ? 'mentor' : 'portfolio';
+  const names = [];
+  try {
+    const dir = await subDir(S.own, `${DATA_DIR}/backups`);
+    for await (const [name, h] of dir.entries()) if (h.kind === 'file' && name.startsWith(base + '-') && name.endsWith('.json')) names.push(name);
+  } catch (_) { /* no folder yet */ }
+  names.sort().reverse();
+  if (!names.length) { toast('There are no backups yet. One is made the first time you save each day.'); return; }
+  const nice = (n) => n.replace(base + '-', '').replace('.json', '');
+  const rows = [];
+  for (const n of names.slice(0, 30)) {
+    let info = '';
+    try {
+      const { json } = await readJson(S.own, `${DATA_DIR}/backups/${n}`);
+      const d = upgrade(json);
+      const cpd = ((d.cpd && d.cpd.activities) || []).length;
+      info = d.mode === 'cpd' ? `${cpd} CPD activities` : `${Object.keys(d.evidence).length} evidence records, ${(d.meetings || []).length} meetings, ${cpd} CPD activities`;
+    } catch (_) { info = 'cannot be read'; }
+    rows.push(`<li><b>${esc(nice(n))}</b> <span class="small muted">${esc(info)}</span> <button data-restore="${esc(n)}">Restore this one</button></li>`);
+  }
+  const d = dialog(`<h2>Restore from a backup</h2><p class="small muted">A copy is made the first time you save each day, and the last 30 are kept. Pick the day you want to go back to.</p>
+    <ul class="list-plain restore-list">${rows.join('')}</ul><div class="row" style="justify-content:flex-end;margin-top:1rem"><button value="" id="restoreClose">Close</button></div>`);
+  $$('button', d).forEach((b) => b.addEventListener('click', async () => {
+    if (!b.dataset.restore) { d.close(); return; }
+    if (!(await ask(`Go back to the copy from <b>${esc(nice(b.dataset.restore))}</b>? Anything you changed since then is replaced. A copy of your current data is kept first.`, 'Restore'))) return;
+    try {
+      const { json } = await readJson(S.own, `${DATA_DIR}/backups/${b.dataset.restore}`);
+      const restored = upgrade(json);
+      const stamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
+      await writeFile(S.own, `${DATA_DIR}/backups/${base}-${stamp}-before-restore.json`, JSON.stringify(S.data, null, 1));
+      S.data = restored;
+      applyFramework(P() && P().framework);
+      await save(true);
+      await scanEvidence();
+      await loadReports();
+      d.close();
+      await render();
+      toast('Restored. Your previous data is kept in the backups folder.');
+    } catch (err) { toast('Could not restore: ' + err.message, 'error'); }
+  }));
+}

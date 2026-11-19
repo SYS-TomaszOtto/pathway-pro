@@ -165,6 +165,9 @@ tr.click:hover td { background: var(--accent-soft); }
 .mitem { padding: 6px 8px; margin-bottom: 6px; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; }
 .mitem textarea { min-height: 2.6rem; }
 
+/* anything with the hidden attribute stays hidden, even when a rule below sets display */
+[hidden] { display: none !important; }
+
 /* preview drawer */
 #drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(46vw, 900px); min-width: 320px; background: var(--panel); border-left: 1px solid var(--line); box-shadow: -6px 0 24px rgba(0,0,0,.18); z-index: 50; display: flex; flex-direction: column; }
 #drawer header { display: flex; gap: .5rem; align-items: flex-start; padding: 10px 12px; border-bottom: 1px solid var(--line); }
@@ -221,7 +224,7 @@ dialog::backdrop { background: rgba(10, 15, 25, .45); }
   *, *::before, *::after { transition-duration: .001ms !important; animation-duration: .001ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
   button.busy::after { animation: none; }
 }
-a.sub-link { display: inline-block; min-width: 24px; min-height: 24px; line-height: 24px; text-align: center; }
+a.sub-link { display: inline-block; min-width: 24px; box-sizing: border-box; padding: 2px 3px; line-height: 20px; margin: 2px 1px; text-align: center; vertical-align: middle; }
 p a, li a, .meta a, .muted a, .small a { text-decoration: underline; }
 td a[data-preview] { display: inline-block; padding: .25rem 0; }
 .table-wrap:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
@@ -229,3 +232,86 @@ html { scroll-padding-top: 60px; }
 @media (max-width: 700px), (max-height: 500px) { header.top { position: static; } html { scroll-padding-top: 0; } }
 @media (max-width: 700px) { button, .btn { white-space: normal; text-align: left; } .row { flex-wrap: wrap; } }
 ol > li > a { display: inline-block; padding: .2rem 0; }
+
+/* help: folder layout and worked example */
+.grid > .card.wide { grid-column: 1 / -1; }
+dialog.wide { max-width: min(820px, 94vw); }
+.guide h3 { margin-top: 1.1rem; }
+.guide h2 { scroll-margin-top: 130px; }
+.tree, .tree ul { list-style: none; margin: 0; padding-left: 0; }
+.tree ul { padding-left: 1.4rem; border-left: 1px solid var(--line); margin-left: .45rem; }
+.tree li { margin: .35rem 0; }
+.tree .chip { margin-left: .25rem; }
+.tree-text { display: block; color: var(--muted); font-size: .92em; }
+.guide .steps { padding-left: 1.6rem; }
+.guide .steps > li { margin-bottom: .6rem; }
+.guide .steps h3 { margin: .9rem 0 .2rem; }
+.guide .see { color: var(--muted); font-size: .92em; }
+
+
+/* ---- polish: progressive tabs, start screen, get-started panel, skip link ---- */
+.skip { position: absolute; left: 8px; top: -60px; z-index: 100; padding: .5rem .8rem; background: var(--panel); color: var(--ink); border: 2px solid var(--accent); border-radius: 6px; }
+.skip:focus { top: 8px; text-decoration: none; }
+nav.tabs details.more-tabs { position: relative; }
+nav.tabs details.more-tabs summary { list-style: none; cursor: pointer; padding: .75rem .7rem .65rem; color: var(--muted); border-bottom: 3px solid transparent; white-space: nowrap; }
+nav.tabs details.more-tabs summary::-webkit-details-marker { display: none; }
+nav.tabs details.more-tabs summary::after { content: " ▾"; }
+nav.tabs details.more-tabs summary:hover { color: var(--ink); background: var(--soft); }
+nav.tabs details.more-tabs[open] .more-list { position: absolute; top: 100%; left: 0; z-index: 30; min-width: 11rem; display: flex; flex-direction: column; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; box-shadow: var(--shadow); padding: .3rem; }
+nav.tabs details.more-tabs .more-list a { border-bottom: 0; border-radius: 6px; }
+.welcome .start-main { max-width: 640px; }
+.welcome .start-main p { margin: .4rem 0 1rem; }
+button.big, .btn.big { font-size: 1.1rem; padding: .7rem 1.4rem; }
+.welcome .start-other { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .6rem; margin: 1rem 0 1.4rem; }
+.get-started ol.steps { padding-left: 1.3rem; display: grid; gap: .9rem; }
+.get-started ol.steps li { line-height: 1.5; }
+.get-started ol.steps .btn, .get-started ol.steps button { margin-left: .4rem; vertical-align: baseline; }
+a.row-link { color: inherit; text-decoration: none; }
+a.row-link:hover, a.row-link:focus-visible { text-decoration: underline; }
+a.preview-link { white-space: nowrap; }
+label.check { display: flex; align-items: flex-start; gap: .5rem; margin-top: .8rem; font-weight: 400; }
+label.check input { margin-top: .25rem; flex: none; }
+.restore-list li { display: flex; flex-wrap: wrap; gap: .4rem .8rem; align-items: center; padding: .4rem 0; border-bottom: 1px solid var(--line); }
+
+.ready-list li { padding: .25rem 0; display: flex; gap: .5rem; align-items: baseline; }
+.ready-list .good, .ready-list .bad { font-weight: 700; width: 1.2em; flex: none; }
+.key-date { margin: .2rem 0 .6rem; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* links inside running text are underlined, not told apart by colour alone */
+main p a:not(.btn), main li a:not(.btn), main .issue a, main .small a:not(.btn) { text-decoration: underline; }
+main .fb a, main .meta a { text-decoration: underline; }
+main .card > a:not(.btn) { text-decoration: underline; }
+
+body.dropping main { outline: 3px dashed var(--accent); outline-offset: -8px; }
+.add-list li { padding: .15rem 0; }
+header.top .top-right button[hidden] { display: none; }
+
+/* phone: table rows become cards (column names are copied into data-label after each render) */
+@media (max-width: 640px) {
+  .table-wrap { overflow: visible; }
+  table.cardable, table.cardable tbody, table.cardable tr, table.cardable td { display: block; width: auto; }
+  table.cardable thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  table.cardable tr { border: 1px solid var(--line); border-radius: 8px; margin: 0 0 .6rem; padding: .35rem .7rem; background: var(--panel); }
+  table.cardable td { display: flex; gap: .7rem; justify-content: space-between; padding: .25rem 0; border: 0; text-align: right; overflow-wrap: anywhere; }
+  table.cardable td::before { content: attr(data-label); flex: 0 0 34%; font-weight: 600; color: var(--muted); text-align: left; }
+  table.cardable td:empty { display: none; }
+  table.cardable td[colspan] { display: block; }
+}
+/* printed summary */
+.summary .sum-kpis { display: flex; flex-wrap: wrap; gap: .4rem 1.4rem; padding: 0; list-style: none; margin: .5rem 0 1rem; }
+.sum-table { width: 100%; font-size: .9rem; }
+.sum-table tr.group th { background: var(--soft); text-align: left; }
+.sum-table td, .sum-table th { padding: .25rem .4rem; vertical-align: top; }
+@media print {
+  @page { margin: 12mm; }
+  .summary { border: 0; padding: 0; }
+  .sum-table { font-size: 9pt; }
+  .sum-table tr { break-inside: avoid; }
+  a { color: inherit; text-decoration: none; }
+}
+@media (max-width: 640px) {
+  nav.tabs a, nav.tabs details.more-tabs summary { padding: .55rem .45rem .45rem; font-size: .93rem; }
+  header.top .brand { margin-right: .4rem; }
+}
+a.sub-link { display: inline-block; min-width: 24px; min-height: 24px; line-height: 24px; text-align: center; }

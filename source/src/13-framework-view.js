@@ -16,7 +16,9 @@ VIEWS.framework = async () => {
       <div class="card"><h2>Name and words</h2>
         <label>Framework name</label><input id="fwName" value="${esc(fw.name)}" style="width:100%"${dd}>
         <div class="form-grid"><div><label>Tab name for the requirements</label><input id="fwLabelAttr" value="${esc(LABEL.attr)}"${dd}></div>
-          <div><label>Tab name for the standards (leave the list empty to hide the tab)</label><input id="fwLabelKsb" value="${esc(LABEL.ksb)}"${dd}></div></div>
+          <div><label>Tab name for the standards (leave the list empty to hide the tab)</label><input id="fwLabelKsb" value="${esc(LABEL.ksb)}"${dd}></div>
+          <div><label>One requirement is called (singular, e.g. competence)</label><input id="fwLabelItem" value="${esc(LABEL.item)}"${dd}></div>
+          <div><label>Many requirements are called (plural)</label><input id="fwLabelItems" value="${esc(LABEL.items)}"${dd}></div></div>
         <label>Start from</label><div class="row"><select id="fwPreset"${dd}><option value="">Choose…</option>${Object.entries(PRESETS).map(([k, p]) => `<option value="${k}">${esc(p.name)}</option>`).join('')}</select><span class="small muted">replaces everything in the boxes below (nothing is saved until you press Save)</span></div></div>
       <div class="card"><h2>Levels</h2><p class="small muted">Letters | Name | What it means. Each requirement needs the goal number of evidence items at every level (set in Settings). One level is fine.</p>
         <textarea id="fwLevels"${rows(4)}${dd}>${esc(toLevelText(fw))}</textarea></div>
@@ -37,6 +39,7 @@ VIEWS.framework.after = () => {
   const val = (id) => $(id).value;
   const fill = (fw) => {
     $('#fwName').value = fw.name; $('#fwLabelAttr').value = (fw.labels || {}).attr || 'Attributes'; $('#fwLabelKsb').value = (fw.labels || {}).ksb || 'KSBs';
+    { const il = itemLabels(fw.labels); $('#fwLabelItem').value = il.item; $('#fwLabelItems').value = il.items; }
     $('#fwLevels').value = toLevelText(fw); $('#fwGroups').value = toGroupText(fw); $('#fwAttrs').value = toAttrText(fw); $('#fwKsbs').value = toKsbText(fw);
     $('#fwEvFolders').value = (fw.evidenceFolders || []).join('\n');
     for (const i of $$('[data-folder]')) i.value = (fw.folders || {})[i.dataset.folder] || DEFAULT_FOLDERS[i.dataset.folder];
@@ -44,7 +47,7 @@ VIEWS.framework.after = () => {
   const read = () => {
     const folders = {};
     for (const i of $$('[data-folder]')) folders[i.dataset.folder] = i.value;
-    return buildFramework({ name: val('#fwName'), labelAttr: val('#fwLabelAttr'), labelKsb: val('#fwLabelKsb'), levels: val('#fwLevels'), groups: val('#fwGroups'), attributes: val('#fwAttrs'), ksbs: val('#fwKsbs'), evidenceFolders: val('#fwEvFolders'), folders }, FRAMEWORK);
+    return buildFramework({ name: val('#fwName'), labelAttr: val('#fwLabelAttr'), labelKsb: val('#fwLabelKsb'), labelItem: val('#fwLabelItem'), labelItems: val('#fwLabelItems'), levels: val('#fwLevels'), groups: val('#fwGroups'), attributes: val('#fwAttrs'), ksbs: val('#fwKsbs'), evidenceFolders: val('#fwEvFolders'), folders }, FRAMEWORK);
   };
   $('#fwPreset').addEventListener('change', (e) => { if (e.target.value) { fill(PRESETS[e.target.value].fw); e.target.value = ''; toast('Filled in: press Save to use it'); } });
   $('#fwExport').addEventListener('click', () => {

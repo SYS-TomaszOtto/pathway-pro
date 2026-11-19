@@ -29,7 +29,7 @@ VIEWS.reports = async () => {
               <td class="small">${s.listed.map(codeLink).join(' ') || '<span class="muted">–</span>'}</td>
               <td class="small">${s.discussed.map(codeLink).join(' ') || '<span class="muted">–</span>'}</td>
               <td>${issues.map(([lv, msg]) => `<div class="issue ${lv}">${linkify(msg)}</div>`).join('') || '<span class="good small">✓</span>'}</td></tr>`;
-          }).join('')}</tbody></table></div>` : '<p class="muted">No sub-attribute headings found (a heading looks like "2b – Contribute to the design…").</p>'}</div>`;
+          }).join('')}</tbody></table></div>` : `<p class="muted">No ${LABEL.item} headings found (a heading looks like "2b – Contribute to the design…").</p>`}</div>`;
     }).join('') : `<div class="empty">No Word files in <b>${FOLDERS.prr}</b> yet.${canEdit() ? ' Press <b>New PRR from template</b> to start one.' : ''}</div>`}
     ${reports.length && missing.length ? `<div class="card"><h2>Not in any PRR yet</h2><p>${missing.map((a) => subLink(a.id)).join(' ')}</p></div>` : ''}`;
 };
@@ -41,17 +41,17 @@ VIEWS.reports.after = () => {
 
 const PRR_HELP = `<h2>Writing a PRR the tool can check</h2>
   <ol>
-    <li>Start each sub-attribute with a heading line such as <b>2b – Contribute to the design and development of engineering solutions</b> (number, letter, dash, then any text). Use Word's Heading style if you like; it is not required.</li>
+    <li>Start each ${LABEL.item} with a heading line such as <b>2b – Contribute to the design and development of engineering solutions</b> (number, letter, dash, then any text). Use Word's Heading style if you like; it is not required.</li>
     <li>Under it, list the evidence on one line: <b>Evidence: CO-14, DD-00 to DD-05</b>.</li>
     <li>Before you write about a piece of evidence, put its code in curly brackets, for example <b>{CO-14}</b>, then write about it (&ldquo;I checked the…&rdquo;). The write-up runs until the next tag or heading.</li>
-    <li>Your mentor comments in Word as normal (Review → New Comment, or Track Changes). The tool lists every comment under the right sub-attribute.</li>
+    <li>Your mentor comments in Word as normal (Review → New Comment, or Track Changes). The tool lists every comment under the right ${LABEL.item}.</li>
   </ol>
-  <p class="small muted">The checks: evidence listed but not written about, written about but not listed, codes that are not in your Evidence folder, very short write-ups, and evidence not yet mapped to that sub-attribute.</p>`;
+  <p class="small muted">The checks: evidence listed but not written about, written about but not listed, codes that are not in your Evidence folder, very short write-ups, and evidence not yet mapped to that ${LABEL.item}.</p>`;
 
 function newPrrDialog() {
   const d = dialog(`<h2>New PRR from the template</h2>
-    <p class="small muted">Makes a Word file in <code>${FOLDERS.prr}</code> with a heading and an Evidence line for each sub-attribute. Existing files are never overwritten.</p>
-    <label>Attribute</label><select id="prrGroup">${GROUPS.map((g) => `<option value="${g.group}">${g.group}. ${esc(g.title)}</option>`).join('')}<option value="all">All in one file</option></select>
+    <p class="small muted">Makes a Word file in <code>${FOLDERS.prr}</code> with a heading and an Evidence line for each ${LABEL.item}. Existing files are never overwritten.</p>
+    <label>${esc(LABEL.attr)}</label><select id="prrGroup">${GROUPS.map((g) => `<option value="${g.group}">${g.group}. ${esc(g.title)}</option>`).join('')}<option value="all">All in one file</option></select>
     <label><input type="checkbox" id="prrEvidence" checked> Fill the Evidence lines from what is already mapped</label>
     <div class="row" style="justify-content:flex-end;margin-top:1rem"><button value="no">Cancel</button><button class="primary" id="prrMake">Create</button></div>`);
   $('button[value=no]', d).addEventListener('click', () => d.close());
@@ -99,9 +99,9 @@ VIEWS.feedback = async (arg, q) => {
   const shown = focus ? list.slice(at, at + 1) : list;
   return `<div class="row spread"><h1>Mentor feedback</h1><div class="row">
       <button id="exportResp" class="primary">Export “Response to feedback” (Word)</button></div></div>
-    <p class="muted small">Comments and tracked changes from the Word files in <code>${FOLDERS.prr}</code>, sorted by sub-attribute. ${canEdit() ? 'Write what you changed under each one and mark it done: that becomes your response table for the mentor.' : 'The apprentice’s responses are shown under each comment.'}</p>
+    <p class="muted small">Comments and tracked changes from the Word files in <code>${FOLDERS.prr}</code>, sorted by ${LABEL.item}. ${canEdit() ? 'Write what you changed under each one and mark it done: that becomes your response table for the mentor.' : 'The apprentice’s responses are shown under each comment.'}</p>
     <div class="sub-tabs">${['open', 'done', 'wont', 'all'].map((s) => `<a href="${qs({ status: s, i: 0 })}" class="${status === s ? 'active' : ''}">${s === 'all' ? 'All' : FB_STATUS[s]} (${count(s)})</a>`).join('')}
-      <select id="fbSub" aria-label="Sub-attribute"><option value="">All sub-attributes</option>${subs.map((s) => `<option ${s === sub ? 'selected' : ''}>${s}</option>`).join('')}</select>
+      <select id="fbSub" aria-label="${cap1(LABEL.item)}"><option value="">All ${LABEL.items}</option>${subs.map((s) => `<option ${s === sub ? 'selected' : ''}>${s}</option>`).join('')}</select>
       <a href="${qs({ focus: focus ? '' : '1', i: 0 })}" class="${focus ? 'active' : ''}" title="Show one comment at a time">One at a time</a></div>
     ${focus && list.length ? `<div class="row" style="margin-bottom:8px"><a class="btn small" href="${qs({ i: Math.max(0, at - 1) })}">‹ Previous</a><span>${at + 1} of ${list.length}</span><a class="btn small" href="${qs({ i: Math.min(list.length - 1, at + 1) })}">Next ›</a></div>` : ''}
     ${shown.length ? shown.map(fbCard).join('') : `<div class="empty">${all.length ? 'Nothing here.' : 'No comments found yet. When your mentor comments in your Word PRR, they appear here.'}</div>`}`;

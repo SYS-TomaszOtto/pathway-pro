@@ -38,6 +38,7 @@ permission only. OneDrive's sharing is what actually stops one person changing t
 ```
 { format: 'ice-tool/1', role: 'apprentice', name, created, saved, mode: 'ice'|'cpd',
   framework: null | { name, source, labels, levels, groups, attributes, ksbs, folders, evidenceFolders },  // null = built-in ICE IEng
+  ksbRatings: { "<ksb id>": [{ date, rating: 1-5 }] },  // self-rating, one entry per day (src/20-selfrate.js)
   settings: { goal: 3, cpdTarget, cpdYearStart, themes },
   evidence: { "<path relative to Evidence>": { code, title, date, project, notes, size, mtime,
               maps: [{ sub: '2b', level: 'knowledge'|'experience'|'ability', ksbs: ['K1'], note }] } },
@@ -70,3 +71,19 @@ A requirement may have `min` (a level id): it is then met by `goal` distinct evi
 Built-in frameworks: ICE IEng, IStructE Chartered / Incorporated / Technician Member (generated at build time from
 `src/ipd.json`, which was extracted from the Institution's IPD guidance PDFs), and a blank one. The tool is named
 "Pathway Pro" (output `dist/Pathway Pro.html`).
+
+## Guidance for new users
+`14-guide.js` builds the "Suggested folder layout" (a nested list made from the live `FOLDERS` and
+`EVIDENCE_CATEGORIES`, so it always matches what the tool creates) and an 11-step worked example. Both show on
+the Help page and, from the start screen's "New to this?" card, in dialogs. `make_howto.py` carries the same text
+(ICE IEng folder names) for the Word guide; keep the two in step.
+
+## First run and wording
+- **Progressive tabs** (`tabUnlocked` in `07-app.js`): a new apprentice sees Home, Evidence, CPD, Settings, Help and a "More" menu; the other pages show once they have content. `settings.showAllTabs` shows all. Routing still accepts every page.
+- **Guided tour** (`15-tour.js`, `tour.css`): a main tour and a short tour per page, no libraries, popover is a dialog with focus handling, progress in localStorage `pathwayPro.tour` (every access in try/catch). Test hook `window.testTour`. The folder layout and worked example stay in `14-guide.js` (Help page and start screen).
+- **Sample data mode** (`19-demo.js`, `demo.css`): `startDemo()` builds an in-memory portfolio (real data shapes, made-up evidence in `S.files`, made-up Word reports and mentor comments in `S.prr` via `parsePrr`, mentor data in `S.otherData`) and sets `S.demo`. `S.own` is an empty stub folder. Every writer is blocked by one rule: `save`, `dailyBackup`, `remember`, `ensureFolders`, `scanEvidence`, `loadReports` return at once, `writeFile` throws "Not available with sample data", and `pickFolder`, Add files and Restore call `demoBlocked()` (toast). Previews show a "sample file" message. The banner (`role=region`) is added by `renderHeader`. Nothing is persisted, so F5 shows the start screen; `leaveDemo()` is synchronous so "Start my own portfolio" can open the folder picker at once. New writers must check `S.demo`.
+- **Wording**: `framework.labels` = `{ attr, ksb, item, items }` (`attr` names the list, `item`/`items` one entry, e.g. competence, question, learning outcome, unit). Older portfolios without `item` get it from `attr`.
+- **Other settings**: `settings.keyDate` / `keyDateLabel` (shown on Home), `settings.showAllTabs`. Settings can restore a daily backup (the current data is kept first as `*-before-restore.json`).
+- **Undo** (`UNDO` in `04-store.js`): one snapshot of the whole portfolio per burst of changes (1.5 s), last 25 steps in memory, Ctrl+Z / Ctrl+Y and top-bar buttons; not kept between sessions (daily backups cover that).
+- **Add evidence** (`16-add.js`): copies picked or dropped files into `2 - Evidence/<kind>/`, next free code for the kind's prefix, never overwrites (adds " (2)").
+- **Labels**: `autoLabel` (`07-app.js`) ties every label without `for`, and every unnamed field, to a name after each render (axe-checked on all pages).

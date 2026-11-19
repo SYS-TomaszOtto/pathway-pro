@@ -1,0 +1,27 @@
+/* ---------- guided tour (src/15-tour.js) ---------- */
+.tour-hole { position: fixed; z-index: 900; pointer-events: none; border-radius: 6px; outline: 3px solid var(--accent); outline-offset: 0;
+  box-shadow: 0 0 0 3px var(--panel), 0 0 0 9999px rgba(8, 12, 20, .58); }
+.tour-hole.none { inset: 0; width: auto; height: auto; border-radius: 0; outline: 0; box-shadow: none; background: rgba(8, 12, 20, .58); }
+@media (prefers-reduced-motion: no-preference) { .tour-hole { transition: left .15s, top .15s, width .15s, height .15s; } }
+.tour-pop { position: fixed; z-index: 901; width: 360px; max-width: calc(100vw - 16px); background: var(--panel); color: var(--ink); border: 2px solid var(--accent);
+  border-radius: var(--radius); padding: 14px 16px 12px; box-shadow: 0 8px 28px rgba(0, 0, 0, .35); }
+.tour-pop:focus { outline: none; }
+.tour-pop:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.tour-pop h2 { margin: 0 0 .35rem; font-size: 1.05rem; }
+.tour-pop p { margin: 0 0 .7rem; }
+.tour-pop .tour-foot { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+.tour-pop .tour-count { font-size: .85rem; color: var(--muted); flex: 1 1 100%; margin-bottom: .1rem; }
+.tour-pop button:focus-visible, .tour-link button:focus-visible, .tour-offer button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.tour-pop button.tour-skip { margin-left: auto; }
+.tour-live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.tour-link { margin: -.2rem 0 .8rem; font-size: .9rem; }
+.tour-link button, .tour-reset button { background: none; border: 0; padding: .3rem 0; min-height: 0; color: var(--accent); text-decoration: underline; cursor: pointer; font: inherit; display: inline; margin-right: 1rem; }
+.tour-offer { border-left: 4px solid var(--accent); }
+.tour-offer p { margin: 0 0 .6rem; }
+@media (pointer: coarse), (max-width: 640px) {
+  .tour-pop button, .tour-offer button { min-height: 44px; }
+  .tour-link button, .tour-reset button { min-height: 44px; }
+}
+@media (max-width: 640px) {
+  .tour-pop { left: 8px !important; right: 8px; top: auto !important; bottom: 8px; width: auto; max-height: 52vh; overflow: auto; }
+}

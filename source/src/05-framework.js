@@ -7,7 +7,7 @@
 let LEVELS = [], LEVEL_SHORT = {}, LEVEL_NAME = {}, LEVEL_HELP = {};
 let SUBS = [], SUB = {}, GROUPS = [], KSBS = [], KSB = {};
 let HEADING_RE = /$^/, SUB_LC = {};
-let LABEL = { attr: 'Attributes', ksb: 'KSBs' };
+let LABEL = { attr: 'Attributes', ksb: 'KSBs', item: 'sub-attribute', items: 'sub-attributes' };
 let FRAMEWORK = null;
 const DEFAULT_FOLDERS = { ...FOLDERS };
 const DEFAULT_CATEGORIES = EVIDENCE_CATEGORIES.slice();
@@ -19,7 +19,7 @@ const clone = (o) => JSON.parse(JSON.stringify(o));
 const ICE_FRAMEWORK = {
   name: 'ICE IEng (apprenticeship)',
   source: 'ICE IEng sub-attributes and the apprenticeship standard KSBs (Institute for Apprenticeships and Technical Education)',
-  labels: { attr: 'Attributes', ksb: 'KSBs' },
+  labels: { attr: 'Attributes', ksb: 'KSBs', item: 'sub-attribute', items: 'sub-attributes' },
   levels: [
     { id: 'knowledge', short: 'K', name: 'Knowledge', help: 'knows and understands it (training, CPD, reading), not yet shown applied on real work.' },
     { id: 'experience', short: 'E', name: 'Experience', help: 'applied it on real work, with guidance, as part of a team, or with a senior making the key decisions.' },
@@ -34,7 +34,7 @@ const ICE_FRAMEWORK = {
 
 const BLANK_FRAMEWORK = {
   name: 'My framework',
-  labels: { attr: 'Requirements', ksb: 'Standards' },
+  labels: { attr: 'Requirements', ksb: 'Standards', item: 'requirement', items: 'requirements' },
   levels: [{ id: 'evidence', short: 'E', name: 'Evidence', help: 'a piece of evidence that shows this requirement is met.' }],
   groups: [{ id: '1', title: 'First group (rename me)' }],
   attributes: [{ id: '1a', group: '1', text: 'First requirement (replace with your own)' }],
@@ -56,7 +56,7 @@ function ipdFramework(key, name, level) {
     { id: 'ability', short: 'B', name: 'Ability', help: 'performed without supervision and competent to advise others.' },
   ];
   return {
-    name, source: 'Institution of Structural Engineers, IPD Guidance for this grade', goal: 1, labels: { attr: 'Core objectives', ksb: 'Must demonstrate' }, levels,
+    name, source: 'Institution of Structural Engineers, IPD Guidance for this grade', goal: 1, labels: { attr: 'Core objectives', ksb: 'Must demonstrate', item: 'core objective', items: 'core objectives' }, levels,
     groups: [{ id: 'CO', title: 'Core Objectives' }],
     attributes: objs.map((o) => ({ id: o.num, group: 'CO', text: `${sentence(o.title)}: ${o.intro.replace(/^This objective is intended to /, '')}`, min: lv[o.level] || '' })),
     ksbs: objs.flatMap((o) => o.must.map((m, i) => ({ id: `${o.num}.${i + 1}`, kind: `Objective ${o.num}`, text: m, attributes: [o.num] }))),
@@ -68,7 +68,7 @@ function ipdFramework(key, name, level) {
 function ukspecFramework(key) {
   const d = UKSPEC_DATA[key];
   return {
-    name: d.name, source: d.source, goal: 1, labels: { attr: 'Competences', ksb: 'Standards' },
+    name: d.name, source: d.source, goal: 1, labels: { attr: 'Competences', ksb: 'Standards', item: 'competence', items: 'competences' },
     levels: [{ id: 'evidence', short: 'E', name: 'Evidence', help: 'a piece of evidence that shows this competence, for example a report, drawing, calculation, email or record of your own work.' }],
     groups: Object.entries(UKSPEC_DATA._titles).map(([id, title]) => ({ id, title: `${id}. ${title}` })),
     attributes: d.attrs.map(([id, group, text]) => ({ id, group, text })),
@@ -77,13 +77,41 @@ function ukspecFramework(key) {
     evidenceFolders: ['0 - Project work - PW', '1 - Reports and calculations - RC', '2 - Drawings and models - DM', '3 - Correspondence and meetings - CO', '4 - Certificates and CPD - CE'],
   };
 }
+// Wording per institution preset: attr = tab/group-level heading (plural), item = one entry, items = plural.
+// Evidence for each word: ICE ipr/cpr/tpr: the preset names say "areas of attributes" and the ids are 1a, 1b (sub-attributes of attribute 1).
+// CIBSE: the source title says "Competence Criteria". IMechE: names say "application questions". RINA: source says "learning outcomes".
+// CIHT TPP: the groups are titled "Professional units" / "Technical units". RITTech: preset name says "competencies P1 to P4"
+// (the heading word only; its items P1.1 have no stated name, so the item word stays neutral). IChemE: nothing in the data
+// names the items (only "sections A to D"), so it keeps the neutral 'requirement'.
+const INST_LABELS = {
+  'ice-ipr': { attr: 'Attributes', item: 'sub-attribute', items: 'sub-attributes' },
+  'ice-cpr': { attr: 'Attributes', item: 'sub-attribute', items: 'sub-attributes' },
+  'ice-tpr': { attr: 'Attributes', item: 'sub-attribute', items: 'sub-attributes' },
+  'cibse-mcibse': { attr: 'Competences', item: 'competence', items: 'competences' },
+  'cibse-acibse': { attr: 'Competences', item: 'competence', items: 'competences' },
+  'imeche-ceng': { attr: 'Questions', item: 'question', items: 'questions' },
+  'imeche-ieng': { attr: 'Questions', item: 'question', items: 'questions' },
+  'rina-ceng': { attr: 'Learning outcomes', item: 'learning outcome', items: 'learning outcomes' },
+  'rina-ieng': { attr: 'Learning outcomes', item: 'learning outcome', items: 'learning outcomes' },
+  'ciht-tpp': { attr: 'Units', item: 'unit', items: 'units' },
+  'rittech': { attr: 'Competencies', item: 'requirement', items: 'requirements' },
+  'icheme': { attr: 'Requirements', item: 'requirement', items: 'requirements' },
+};
+// Older saved frameworks have no labels.item: work it out from labels.attr, else 'requirement'.
+const ITEM_FROM_ATTR = { attributes: 'sub-attribute', competences: 'competence', competencies: 'competency', questions: 'question', 'core objectives': 'core objective', 'learning outcomes': 'learning outcome', units: 'unit', requirements: 'requirement' };
+function itemLabels(labels) {
+  labels = labels || {};
+  const item = String(labels.item || '').trim() || ITEM_FROM_ATTR[String(labels.attr || '').trim().toLowerCase()] || 'requirement';
+  return { item, items: String(labels.items || '').trim() || (/y$/.test(item) ? item.slice(0, -1) + 'ies' : item + 's') };
+}
+const cap1 = (s) => String(s).charAt(0).toUpperCase() + String(s).slice(1);
 // Other institutions' published competence lists (one preset each), read from their guidance documents.
 function instFramework(key) {
   const d = INST_DATA[key];
   const custom = d.levels && d.levels.length;
   const levels = custom ? d.levels.map(([short, name, help]) => ({ id: slug(name), short, name, help })) : [{ id: 'evidence', short: 'E', name: 'Evidence', help: 'a piece of evidence that shows this requirement is met, for example a report, drawing, calculation, email or record of your own work.' }];
   return {
-    name: d.name, source: d.source, goal: 1, labels: { attr: 'Requirements', ksb: 'Standards' }, levels,
+    name: d.name, source: d.source, goal: 1, labels: { ...(INST_LABELS[key] || { attr: 'Requirements', item: 'requirement', items: 'requirements' }), ksb: 'Standards' }, levels,
     groups: d.groups.map(([id, title]) => ({ id, title })),
     attributes: d.attrs.map(([id, group, text, min]) => ({ id, group, text, min: custom && min ? (levels.find((l) => l.short === min) || {}).id || '' : '' })),
     ksbs: [],
@@ -138,16 +166,17 @@ function applyFramework(fw) {
   KSB = Object.fromEntries(KSBS.map((k) => [k.id, k]));
   const ids = SUBS.map((a) => a.id).sort((x, y) => y.length - x.length).map(escRe);
   HEADING_RE = ids.length ? new RegExp(`^\\s*(${ids.join('|')})\\s*[–—\\-:.)]\\s*(.*)$`, 'i') : /$^/;
-  LABEL = { attr: (fw.labels && fw.labels.attr) || 'Attributes', ksb: (fw.labels && fw.labels.ksb) || 'KSBs' };
+  LABEL = { attr: (fw.labels && fw.labels.attr) || 'Attributes', ksb: (fw.labels && fw.labels.ksb) || 'KSBs', ...itemLabels(fw.labels) };
   Object.assign(FOLDERS, DEFAULT_FOLDERS, fw.folders || {});
   EVIDENCE_CATEGORIES = (fw.evidenceFolders || []).slice();
-  S.prr = {};   // parsed reports depend on the requirement ids: read them again
+  S.prr = S.demo ? demoPrr() : {};   // parsed reports depend on the requirement ids: read them again
 }
 const subIdFromHeading = (text) => SUB_LC[String(text).toLowerCase()] || '';
 applyFramework(null);
 
 // Make the folders in the person's OneDrive folder, including one per kind of evidence.
 async function ensureFolders(dir, mode) {
+  if (S.demo) return;
   const names = mode === 'cpd' ? [FOLDERS.cpd, FOLDERS.exports] : Object.values(FOLDERS);
   for (const f of names) await subDir(dir, f, true);
   if (mode !== 'cpd') for (const c of EVIDENCE_CATEGORIES) await subDir(dir, `${FOLDERS.evidence}/${c}`, true);
@@ -223,6 +252,6 @@ function buildFramework(f, previous) {
   }
   if (new Set(Object.values(folders)).size !== Object.keys(folders).length) throw new Error('Each folder needs a different name.');
   const evidenceFolders = lines(f.evidenceFolders).map((x) => x.replace(/[\\/:*?"<>|]+/g, ' ').trim()).filter(Boolean);
-  return { name: f.name.trim() || 'My framework', goal: previous.goal, source: previous.source, labels: { attr: f.labelAttr.trim() || 'Attributes', ksb: f.labelKsb.trim() || 'KSBs' }, levels, groups, attributes, ksbs, folders, evidenceFolders };
+  return { name: f.name.trim() || 'My framework', goal: previous.goal, source: previous.source, labels: { attr: f.labelAttr.trim() || 'Attributes', ksb: f.labelKsb.trim() || 'KSBs', ...itemLabels({ attr: f.labelAttr, item: f.labelItem, items: f.labelItems }) }, levels, groups, attributes, ksbs, folders, evidenceFolders };
 }
 

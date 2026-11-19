@@ -1,0 +1,5 @@
+/* ---------- sample data mode (src/19-demo.js) ---------- */
+.demo-banner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .4rem .9rem; padding: .4rem 24px;
+  background: var(--accent-soft); color: var(--ink); border-top: 1px solid var(--line); font-size: .92rem; }
+.demo-banner .row { display: flex; gap: .5rem; flex-wrap: wrap; }
+@media print { .demo-banner { display: none; } }

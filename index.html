@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pathway Pro</title>
-<!-- Pathway Pro 2026-11-07: a tracker for a professional review portfolio and CPD. One file, no install, no internet,
+<!-- Pathway Pro 2026-11-19: a tracker for a professional review portfolio and CPD. One file, no install, no internet,
      no AI. Open in Microsoft Edge or Google Chrome. Source and licence notes: see "How to use Pathway Pro". -->
 <style>
 :root {
@@ -174,6 +174,9 @@ tr.click:hover td { background: var(--accent-soft); }
 .mitem { padding: 6px 8px; margin-bottom: 6px; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; }
 .mitem textarea { min-height: 2.6rem; }
 
+/* anything with the hidden attribute stays hidden, even when a rule below sets display */
+[hidden] { display: none !important; }
+
 /* preview drawer */
 #drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(46vw, 900px); min-width: 320px; background: var(--panel); border-left: 1px solid var(--line); box-shadow: -6px 0 24px rgba(0,0,0,.18); z-index: 50; display: flex; flex-direction: column; }
 #drawer header { display: flex; gap: .5rem; align-items: flex-start; padding: 10px 12px; border-bottom: 1px solid var(--line); }
@@ -230,7 +233,7 @@ dialog::backdrop { background: rgba(10, 15, 25, .45); }
   *, *::before, *::after { transition-duration: .001ms !important; animation-duration: .001ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
   button.busy::after { animation: none; }
 }
-a.sub-link { display: inline-block; min-width: 24px; min-height: 24px; line-height: 24px; text-align: center; }
+a.sub-link { display: inline-block; min-width: 24px; box-sizing: border-box; padding: 2px 3px; line-height: 20px; margin: 2px 1px; text-align: center; vertical-align: middle; }
 p a, li a, .meta a, .muted a, .small a { text-decoration: underline; }
 td a[data-preview] { display: inline-block; padding: .25rem 0; }
 .table-wrap:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
@@ -239,9 +242,127 @@ html { scroll-padding-top: 60px; }
 @media (max-width: 700px) { button, .btn { white-space: normal; text-align: left; } .row { flex-wrap: wrap; } }
 ol > li > a { display: inline-block; padding: .2rem 0; }
 
+/* help: folder layout and worked example */
+.grid > .card.wide { grid-column: 1 / -1; }
+dialog.wide { max-width: min(820px, 94vw); }
+.guide h3 { margin-top: 1.1rem; }
+.guide h2 { scroll-margin-top: 130px; }
+.tree, .tree ul { list-style: none; margin: 0; padding-left: 0; }
+.tree ul { padding-left: 1.4rem; border-left: 1px solid var(--line); margin-left: .45rem; }
+.tree li { margin: .35rem 0; }
+.tree .chip { margin-left: .25rem; }
+.tree-text { display: block; color: var(--muted); font-size: .92em; }
+.guide .steps { padding-left: 1.6rem; }
+.guide .steps > li { margin-bottom: .6rem; }
+.guide .steps h3 { margin: .9rem 0 .2rem; }
+.guide .see { color: var(--muted); font-size: .92em; }
+
+
+/* ---- polish: progressive tabs, start screen, get-started panel, skip link ---- */
+.skip { position: absolute; left: 8px; top: -60px; z-index: 100; padding: .5rem .8rem; background: var(--panel); color: var(--ink); border: 2px solid var(--accent); border-radius: 6px; }
+.skip:focus { top: 8px; text-decoration: none; }
+nav.tabs details.more-tabs { position: relative; }
+nav.tabs details.more-tabs summary { list-style: none; cursor: pointer; padding: .75rem .7rem .65rem; color: var(--muted); border-bottom: 3px solid transparent; white-space: nowrap; }
+nav.tabs details.more-tabs summary::-webkit-details-marker { display: none; }
+nav.tabs details.more-tabs summary::after { content: " ▾"; }
+nav.tabs details.more-tabs summary:hover { color: var(--ink); background: var(--soft); }
+nav.tabs details.more-tabs[open] .more-list { position: absolute; top: 100%; left: 0; z-index: 30; min-width: 11rem; display: flex; flex-direction: column; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; box-shadow: var(--shadow); padding: .3rem; }
+nav.tabs details.more-tabs .more-list a { border-bottom: 0; border-radius: 6px; }
+.welcome .start-main { max-width: 640px; }
+.welcome .start-main p { margin: .4rem 0 1rem; }
+button.big, .btn.big { font-size: 1.1rem; padding: .7rem 1.4rem; }
+.welcome .start-other { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .6rem; margin: 1rem 0 1.4rem; }
+.get-started ol.steps { padding-left: 1.3rem; display: grid; gap: .9rem; }
+.get-started ol.steps li { line-height: 1.5; }
+.get-started ol.steps .btn, .get-started ol.steps button { margin-left: .4rem; vertical-align: baseline; }
+a.row-link { color: inherit; text-decoration: none; }
+a.row-link:hover, a.row-link:focus-visible { text-decoration: underline; }
+a.preview-link { white-space: nowrap; }
+label.check { display: flex; align-items: flex-start; gap: .5rem; margin-top: .8rem; font-weight: 400; }
+label.check input { margin-top: .25rem; flex: none; }
+.restore-list li { display: flex; flex-wrap: wrap; gap: .4rem .8rem; align-items: center; padding: .4rem 0; border-bottom: 1px solid var(--line); }
+
+.ready-list li { padding: .25rem 0; display: flex; gap: .5rem; align-items: baseline; }
+.ready-list .good, .ready-list .bad { font-weight: 700; width: 1.2em; flex: none; }
+.key-date { margin: .2rem 0 .6rem; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* links inside running text are underlined, not told apart by colour alone */
+main p a:not(.btn), main li a:not(.btn), main .issue a, main .small a:not(.btn) { text-decoration: underline; }
+main .fb a, main .meta a { text-decoration: underline; }
+main .card > a:not(.btn) { text-decoration: underline; }
+
+body.dropping main { outline: 3px dashed var(--accent); outline-offset: -8px; }
+.add-list li { padding: .15rem 0; }
+header.top .top-right button[hidden] { display: none; }
+
+/* phone: table rows become cards (column names are copied into data-label after each render) */
+@media (max-width: 640px) {
+  .table-wrap { overflow: visible; }
+  table.cardable, table.cardable tbody, table.cardable tr, table.cardable td { display: block; width: auto; }
+  table.cardable thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  table.cardable tr { border: 1px solid var(--line); border-radius: 8px; margin: 0 0 .6rem; padding: .35rem .7rem; background: var(--panel); }
+  table.cardable td { display: flex; gap: .7rem; justify-content: space-between; padding: .25rem 0; border: 0; text-align: right; overflow-wrap: anywhere; }
+  table.cardable td::before { content: attr(data-label); flex: 0 0 34%; font-weight: 600; color: var(--muted); text-align: left; }
+  table.cardable td:empty { display: none; }
+  table.cardable td[colspan] { display: block; }
+}
+/* printed summary */
+.summary .sum-kpis { display: flex; flex-wrap: wrap; gap: .4rem 1.4rem; padding: 0; list-style: none; margin: .5rem 0 1rem; }
+.sum-table { width: 100%; font-size: .9rem; }
+.sum-table tr.group th { background: var(--soft); text-align: left; }
+.sum-table td, .sum-table th { padding: .25rem .4rem; vertical-align: top; }
+@media print {
+  @page { margin: 12mm; }
+  .summary { border: 0; padding: 0; }
+  .sum-table { font-size: 9pt; }
+  .sum-table tr { break-inside: avoid; }
+  a { color: inherit; text-decoration: none; }
+}
+@media (max-width: 640px) {
+  nav.tabs a, nav.tabs details.more-tabs summary { padding: .55rem .45rem .45rem; font-size: .93rem; }
+  header.top .brand { margin-right: .4rem; }
+}
+a.sub-link { display: inline-block; min-width: 24px; min-height: 24px; line-height: 24px; text-align: center; }
+/* ---------- guided tour (src/15-tour.js) ---------- */
+.tour-hole { position: fixed; z-index: 900; pointer-events: none; border-radius: 6px; outline: 3px solid var(--accent); outline-offset: 0;
+  box-shadow: 0 0 0 3px var(--panel), 0 0 0 9999px rgba(8, 12, 20, .58); }
+.tour-hole.none { inset: 0; width: auto; height: auto; border-radius: 0; outline: 0; box-shadow: none; background: rgba(8, 12, 20, .58); }
+@media (prefers-reduced-motion: no-preference) { .tour-hole { transition: left .15s, top .15s, width .15s, height .15s; } }
+.tour-pop { position: fixed; z-index: 901; width: 360px; max-width: calc(100vw - 16px); background: var(--panel); color: var(--ink); border: 2px solid var(--accent);
+  border-radius: var(--radius); padding: 14px 16px 12px; box-shadow: 0 8px 28px rgba(0, 0, 0, .35); }
+.tour-pop:focus { outline: none; }
+.tour-pop:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.tour-pop h2 { margin: 0 0 .35rem; font-size: 1.05rem; }
+.tour-pop p { margin: 0 0 .7rem; }
+.tour-pop .tour-foot { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+.tour-pop .tour-count { font-size: .85rem; color: var(--muted); flex: 1 1 100%; margin-bottom: .1rem; }
+.tour-pop button:focus-visible, .tour-link button:focus-visible, .tour-offer button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.tour-pop button.tour-skip { margin-left: auto; }
+.tour-live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.tour-link { margin: -.2rem 0 .8rem; font-size: .9rem; }
+.tour-link button, .tour-reset button { background: none; border: 0; padding: .3rem 0; min-height: 0; color: var(--accent); text-decoration: underline; cursor: pointer; font: inherit; display: inline; margin-right: 1rem; }
+.tour-offer { border-left: 4px solid var(--accent); }
+.tour-offer p { margin: 0 0 .6rem; }
+@media (pointer: coarse), (max-width: 640px) {
+  .tour-pop button, .tour-offer button { min-height: 44px; }
+  .tour-link button, .tour-reset button { min-height: 44px; }
+}
+@media (max-width: 640px) {
+  .tour-pop { left: 8px !important; right: 8px; top: auto !important; bottom: 8px; width: auto; max-height: 52vh; overflow: auto; }
+}
+.rate-summary { margin: .4rem 0 .8rem; }
+.rate-sel { font: inherit; padding: .25rem .4rem; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); color: var(--ink); max-width: 11rem; }
+/* ---------- sample data mode (src/19-demo.js) ---------- */
+.demo-banner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .4rem .9rem; padding: .4rem 24px;
+  background: var(--accent-soft); color: var(--ink); border-top: 1px solid var(--line); font-size: .92rem; }
+.demo-banner .row { display: flex; gap: .5rem; flex-wrap: wrap; }
+@media print { .demo-banner { display: none; } }
+
 </style>
 </head>
 <body>
+<a class="skip" id="skipLink" href="#main">Skip to content</a>
 <header class="top" id="top"></header>
 <main id="main"><p class="muted">Loading…</p></main>
 <noscript>This tool needs JavaScript. Open it in Microsoft Edge or Google Chrome.</noscript>
@@ -253,7 +374,7 @@ const UKSPEC_DATA = {"ukspec4-engtech":{"name":"UK-SPEC 4th edition: Engineering
 
 const IPD_DATA = {"cm":[{"num":"1","title":"PROFESSIONAL STANDARDS AND ENGINEERING RESPONSIBILITY","level":"Knowledge","intro":"This objective is intended to demonstrate knowledge of professional conduct, a commitment to continuous professional development and engagement with the Institution and wider industry.","must":["the structure and purpose of the Institution of Structural Engineers, together with an awareness of the Institution’s Code of Conduct","an involvement in Institution affairs appropriate to their individual circumstances and location","the limits of their technical competency in recognising complexity in problems and solution methods","the importance of sharing knowledge and data across the industry","the importance of CPD, the Institution requirements for CPD and a record of appropriate training","their need to plan for an ongoing commitment to CPD","being supportive of the needs and concerns of others, especially where this relates to diversity and inclusion","the ethical issues that could arise in their role and how they should carry out their responsibilities in an ethical manner"]},{"num":"2","title":"COMMUNICATION","level":"Ability","intro":"This objective is intended to demonstrate candidates have an ability to communicate effectively in a variety of situations and demonstrate appropriate interpersonal skills.","must":["produce appropriate drawings, sketches, or models (physical or digital) to communicate ideas","produce formal reports","produce both formal and informal communications appropriately","communicate verbally and demonstrate effective inter -personal skills","prepare and deliver presentations","produce documents suitable for a variety of appropriate audiences","create, maintain, and enhance productive working relationships, and resolve conflicts.","evaluate and provide positive critical feedback on the work of others","exchanging information and providing advice to technical and non -technical colleagues"]},{"num":"3","title":"CONCEPT CREATION AND DESIGN","level":"Ability","intro":"This objective is intended to demonstrate a candidate’s skills around producing structural solutions in response to a brief. This would account for key aspects of a structural engineer’s skillset such as designing for safety, carbon, durability, reuse, aes thetics, and cost.","must":["understanding and interrogating the brief to identify possible solutions","producing and comparing a variety of options to a single brief","determining appropriate loading and design criteria","designing load transfer and stability systems, both superstructure and substructure","considering robustness and accidental actions including fire","estimating and communicating the embodied carbon (both upfront and whole life) in the structure as part of the decision -making process, and minimising this as far as possible","consideration of construction issues (e.g., detailing, constructability, phasing, site constraints)","driving collaboration across the project team through an appreciation of wider objectives","coordinating the structural design with other disciplines (e.g., civils, drainage, facades)"]},{"num":"4","title":"ANALYSIS AND SIZING","level":"Ability","intro":"This objective is intended to demonstrate an understanding of structural behaviour and the ability to assess behaviour using appropriate methods of analysis. This objective is also intended to demonstrate competency of interpreting that analysis and using it to size structural elements and details, using the minimum amount of necessary material.","must":["Analysis: understanding structural behaviour at all scales, from a single element to an entire frame","Analysis: using the appropriate analysis tools for each purpose (e.g., hand calcs and models to the appropriate level of detail)","Analysis: using suitable modelling assumptions for each purpose","Analysis: applying appropriate design criteria including loading, utilisation targets, serviceability, and user comfort (e.g., vibration)","Analysis: understanding the limitations of the model and its outputs (approximations, simplifications, etc)","Analysis: verifying results through hand checks, simple approximation, and engineering judgement","Analysis: validation and verification of analysis or design methods","Analysis: identification of limitations in analysis and/or design methods either in terms of accuracy or capability","Sizing and detailing: sizing structures to minimise material usage within the agreed design criteria (e.g., strength, stiffness, durability/maintenance, buildability, etc.)","Sizing and detailing: designing structural details such as connections and reinforcement to the appropriate level of detail at each stage of design","Sizing and detailing: determining and utilising the capacity of existing structures and components through collection and analysis of appropriate information or data where relevant","Sizing and detailing: using appropriate standards, codes of practice, specifications, Institution publications, technical agency publications, bulletins, reports, commercial and relevant publications from other professional institutions etc., and applying the requirements or re commendations of these documents within specification or design criteria"]},{"num":"5","title":"MATERIALS","level":"Ability","intro":"This objective is intended to demonstrate an in -depth understanding of the structural materials used in the candidate’s work, along with an ability to specify and coordinate the use of such materials.","must":["the behaviour and structural properties (including strength, stiffness, ductility, and directionality) for different materials and their common grades/subgrades, and how these impact design and detailing requirements","the effects on carbon emissions related to production methods, material sourcing and supply chains","durability requirements","detailing requirements, including an appreciation of how these affect end -of-life disassembly and reuse","movement behaviour including creep, drying, and thermal movement Whilst candidates often choose to specialise in one or two materials (and thus will have developed an ability in determining their behaviour) they must still have some knowledge of the carbon credentials, availability, behaviour, cost, manufacture, princip al engineering properties and potential applications of a wider range of construction materials."]},{"num":"6","title":"SUSTAINABILITY","level":"Experience","intro":"This objective is intended to demonstrate experience in applying structural engineering in a way that minimises (and ultimately, reverses) negative environmental impacts whilst maximising societal benefit.","must":["communicating the environmental impact of a structural design to the design and client team","questioning the brief to reduce negative impacts whilst achieving the client’s desired outcomes","advocating for reuse and ‘build less’ design approaches","considering wider sustainability aspects within their work"]},{"num":"7","title":"CONSTRUCTION","level":"Experience","intro":"This objective is intended to demonstrate a candidate’s experience of the practical process to convert design work into completed structures and should demonstrate that they are able to contribute to this in a meaningful way. Practical experience of site c onditions and working practices is essential to the safe design and specification of projects.","must":["construction techniques, construction plant and machinery","designing, specifying, or reviewing temporary systems","reviewing construction programmes and construction sequencing","reviewing or producing fabrication or shop drawings","erection methodologies","identification and correction of potential errors","how their observations of construction/fabrication have informed their approach to design/buildability"]},{"num":"8","title":"HEALTH, SAFETY AND RISK MANAGEMENT","level":"Experience","intro":"This objective is intended to demonstrate a candidate’s experience in meeting health and safety requirements and legislation.","must":["using appropriate health and safety standards","engagement with CROSS (Collaborative Reporting for Safer Structures) https://www.cross -safety.org/uk","reviewing and applying learning from CROSS publications","producing risk and hazard assessments","designing out risk","safety on construction sites"]},{"num":"9","title":"MANAGEMENT","level":"Experience","intro":"This objective is intended to demonstrate a candidate’s experience of management skills for programming and control.","must":["management of individuals, teams, and data/information","leadership","programming and project control","interdisciplinary/inter team liaison and interface management","working within a quality management system","contributing to and working within a quality plan"]},{"num":"10","title":"COMMERCIAL AND LEGAL","level":"Knowledge","intro":"This objective is intended to demonstrate a candidate’s knowledge of commercial, financial, contractual, and legal matters relevant to the country and industry in which they work.","must":["commercial pressures within the construction industry including the effects of national and international current affairs on costs","the methods of calculating construction costs including estimating and monitoring the cost of design work","sensitivity of cost variations in construction techniques","relevant forms of contract used in projects for which they are involved, for both design and construction","the procurement routes relevant to the work in which they are involved and appropriate procurement issues including dispute resolution","statutory legislation, negligence/liability laws, health, and safety legislation","decarbonisation and sustainability legislation","contract law"]}],"im":[{"num":"1","title":"PROFESSIONAL STANDARDS AND ENGINEERING RESPONSIBILITY","level":"Knowledge","intro":"This objective is intended to demonstrate knowledge of professional conduct, a commitment to continuous professional development and engagement with the Institution and wider industry.","must":["the structure and purpose of the Institution of Structural Engineers, together with an awareness of the Institution’s Code of Conduct.","an involvement in Institution affairs appropriate to their individual circumstances and location.","the limits of their technical competency in recognising complexity in problems and solution methods.","the importance of CPD, the Institution requirements for CPD and a record of appropriate training.","their need to plan for an ongoing commitment to CPD.","being supportive of the needs and concerns of others, especially where this relates to diversity and inclusion.","the ethical issues that may arise in their role and how they should carry out their responsibilities in an ethical manner."]},{"num":"2","title":"COMMUNICATION","level":"Ability","intro":"This objective is intended to demonstrate candidates have an ability to communicate effectively in a variety of situations and demonstrate appropriate interpersonal skills.","must":["produce appropriate drawings, sketches, or models (physical or digital) to communicate ideas.","produce formal reports.","produce both formal and informal communications appropriately.","communicate verbally and demonstrate effective inter-personal skills.","prepare and deliver presentations.","produce documents suitable for a variety of appropriate audiences.","create, maintain and enhance productive working relationships, and resolve conflicts.","evaluate and provide positive critical feedback on the work of others.","exchange information and provide advice to technical and non-technical colleagues."]},{"num":"3","title":"CONCEPT CREATION AND DESIGN","level":"Experience","intro":"This objective is intended to demonstrate a candidate’s experience of producing structural solutions in response to a brief. This would account for key aspects of a structural engineer’s skillset such as designing for safety, carbon, durability, reuse, aesthetics and cost.","must":["understanding and interrogating the brief to identify possible solutions","producing and comparing a variety of options to a single brief","determining appropriate loading and design criteria","designing load transfer and stability systems, both superstructure and substructure","considering robustness and accidental actions including fire","estimating and communicating the embodied carbon (both upfront and whole-life) in the structure as part of the decision making process, and minimising this as far as possible","considering construction issues (e.g. detailing, constructability, phasing, site constraints)","driving collaboration across the project team through an appreciation of wider objectives","coordinating the structural design with other disciplines (e.g. civils, drainage, facades)"]},{"num":"4","title":"ANALYSIS AND SIZING","level":"Ability","intro":"This objective is intended to demonstrate an understanding of structural behaviour and the ability to assess behaviour using appropriate methods of analysis. This objective is also intended to demonstrate competency of interpreting that analysis and using it to size structural elements and details, using the minimum amount of necessary material.","must":["Analysis: understanding structural behaviour at all scales, from a single element to an entire frame","Analysis: using the appropriate analysis tools for each purpose (e.g. hand calcs and models to the appropriate level of detail)","Analysis: using suitable modelling assumptions for each purpose","Analysis: applying appropriate design criteria including loading, utilisation targets, serviceability and user comfort (e.g. vibration)","Analysis: understanding the limitations of the model and its outputs (approximations, simplifications, etc)","Analysis: verifying results through hand checks, simple approximation, and engineering judgement validation and verification of analysis or design methods","Analysis: identification of limitations in analysis and/or design methods either in terms of accuracy or capability","Sizing and detailing: sizing structures to minimise material usage within the agreed design criteria (eg. strength, stiffness, durability/maintenance, buildability, etc.)","Sizing and detailing: designing structural details such as connections and reinforcement to the appropriate level of detail at each stage of design","Sizing and detailing: contributing to the determination and utilisation of the capacity of existing structures and components through collection and analysis of appropriate information or data where relevant","Sizing and detailing: using appropriate standards, codes of practice, specifications, Institution publications, technical agency publications, bulletins, reports, commercial and relevant publications from other professional institutions etc., and applying the requirements or recommendations of these documents within specification or design criteria"]},{"num":"5","title":"MATERIALS","level":"Ability","intro":"This objective is intended to demonstrate an in-depth understanding of the structural materials used in the candidate’s work, along with an ability to specify and coordinate the use of such materials.","must":["The behaviour and structural properties (including strength, stiffness, ductility, and directionality) for different materials and their common grades/subgrades; and how these impact design and detailing requirements.","The effects on carbon emissions related to production methods, material sourcing and supply chains.","Durability requirements.","Detailing requirements, including an appreciation of how these affect end-of-life disassembly and reuse.","Movement behaviour including creep, drying, and thermal movement. Whilst the candidate often chooses to specialise in one or two materials (and thus have developed an ability in determining their behaviour) they must still have some knowledge of the carbon credentials, availability, behaviour, cost, manufacture, principal engineering properties and potential applications of a wider range of construction materials."]},{"num":"6","title":"SUSTAINABILITY","level":"Experience","intro":"This objective is intended to demonstrate experience in applying structural engineering in a way that minimises (and ultimately, reverses) negative environmental impacts whilst maximising societal benefit.","must":["communicating the impact of a structural design to the design and client team","contributing to questioning the brief to reduce negative impacts whilst achieving the client’s desired outcomes.","contributing to advocating for reuse and ‘build less’ design approaches.","considering the wider sustainability aspects within their work."]},{"num":"7","title":"CONSTRUCTION","level":"Experience","intro":"This objective is intended to demonstrate a candidate’s experience of the practical process to convert design work into completed structures and should demonstrate that they are able to contribute to this in a meaningful way. Practical experience of site conditions and working practices is essential to the safe design and specification of projects.","must":["construction techniques, construction plant and machinery.","designing, specifying, or reviewing temporary systems.","reviewing construction programmes and construction sequencing.","reviewing or producing fabrication or shop drawings.","erection methodologies","identification and correction of potential errors","how their observations of construction/fabrication have informed their approach to design/buildability"]},{"num":"8","title":"HEALTH, SAFETY AND RISK MANAGEMENT","level":"Experience","intro":"This objective is intended to demonstrate a candidate’s experience in meeting health and safety requirements and legislation.","must":["using appropriate health and safety standards","engagement with CROSS (Collaborative Reporting for Safer Structures) https://www.cross-safety.org/uk","reviewing and applying learning from CROSS publications","producing risk and hazard assessments","designing out risk","safety on construction sites"]},{"num":"9","title":"MANAGEMENT","level":"Experience","intro":"This objective is intended to demonstrate a candidate’s experience of management skills for programming and control.","must":["management of individuals, teams, and data/information","leadership at an appropriate level","programming and project control","interdisciplinary/inter team liaison and interface management","working within a quality management system","contributing to and working within a quality plan"]},{"num":"10","title":"COMMERCIAL AND LEGAL","level":"Knowledge","intro":"This objective is intended to demonstrate a candidate’s knowledge of commercial, financial, contractual, and legal matters relevant to the country and industry in which they work.","must":["commercial pressures within the construction industry including the effects of national and international current affairs on costs","the methods of calculating construction costs including estimating and monitoring the cost of design work","sensitivity of cost variations in construction techniques","relevant forms of contract used in projects for which they are involved, for both design and construction","the procurement routes relevant to the work in which they are involved and appropriate procurement issues including dispute resolution","competitive tendering","statutory legislation, negligence/liability laws, health, and safety legislation","decarbonisation and sustainability legislation","contract law"]}],"tm":[{"num":"1","title":"PROFESSIONAL STANDARDS AND ENGINEERING RESPONSIBILITY","level":"Knowledge","intro":"This objective is intended to demonstrate knowledge of professional conduct, a commitment to continuous professional development and engagement with the Institution and wider industry.","must":["the structure and purpose of the Institution of Structural Engineers, together with an awareness of the Institution’s Code of Conduct","an involvement in Institution affairs appropriate to their individual circumstances and location","the limits of their technical competency in recognising complexity in problems and solution methods","the importance of sharing knowledge and data across the industry","the importance of CPD, the Institution requirements for CPD and a record of appropriate training","their need to plan for an ongoing commitment to CPD","being supportive of the needs and concerns of others, especially where this relates to diversity and inclusion","the ethical issues that may arise in their role and how they should carry out their responsibilities in an ethical manner"]},{"num":"2","title":"COMMUNICATION","level":"Ability","intro":"This objective is intended to demonstrate candidates have an ability to communicate effectively in a variety of situations and demonstrate appropriate interpersonal skills.","must":["produce appropriate drawings, sketches, or 3D models (physical or digital) to communicate ideas","contribute to the production of formal reports","produce both formal and informal communications appropriately","communicate verbally and demonstrate effective inter -personal skills","prepare and deliver presentations","produce documents suitable for a variety of appropriate audiences","create, maintain and enhance productive working relationships, and resolve conflicts","evaluate and provide positive critical feedback on the work of others","exchang e information and provid e advice to technical and non -technical colleagues"]},{"num":"3","title":"CONCEPT CREATION AND DESIGN","level":"Appreciation","intro":"This objective is intended to demonstrate an appreciation of the process of concept creation and design. This would include designing for safety, carbon, durability, reuse aesthetics and cost .","must":["the assessment of the brief to identify possible solutions","determining appropriate loading and design criteria","establishing load paths and stability systems","considering robustness and accidental actions, including fire","the process to estimate embodied carbon","the way construction issues impact on design choices","collaboration and coordination with other disciplines"]},{"num":"4","title":"DESIGN AND ANALYSIS","level":"Knowledge","intro":"This objective is intended to demonstrate knowledge of the processes involved in the analysis and design of structures .","must":["the processes involved with the design of individual components in at least one primary structural material (i.e. derivation of forces/stresses/deflections and maintaining equilibrium)","the application of appropriate loading criteria","the use of appropriate design standards, codes of practice etc","the elements within a structure which determine overall stability, robustness and structural integrity","limits of the structural model and its outputs (approximations, simplifications etc)","the verification of analysis using hand checks, simple approximation and engineering judgment"]},{"num":"5","title":"MATERIALS","level":"Knowledge","intro":"This objective is intended to demonstrate knowledge of how materials are specified and incorporated into the structure.","must":["the behaviour and structural properties (including strength, stiffness, ductility, and directionality) for different materials and their common grades/subgrades; and how these impact design and detailing requirements","the effects on carbon emissions related to production methods, material sourcing and supply chains","durability requirements","detailing requirements, including an appreciation of how these affect end -of-life disassembly and reuse","movement behaviour including creep, drying, and thermal movement. Whilst candidates often choose to specialise in one or two materials (and thus will have developed knowledge in determining their behaviour) they must still have some appreciation of the carbon credentials, availability, behaviour, cost, manufacture, princ ipal engineering properties and potential applications of a wider range of construction materials."]},{"num":"6","title":"SUSTAINABILITY","level":"Knowledge","intro":"This objective is intended to demonstrate knowledge in applying structural engineering in a way that minimises (and ultimately, reverses) negative environmental impacts whilst maximising societal benefit .","must":["contributing to the communication of the impact of a structural design within the context of climate and biodiversity issues.","contributing to the questioning of the brief to reduce negative impacts whilst achieving the client’s desired outcomes.","working with the wider design team to reduce the overall project carbon.","considering wider sustainability aspects within their work"]},{"num":"7","title":"CONSTRUCTION","level":"Experience","intro":"This objective is intended to demonstrate candidate’s experience of the practical process to convert design work into completed structures and should demonstrate that they are able to contribute to this in a meaningful way. Practical experience of site con ditions and working practices is essential to the safe design and specification of projects.","must":["construction sites . This may include site visits, undertaking surveys, visiting fabrication/manufacturing locations, responding to site queries, communicating sequence and buildability matter s","construction techniques, construction plant and machinery","reviewing temporary support systems","reviewing construction programmes and construction sequencing","reviewing or producing fabrication or shop drawings","erection methodologies","identification and correction of potential errors","how their observations of construction/fabrication has informed their approach to design/buildability"]},{"num":"8","title":"HEALTH       AND SAFETY","level":"Knowledge","intro":"This objective is intended to demonstrate a candidate’s knowledge of meeting health and safety requirements and legislation.","must":["using appropriate health and safety standards","reviewing CROSS (Collaborative Reporting for Safer Structures) publications","communicating risk and hazard assessments","designing out risk","safety on construction/fabrication sites"]},{"num":"9","title":"MANAGEMENT","level":"Knowledge","intro":"This objective is intended to demonstrate a candidate’s knowledge of management skills and responsibility.","must":["contributing to the management of individuals/self and/or teams and data/information","cooperation with team leadership and management","programming and project control.","interdisciplinary/inter team liaison and interface management."]},{"num":"10","title":"COMMERCIAL","level":"Appreciation","intro":"This objective is intended to demonstrate a candidate’s appreciation of commercial, financial, and contractual matters relevant to the country and industry in which they work.","must":["commercial pressures within the construction industry, including the effects of national and international current affairs on the costs.","the methods of calculating construction costs, including estimating and monitoring the cost of design work.","sensitivity of cost variations in construction techniques.","relevant forms of contract used in projects for which they are involved, for both design and construction.","the procurement routes relevant to the work in which they are involved and the impact on their scope of work","the role of the expert witness In preparing their Summary Report Forms the candidate should be prepared to discuss their understanding of commercial matters and how they have affected the projects they have worked on."]},{"num":"11","title":"TECHNOLOGY, DOCUMENTATION & PROCESS","level":"Ability","intro":"This objective is intended to demonstrate ability in the production, control and management of engineering documentation and systems.","must":["the production of general arrangement drawings","the creation of detail drawings showing the interface between components and materials","the coordination of details and information received from other parts of the design team with the structural information","the control and documentation of information received from and issued to third parties","the use of standard procedures and drawing standards, either company specific or based on industry standards","the production of appropriate schedules (such as bar bending schedules, lintel schedules, beams schedules, pile schedules, material take offs for use in pricing or embodied carbon calculations)","the communication of risks and hazards","the implementation of and compliance with Project Quality Plans"]}]};
 
-const TOOL_VERSION = "2026-11-07";
+const TOOL_VERSION = "2026-11-19";
 
 // ICE IEng sub-attributes and apprenticeship KSBs, from "IEng Attributes and KSB List.xlsx".
 const REF = {"attributes":[{"id":"1a","group":1,"group_title":"Knowledge and Understanding of Engineering","text":"Maintain and extend knowledge of engineering theory and practice, and how technology assists its application."},{"id":"1b","group":1,"group_title":"Knowledge and Understanding of Engineering","text":"Solve engineering problems using a sound theoretical approach, based on evidence, and contribute to continuous improvement."},{"id":"2a","group":2,"group_title":"Technical and practical application of engineering","text":"Identify, review and select techniques, procedures and methods to undertake engineering tasks."},{"id":"2b","group":2,"group_title":"Technical and practical application of engineering","text":"Contribute to the design and development of engineering solutions"},{"id":"2c","group":2,"group_title":"Technical and practical application of engineering","text":"Implement engineering solutions, and evaluate their effectiveness in the context of the whole project life cycle."},{"id":"3a","group":3,"group_title":"Management and leadership","text":"Plan the work and resources needed to enable effective implementation of engineering tasks and projects."},{"id":"3b","group":3,"group_title":"Management and leadership","text":"Manage the planning and organisation of tasks and resources."},{"id":"3c","group":3,"group_title":"Management and leadership","text":"Assist others to meet changing technical and managerial needs."},{"id":"3d","group":3,"group_title":"Management and leadership","text":"Manage teams or technical specialisms."},{"id":"3e","group":3,"group_title":"Management and leadership","text":"Manage quality processes and contribute to quality improvements."},{"id":"4a","group":4,"group_title":"Independent judgement and responsibility","text":"Identify the limits of personal knowledge and skills."},{"id":"4b","group":4,"group_title":"Independent judgement and responsibility","text":"Exercise sound independent engineering judgement and take responsibility."},{"id":"5a","group":5,"group_title":"Commercial ability","text":"Manage, prepare and control costs/budgets of engineering tasks or projects."},{"id":"5b","group":5,"group_title":"Commercial ability","text":"Use sound knowledge of statutory and commercial frameworks within their own area of responsibility and have an appreciation of other commercial arrangements."},{"id":"6a","group":6,"group_title":"Health, safety and welfare","text":"Demonstrate a sound knowledge of legislation, hazards and safe systems of work."},{"id":"6b","group":6,"group_title":"Health, safety and welfare","text":"Manage risks"},{"id":"6c","group":6,"group_title":"Health, safety and welfare","text":"Manage health, safety and welfare within their own area of responsibility. Contribute to improvements in health, safety and welfare."},{"id":"7a","group":7,"group_title":"Sustainable development","text":"Understand the principles of sustainable development and apply them in work."},{"id":"7b","group":7,"group_title":"Sustainable development","text":"Manage engineering activities that contribute to sustainable development and the United Nations’ Sustainable Development Goals (UNSDGs)."},{"id":"8a","group":8,"group_title":"Interpersonal skills and communication","text":"Communicate well with others at all levels including effective use of English, orally and in writing."},{"id":"8b","group":8,"group_title":"Interpersonal skills and communication","text":"Discuss ideas and plans competently and with confidence."},{"id":"8c","group":8,"group_title":"Interpersonal skills and communication","text":"Demonstrate effective personal and social skills."},{"id":"8d","group":8,"group_title":"Interpersonal skills and communication","text":"Demonstrate awareness of diversity and inclusion."},{"id":"9a","group":9,"group_title":"Professional commitment","text":"Understand and comply with the ICE Code of Conduct."},{"id":"9b","group":9,"group_title":"Professional commitment","text":"Plan, carry out and record Continuing Professional Development (CPD) necessary to maintain and enhance competence in their own area of practice."},{"id":"9c","group":9,"group_title":"Professional commitment","text":"Engage with ICE activities."},{"id":"9d","group":9,"group_title":"Professional commitment","text":"Demonstration of appropriate professional standards, recognising obligations to society, the profession and the environment."},{"id":"9e","group":9,"group_title":"Professional commitment","text":"Understand the ethical issues that may arise in their role and carry out their responsibilities in an ethical manner."}],"ksbs":[{"id":"K1","kind":"Knowledge","text":"The principles and techniques used to evaluate the impact of civil engineering infrastructure on society and the environment taking account business, client and end user needs in its construction, management and use. This includes the importance of the tools used to measure welfare, health, safety, and sustainability.","attributes":["2a"]},{"id":"K2","kind":"Knowledge","text":"The mathematical, scientific and engineering principles, methods and modelling that underpin the design and construction of civil engineering infrastructure. This will include understanding structural and ground responses, properties of materials and their predicted behaviour as part of integrated systems.","attributes":["1a","1b"]},{"id":"K3","kind":"Knowledge","text":"The use and validation of digital solutions to model, evaluate, design, test. Build and manage civil engineering infrastructure refining as required and applied to integrated solutions.","attributes":["1b","2a"]},{"id":"K4","kind":"Knowledge","text":"A range of research techniques used to develop innovative solutions to civil engineering problems and the use of current and emerging technologies and products.","attributes":["1b","2a"]},{"id":"K5","kind":"Knowledge","text":"The design and quality standards, codes of practice, legal and regulatory frameworks, such as those of asset owners and regulatory bodies, that govern the life cycle of civil engineering infrastructure","attributes":["2a","2b"]},{"id":"K6","kind":"Knowledge","text":"The principles and techniques of effective project management including resources, cost management and risk assessment.","attributes":["3a","3b","5a"]},{"id":"K7","kind":"Knowledge","text":"How to manage teams and develop staff to meet changing technical and managerial needs.","attributes":["3c"]},{"id":"K8","kind":"Knowledge","text":"How to communicate effectively and provide guidance to others through design models, calculations, reports, drawings, specifications, presentations, digital media, and discussions with those both inside and outside the industry.","attributes":["8a"]},{"id":"K9","kind":"Knowledge","text":"The professional and ethical codes of conduct and associated responsibilities as set out by the relevant professional engineering institution.","attributes":["9a","9d"]},{"id":"S1","kind":"Skill","text":"Evaluate the impact of civil engineering infrastructure on society and the environment taking account of business, client and end user needs in its construction, management and use.","attributes":["2b","7b"]},{"id":"S2","kind":"Skill","text":"Proactively consider welfare, health, safety, and sustainability in the life cycle of civil engineering infrastructure using tools such as CEEQUAL and environmental impact assessments","attributes":["6a","6b","6c","7a"]},{"id":"S3","kind":"Skill","text":"Apply mathematical, scientific and engineering principles, methods and modelling to the design and construction of civil engineering infrastructure.","attributes":["1a","1b"]},{"id":"S4","kind":"Skill","text":"Use and validate digital solutions to model, evaluate, design, test, build and manage civil engineering infrastructure defining engineering and other constraints, identifying risks and how these may be resolved through design.","attributes":["2a","2b"]},{"id":"S5","kind":"Skill","text":"Develop innovative, safe, technical solutions to civil engineering problems through the use of research techniques, market intelligence and best practice.","attributes":["2a","2b"]},{"id":"S6","kind":"Skill","text":"Interpret and apply design and quality standards including codes of practice, legal and regulatory frameworks, in the development of civil engineering solutions, the determination of construction methods and the technical aspects of site activities.","attributes":["2b","3d"]},{"id":"S7","kind":"Skill","text":"Manage and apply safe systems of work including taking responsibility for own obligations for health, safety, and welfare issues, assessing and controlling risk, working with health, safety and welfare legislation and best practice.","attributes":["6a","6b","6c"]},{"id":"S8","kind":"Skill","text":"Manage the planning, budgeting and organisation of tasks, people and resources through the use of appropriate management systems, working to agreed quality standards, project programme and budget, within legal contractual and statutory requirements.","attributes":["5a","5b"]},{"id":"S9","kind":"Skill","text":"Manage teams and develop staff to meet changing technical and managerial needs.","attributes":["3c"]},{"id":"S10","kind":"Skill","text":"Communicate effectively and provide guidance to others through design models, calculations, reports, drawings, specifications, presentations, digital media, and discussions with those both inside and outside the industry.","attributes":["8a","8b"]},{"id":"S11","kind":"Skill","text":"Carry out and record the continuing professional development necessary to maintain and enhance knowledge and competence as a civil engineer.","attributes":["9b"]},{"id":"B1","kind":"Behaviour","text":"Be aware of the needs and concerns of others, especially in relation to diversity and equality.","attributes":["8c","8d"]},{"id":"B2","kind":"Behaviour","text":"Demonstrate reliability, integrity, and respect for confidentiality.","attributes":["9e"]},{"id":"B3","kind":"Behaviour","text":"Demonstrate confidence and flexibility in dealing with new and changing interpersonal situations","attributes":["8c","8d"]},{"id":"B4","kind":"Behaviour","text":"Be conscious of the need to create, maintain and enhance productive working relationships.","attributes":["3c","8c"]},{"id":"B5","kind":"Behaviour","text":"Demonstrate a strong commitment to health, safety and welfare","attributes":["6c"]},{"id":"B6","kind":"Behaviour","text":"Demonstrate a personal commitment to professional and ethical standards, recognising your obligations to society, the profession and the environment.","attributes":["9a","9e"]},{"id":"B7","kind":"Behaviour","text":"Demonstrate self-awareness of knowledge and skills and only undertake work that you are competent to do.","attributes":["4a","4b"]},{"id":"B8","kind":"Behaviour","text":"Reflect on their personal development needs and place a strong emphasis on addressing them.","attributes":["9b"]}]};
@@ -711,6 +832,7 @@ const S = {
   loadedStamp: 0,     // lastModified of my data file when loaded, to spot an edit from another device
   files: [],          // evidence files in the portfolio: {path, name, size, mtime, handle}
   saving: false,
+  demo: false,        // true while looking around with sample data (19-demo.js): in memory only, every write is blocked
   dirty: false,
   warnings: [],
 };
@@ -728,6 +850,7 @@ function idb() {
   });
 }
 async function remember(key, value) {
+  if (S.demo) return;
   let db;
   try { db = await idb(); } catch (_) { return; }
   await new Promise((resolve, reject) => {
@@ -757,6 +880,7 @@ async function permission(handle, mode, ask) {
 }
 
 async function pickFolder(id, mode) {
+  if (demoBlocked()) throw new Error('Not available with sample data');
   return window.showDirectoryPicker({ id, mode, startIn: 'documents' });
 }
 
@@ -778,6 +902,7 @@ async function readJson(dir, path) {
   return { json: JSON.parse(await file.text()), stamp: file.lastModified };
 }
 async function writeFile(dir, path, content) {
+  if (S.demo) throw new Error('Not available with sample data');
   const h = await fileHandle(dir, path, true);
   const w = await h.createWritable();
   await w.write(content);
@@ -852,6 +977,7 @@ function upgrade(d) {
   d.evidence = d.evidence || {}; d.comments = d.comments || {}; d.meetings = d.meetings || [];
   d.cpd = d.cpd || { objectives: [], activities: [], reviews: [] };
   d.cpd.reviews = d.cpd.reviews || [];
+  d.ksbRatings = d.ksbRatings || {};
   return d;
 }
 
@@ -880,6 +1006,7 @@ async function loadOther() {
 }
 
 async function scanEvidence() {
+  if (S.demo) return;   // the sample files are made up and live only in S.files
   const root = portfolioRoot();
   S.files = root ? (await listDir(root, FOLDERS.evidence)).map((f) => ({ ...f, path: `${FOLDERS.evidence}/${f.path}` })) : [];
   S.files.sort((a, b) => natural(a.path, b.path));
@@ -898,13 +1025,54 @@ async function conflictCopies() {
 }
 
 const saveSoon = debounce(() => save(), 700);
+// Undo: one snapshot per burst of changes (changes less than 1.5 seconds apart count as one step), up to 25 steps.
+const UNDO = { stack: [], redo: [], base: null, pending: false, timer: null, bytes: 0 };
+function undoReset() { UNDO.stack = []; UNDO.redo = []; UNDO.pending = false; UNDO.base = S.data ? JSON.stringify(S.data) : null; refreshUndo(); }
+function refreshUndo() {
+  const u = $('#undoBtn'), r = $('#redoBtn');
+  if (u) u.hidden = !UNDO.stack.length;
+  if (r) r.hidden = !UNDO.redo.length;
+}
+function noteChange() {
+  if (!UNDO.base) return;
+  if (!UNDO.pending) {
+    UNDO.stack.push(UNDO.base);
+    UNDO.redo = [];
+    UNDO.pending = true;
+    UNDO.bytes += UNDO.base.length;
+    while (UNDO.stack.length > 25 || (UNDO.bytes > 40e6 && UNDO.stack.length > 1)) UNDO.bytes -= UNDO.stack.shift().length;
+  }
+  clearTimeout(UNDO.timer);
+  UNDO.timer = setTimeout(() => { UNDO.base = JSON.stringify(S.data); UNDO.pending = false; refreshUndo(); }, 1500);
+  refreshUndo();
+}
+async function undoStep(redo = false) {
+  const from = redo ? UNDO.redo : UNDO.stack, to = redo ? UNDO.stack : UNDO.redo;
+  if (!from.length || !S.data) return;
+  clearTimeout(UNDO.timer);
+  UNDO.pending = false;
+  const now = JSON.stringify(S.data);
+  const snap = from.pop();
+  to.push(now);
+  S.data = upgrade(JSON.parse(snap));
+  UNDO.base = snap;
+  applyFramework(P() && P().framework);
+  S.dirty = true;
+  setSaveState('Saving…');
+  saveSoon();
+  await render();
+  toast(redo ? 'Redone' : 'Undone');
+}
+
 function changed() {
+  noteChange();
   S.dirty = true;
   setSaveState('Saving…');
   saveSoon();
 }
 
 async function save(force = false) {
+  if (S.demo) { S.dirty = false; setSaveState('Not saved (sample)'); return; }
   if (!S.data || S.saving) { if (S.saving) saveSoon(); return; }
   S.saving = true;
   try {
@@ -934,6 +1102,7 @@ async function save(force = false) {
 
 // One copy a day in ice-data/backups, the newest 30 kept.
 async function dailyBackup(text) {
+  if (S.demo) return;
   const base = isMentor() ? 'mentor' : 'portfolio';
   const path = `${DATA_DIR}/backups/${base}-${today()}.json`;
   if (await exists(S.own, path)) return;
@@ -961,7 +1130,7 @@ window.addEventListener('beforeunload', (e) => { if (S.dirty) { e.preventDefault
 let LEVELS = [], LEVEL_SHORT = {}, LEVEL_NAME = {}, LEVEL_HELP = {};
 let SUBS = [], SUB = {}, GROUPS = [], KSBS = [], KSB = {};
 let HEADING_RE = /$^/, SUB_LC = {};
-let LABEL = { attr: 'Attributes', ksb: 'KSBs' };
+let LABEL = { attr: 'Attributes', ksb: 'KSBs', item: 'sub-attribute', items: 'sub-attributes' };
 let FRAMEWORK = null;
 const DEFAULT_FOLDERS = { ...FOLDERS };
 const DEFAULT_CATEGORIES = EVIDENCE_CATEGORIES.slice();
@@ -973,7 +1142,7 @@ const clone = (o) => JSON.parse(JSON.stringify(o));
 const ICE_FRAMEWORK = {
   name: 'ICE IEng (apprenticeship)',
   source: 'ICE IEng sub-attributes and the apprenticeship standard KSBs (Institute for Apprenticeships and Technical Education)',
-  labels: { attr: 'Attributes', ksb: 'KSBs' },
+  labels: { attr: 'Attributes', ksb: 'KSBs', item: 'sub-attribute', items: 'sub-attributes' },
   levels: [
     { id: 'knowledge', short: 'K', name: 'Knowledge', help: 'knows and understands it (training, CPD, reading), not yet shown applied on real work.' },
     { id: 'experience', short: 'E', name: 'Experience', help: 'applied it on real work, with guidance, as part of a team, or with a senior making the key decisions.' },
@@ -988,7 +1157,7 @@ const ICE_FRAMEWORK = {
 
 const BLANK_FRAMEWORK = {
   name: 'My framework',
-  labels: { attr: 'Requirements', ksb: 'Standards' },
+  labels: { attr: 'Requirements', ksb: 'Standards', item: 'requirement', items: 'requirements' },
   levels: [{ id: 'evidence', short: 'E', name: 'Evidence', help: 'a piece of evidence that shows this requirement is met.' }],
   groups: [{ id: '1', title: 'First group (rename me)' }],
   attributes: [{ id: '1a', group: '1', text: 'First requirement (replace with your own)' }],
@@ -1010,7 +1179,7 @@ function ipdFramework(key, name, level) {
     { id: 'ability', short: 'B', name: 'Ability', help: 'performed without supervision and competent to advise others.' },
   ];
   return {
-    name, source: 'Institution of Structural Engineers, IPD Guidance for this grade', goal: 1, labels: { attr: 'Core objectives', ksb: 'Must demonstrate' }, levels,
+    name, source: 'Institution of Structural Engineers, IPD Guidance for this grade', goal: 1, labels: { attr: 'Core objectives', ksb: 'Must demonstrate', item: 'core objective', items: 'core objectives' }, levels,
     groups: [{ id: 'CO', title: 'Core Objectives' }],
     attributes: objs.map((o) => ({ id: o.num, group: 'CO', text: `${sentence(o.title)}: ${o.intro.replace(/^This objective is intended to /, '')}`, min: lv[o.level] || '' })),
     ksbs: objs.flatMap((o) => o.must.map((m, i) => ({ id: `${o.num}.${i + 1}`, kind: `Objective ${o.num}`, text: m, attributes: [o.num] }))),
@@ -1022,7 +1191,7 @@ function ipdFramework(key, name, level) {
 function ukspecFramework(key) {
   const d = UKSPEC_DATA[key];
   return {
-    name: d.name, source: d.source, goal: 1, labels: { attr: 'Competences', ksb: 'Standards' },
+    name: d.name, source: d.source, goal: 1, labels: { attr: 'Competences', ksb: 'Standards', item: 'competence', items: 'competences' },
     levels: [{ id: 'evidence', short: 'E', name: 'Evidence', help: 'a piece of evidence that shows this competence, for example a report, drawing, calculation, email or record of your own work.' }],
     groups: Object.entries(UKSPEC_DATA._titles).map(([id, title]) => ({ id, title: `${id}. ${title}` })),
     attributes: d.attrs.map(([id, group, text]) => ({ id, group, text })),
@@ -1031,13 +1200,41 @@ function ukspecFramework(key) {
     evidenceFolders: ['0 - Project work - PW', '1 - Reports and calculations - RC', '2 - Drawings and models - DM', '3 - Correspondence and meetings - CO', '4 - Certificates and CPD - CE'],
   };
 }
+// Wording per institution preset: attr = tab/group-level heading (plural), item = one entry, items = plural.
+// Evidence for each word: ICE ipr/cpr/tpr: the preset names say "areas of attributes" and the ids are 1a, 1b (sub-attributes of attribute 1).
+// CIBSE: the source title says "Competence Criteria". IMechE: names say "application questions". RINA: source says "learning outcomes".
+// CIHT TPP: the groups are titled "Professional units" / "Technical units". RITTech: preset name says "competencies P1 to P4"
+// (the heading word only; its items P1.1 have no stated name, so the item word stays neutral). IChemE: nothing in the data
+// names the items (only "sections A to D"), so it keeps the neutral 'requirement'.
+const INST_LABELS = {
+  'ice-ipr': { attr: 'Attributes', item: 'sub-attribute', items: 'sub-attributes' },
+  'ice-cpr': { attr: 'Attributes', item: 'sub-attribute', items: 'sub-attributes' },
+  'ice-tpr': { attr: 'Attributes', item: 'sub-attribute', items: 'sub-attributes' },
+  'cibse-mcibse': { attr: 'Competences', item: 'competence', items: 'competences' },
+  'cibse-acibse': { attr: 'Competences', item: 'competence', items: 'competences' },
+  'imeche-ceng': { attr: 'Questions', item: 'question', items: 'questions' },
+  'imeche-ieng': { attr: 'Questions', item: 'question', items: 'questions' },
+  'rina-ceng': { attr: 'Learning outcomes', item: 'learning outcome', items: 'learning outcomes' },
+  'rina-ieng': { attr: 'Learning outcomes', item: 'learning outcome', items: 'learning outcomes' },
+  'ciht-tpp': { attr: 'Units', item: 'unit', items: 'units' },
+  'rittech': { attr: 'Competencies', item: 'requirement', items: 'requirements' },
+  'icheme': { attr: 'Requirements', item: 'requirement', items: 'requirements' },
+};
+// Older saved frameworks have no labels.item: work it out from labels.attr, else 'requirement'.
+const ITEM_FROM_ATTR = { attributes: 'sub-attribute', competences: 'competence', competencies: 'competency', questions: 'question', 'core objectives': 'core objective', 'learning outcomes': 'learning outcome', units: 'unit', requirements: 'requirement' };
+function itemLabels(labels) {
+  labels = labels || {};
+  const item = String(labels.item || '').trim() || ITEM_FROM_ATTR[String(labels.attr || '').trim().toLowerCase()] || 'requirement';
+  return { item, items: String(labels.items || '').trim() || (/y$/.test(item) ? item.slice(0, -1) + 'ies' : item + 's') };
+}
+const cap1 = (s) => String(s).charAt(0).toUpperCase() + String(s).slice(1);
 // Other institutions' published competence lists (one preset each), read from their guidance documents.
 function instFramework(key) {
   const d = INST_DATA[key];
   const custom = d.levels && d.levels.length;
   const levels = custom ? d.levels.map(([short, name, help]) => ({ id: slug(name), short, name, help })) : [{ id: 'evidence', short: 'E', name: 'Evidence', help: 'a piece of evidence that shows this requirement is met, for example a report, drawing, calculation, email or record of your own work.' }];
   return {
-    name: d.name, source: d.source, goal: 1, labels: { attr: 'Requirements', ksb: 'Standards' }, levels,
+    name: d.name, source: d.source, goal: 1, labels: { ...(INST_LABELS[key] || { attr: 'Requirements', item: 'requirement', items: 'requirements' }), ksb: 'Standards' }, levels,
     groups: d.groups.map(([id, title]) => ({ id, title })),
     attributes: d.attrs.map(([id, group, text, min]) => ({ id, group, text, min: custom && min ? (levels.find((l) => l.short === min) || {}).id || '' : '' })),
     ksbs: [],
@@ -1092,16 +1289,17 @@ function applyFramework(fw) {
   KSB = Object.fromEntries(KSBS.map((k) => [k.id, k]));
   const ids = SUBS.map((a) => a.id).sort((x, y) => y.length - x.length).map(escRe);
   HEADING_RE = ids.length ? new RegExp(`^\\s*(${ids.join('|')})\\s*[–—\\-:.)]\\s*(.*)$`, 'i') : /$^/;
-  LABEL = { attr: (fw.labels && fw.labels.attr) || 'Attributes', ksb: (fw.labels && fw.labels.ksb) || 'KSBs' };
+  LABEL = { attr: (fw.labels && fw.labels.attr) || 'Attributes', ksb: (fw.labels && fw.labels.ksb) || 'KSBs', ...itemLabels(fw.labels) };
   Object.assign(FOLDERS, DEFAULT_FOLDERS, fw.folders || {});
   EVIDENCE_CATEGORIES = (fw.evidenceFolders || []).slice();
-  S.prr = {};   // parsed reports depend on the requirement ids: read them again
+  S.prr = S.demo ? demoPrr() : {};   // parsed reports depend on the requirement ids: read them again
 }
 const subIdFromHeading = (text) => SUB_LC[String(text).toLowerCase()] || '';
 applyFramework(null);
 
 // Make the folders in the person's OneDrive folder, including one per kind of evidence.
 async function ensureFolders(dir, mode) {
+  if (S.demo) return;
   const names = mode === 'cpd' ? [FOLDERS.cpd, FOLDERS.exports] : Object.values(FOLDERS);
   for (const f of names) await subDir(dir, f, true);
   if (mode !== 'cpd') for (const c of EVIDENCE_CATEGORIES) await subDir(dir, `${FOLDERS.evidence}/${c}`, true);
@@ -1177,7 +1375,7 @@ function buildFramework(f, previous) {
   }
   if (new Set(Object.values(folders)).size !== Object.keys(folders).length) throw new Error('Each folder needs a different name.');
   const evidenceFolders = lines(f.evidenceFolders).map((x) => x.replace(/[\\/:*?"<>|]+/g, ' ').trim()).filter(Boolean);
-  return { name: f.name.trim() || 'My framework', goal: previous.goal, source: previous.source, labels: { attr: f.labelAttr.trim() || 'Attributes', ksb: f.labelKsb.trim() || 'KSBs' }, levels, groups, attributes, ksbs, folders, evidenceFolders };
+  return { name: f.name.trim() || 'My framework', goal: previous.goal, source: previous.source, labels: { attr: f.labelAttr.trim() || 'Attributes', ksb: f.labelKsb.trim() || 'KSBs', ...itemLabels({ attr: f.labelAttr, item: f.labelItem, items: f.labelItems }) }, levels, groups, attributes, ksbs, folders, evidenceFolders };
 }
 
 
@@ -1315,6 +1513,7 @@ function sectionChecks(s, codes, accepted) {
 }
 
 async function loadReports() {
+  if (S.demo) return;   // sample reports are made up in S.prr
   const root = portfolioRoot();
   if (!root) return;
   const files = (await listDir(root, FOLDERS.prr)).filter((f) => /\.docx$/i.test(f.name));
@@ -1413,7 +1612,7 @@ function nextSteps(limit = 8) {
   const missing = evidenceItems().filter((i) => i.missing);
   if (missing.length) out.push({ text: `${plural(missing.length, 'evidence record')} lost ${missing.length === 1 ? 'its file' : 'their files'} (moved or renamed): relink them`, href: '#evidence?show=missing' });
   if (fb.length) out.push({ text: `Answer ${plural(fb.length, 'open mentor comment')}`, href: '#feedback' });
-  if (unmapped.length) out.push({ text: `Map ${plural(unmapped.length, 'evidence file')} to sub-attributes`, href: '#evidence?show=unmapped' });
+  if (unmapped.length) out.push({ text: `Map ${plural(unmapped.length, 'evidence file')} to ${LABEL.items}`, href: '#evidence?show=unmapped' });
   const gaps = SUBS.map((a) => ({ a, s: slots(cov[a.id]) })).sort((x, y) => x.s - y.s);
   for (const { a, s } of gaps.slice(0, 4)) {
     if (s >= slotMax(cov[a.id])) break;
@@ -1502,30 +1701,78 @@ function cpdWarnings(a) {
   return out;
 }
 
+
+// A plain yes/no list of what should be true before the portfolio goes in. Worked out from the data; nothing is guessed.
+function readiness() {
+  const cov = coverage();
+  const prr = prrBySub();
+  const items = evidenceItems();
+  const full = SUBS.filter((a) => slotStatus(cov[a.id]) === 'met').length;
+  const open = feedbackItems().filter((f) => f.status === 'open').length;
+  const unmapped = items.filter((i) => !i.missing && !(i.rec && i.rec.maps && i.rec.maps.length)).length;
+  const missing = items.filter((i) => i.missing).length;
+  const notWritten = SUBS.filter((a) => ['missing', 'empty', 'placeholder'].includes(prr[a.id].state)).length;
+  const warned = SUBS.filter((a) => prr[a.id].state === 'draft').length;
+  const yr = cpdYear(today());
+  const hours = P().cpd.activities.filter((a) => cpdYear(a.dateFrom) === yr).reduce((n, a) => n + (+a.hours || 0), 0);
+  const target = P().settings.cpdTarget || 0;
+  const list = [
+    { ok: full === SUBS.length, text: `Every ${LABEL.item} has enough evidence (${full} of ${SUBS.length})`, href: '#attributes' },
+    { ok: unmapped === 0 && missing === 0, text: unmapped || missing ? `${unmapped ? plural(unmapped, 'evidence file') + ' not mapped' : ''}${unmapped && missing ? ', ' : ''}${missing ? plural(missing, 'evidence record') + ' with a missing file' : ''}` : 'All evidence files are mapped and found', href: '#evidence?show=' + (missing ? 'missing' : 'unmapped') },
+    { ok: notWritten === 0, text: notWritten ? `${notWritten} of ${SUBS.length} ${LABEL.items} not written up in a report yet` : `Every ${LABEL.item} is written up in a report`, href: '#reports' },
+    { ok: warned === 0, text: warned ? `${plural(warned, 'report section')} with check warnings` : 'No report check warnings', href: '#reports' },
+    { ok: open === 0, text: open ? `${plural(open, 'mentor comment')} still open` : 'No open mentor comments', href: '#feedback' },
+    { ok: !target || hours >= target, text: `CPD this year: ${hours} of ${target} hours`, href: '#cpd' },
+  ];
+  return list;
+}
+
 // The app shell: top bar and tabs, routing, the preview panel, search, and the first-run screens.
 
 const VIEWS = {};      // name -> function(arg, query) that renders into #main
 const canEdit = () => !isMentor();   // the portfolio data belongs to the apprentice
 
+// Every page that exists for this person (used for routing); the tab bar shows only some of them (tabsShown).
 function tabsFor() { return tabsAll().filter((t) => t[0] !== 'ksbs' || KSBS.length); }
+// Progressive tabs: a new apprentice sees only Home, Evidence, CPD, Settings and Help. The others appear as soon as
+// there is something for them to show (or always, with Settings -> "Show every tab"); the rest stay under "More".
+function tabUnlocked(id) {
+  if (isMentor() || !P() || P().mode === 'cpd' || (P().settings && P().settings.showAllTabs)) return true;
+  const hasEvidence = evidenceItems().length > 0 || Object.values(P().evidence || {}).some((r) => r.maps && r.maps.length);
+  switch (id) {
+    case 'attributes': case 'ksbs': case 'reports': return hasEvidence || Object.keys(S.prr || {}).length > 0;
+    case 'feedback': return feedbackItems().length > 0;
+    case 'meetings': return (P().meetings || []).length > 0;
+    case 'mentor': return !!S.other || !!S.otherData;
+    default: return true;
+  }
+}
+function tabsShown(active) {
+  const all = tabsFor();
+  const shown = all.filter((t) => tabUnlocked(t[0]) || t[0] === active);
+  return { shown, more: all.filter((t) => !shown.includes(t)) };
+}
 function tabsAll() {
   if (!S.data) return [];
   if (isMentor()) return [['home', 'Home'], ['evidence', 'Evidence'], ['attributes', LABEL.attr], ['ksbs', LABEL.ksb], ['reports', 'Reports'], ['feedback', 'Feedback'], ['meetings', 'Meetings'], ['mentor', 'Assessment'], ['cpd', 'CPD'], ['settings', 'Settings'], ['help', 'Help']];
   if (P().mode === 'cpd') return [['cpd', 'CPD'], ['settings', 'Settings'], ['help', 'Help']];
   return [['home', 'Home'], ['evidence', 'Evidence'], ['attributes', LABEL.attr], ['ksbs', LABEL.ksb], ['reports', 'Reports'], ['feedback', 'Feedback'], ['meetings', 'Meetings'], ['cpd', 'CPD'], ['mentor', 'Mentor'], ['settings', 'Settings'], ['help', 'Help']];
 }
-const ACTIVE_TAB = { framework: 'settings', item: 'evidence', sub: 'attributes', report: 'reports', meeting: 'meetings', ksb: 'ksbs' };
+const ACTIVE_TAB = { summary: 'home', framework: 'settings', item: 'evidence', sub: 'attributes', report: 'reports', meeting: 'meetings', ksb: 'ksbs' };
 
 function renderHeader(active) {
   const who = S.data ? (isMentor() ? `Mentor: ${esc(S.data.name)} · apprentice: ${esc((P() && P().name) || S.data.apprentice || '?')}` : esc(S.data.name)) : '';
   const openFb = S.data && P() ? feedbackItems().filter((f) => f.status === 'open').length : 0;
   $('#top').innerHTML = `<div class="bar">
     <a class="brand" href="#${S.data && P() && P().mode === 'cpd' ? 'cpd' : 'home'}">Pathway Pro<small>${who}</small></a>
-    <nav class="tabs">${tabsFor().map(([id, name]) => `<a href="#${id}" class="${active === id ? 'active' : ''}"${active === id ? ' aria-current="page"' : ''}>${name}${
-      id === 'feedback' && openFb ? `<span class="count" title="open comments">${openFb}</span>` : ''}</a>`).join('')}</nav>
-    <div class="top-right">${S.data ? `<div class="search-wrap"><input id="search" type="search" placeholder="Search (Ctrl+K)" autocomplete="off"><div id="searchResults" hidden></div></div>
+    <nav class="tabs" aria-label="Pages">${tabsShown(active).shown.map(([id, name]) => `<a href="#${id}" class="${active === id ? 'active' : ''}"${active === id ? ' aria-current="page"' : ''}>${name}${
+      id === 'feedback' && openFb ? `<span class="count" title="open comments">${openFb}</span>` : ''}</a>`).join('')}${tabsShown(active).more.length ? `<details class="more-tabs"><summary>More</summary><div class="more-list">${tabsShown(active).more.map(([id, name]) => `<a href="#${id}">${name}</a>`).join('')}</div></details>` : ''}</nav>
+    <div class="top-right">${S.data ? `<button id="tourBtn" class="small" title="A short guided tour of this tool">Show me around</button><div class="search-wrap"><input id="search" type="search" placeholder="Search (Ctrl+K)" autocomplete="off"><div id="searchResults" hidden></div></div>
+      <button id="undoBtn" class="small" title="Undo the last change (Ctrl+Z)" ${UNDO.stack.length ? '' : 'hidden'}>↶ Undo</button><button id="redoBtn" class="small" title="Redo (Ctrl+Y)" ${UNDO.redo.length ? '' : 'hidden'}>Redo</button>
       <span id="saveState" class="save-state">${S.dirty ? 'Saving…' : isMentor() || S.data.saved ? 'Saved' : ''}</span>` : ''}</div></div>`;
+  if (S.demo) demoBanner();
   if (S.data) bindSearch();
+  if ($('#undoBtn')) { $('#undoBtn').addEventListener('click', () => undoStep(false)); $('#redoBtn').addEventListener('click', () => undoStep(true)); }
 }
 
 function parseHash() {
@@ -1535,6 +1782,26 @@ function parseHash() {
   return { name: i < 0 ? path : path.slice(0, i), arg: i < 0 ? '' : path.slice(i + 1), q: new URLSearchParams(query || '') };
 }
 const go = (hash) => { if (location.hash === hash) render(); else location.hash = hash; };
+
+// Tie each <label> that has no "for" to the form control that follows it, so every field has an accessible name.
+let autoLabelId = 0;
+function autoLabel(root) {
+  for (const l of $$('label:not([for])', root)) {
+    if (l.querySelector('input,select,textarea')) continue;
+    const next = l.nextElementSibling;
+    const ctl = next && (next.matches('input,select,textarea') ? next : next.querySelector('input,select,textarea'));
+    if (!ctl || (ctl.id && document.querySelector(`label[for="${ctl.id}"]`))) continue;
+    if (!ctl.id) ctl.id = 'auto-' + (++autoLabelId);
+    l.setAttribute('for', ctl.id);
+  }
+  // Any field still without a name takes the heading of the card it sits in (for example the framework text boxes).
+  for (const ctl of $$('input:not([type=hidden]):not([type=file]),select,textarea', root)) {
+    if (ctl.getAttribute('aria-label') || ctl.getAttribute('aria-labelledby') || ctl.closest('label') || (ctl.id && document.querySelector(`label[for="${ctl.id}"]`))) continue;
+    const box = ctl.closest('.card, section');
+    const h = box && box.querySelector('h2, h3');
+    if (h) ctl.setAttribute('aria-label', h.textContent.trim());
+  }
+}
 
 async function render() {
   const main = $('#main');
@@ -1552,6 +1819,8 @@ async function render() {
     const html = await VIEWS[name](arg, q);
     if (html !== undefined) { main.innerHTML = banners + html; }
     if (VIEWS[name].after) VIEWS[name].after(arg, q);
+    autoLabel(main);
+    labelTableCells(main);
   } catch (err) {
     console.error(err);
     main.innerHTML = banners + `<div class="banner bad">This page failed to load: ${esc(err.message)}</div>`;
@@ -1608,6 +1877,7 @@ document.addEventListener('click', (e) => {
 
 let previewUrl = null;
 async function previewHtml(path) {
+  if (S.demo) return demoPreviewHtml(path);
   const file = await getFile(path);
   if (previewUrl) URL.revokeObjectURL(previewUrl);
   const ext = (path.split('.').pop() || '').toLowerCase();
@@ -1655,7 +1925,7 @@ function searchIndex() {
   const out = [];
   if (P() && P().mode !== 'cpd') {
     for (const it of evidenceItems()) out.push({ kind: 'Evidence', text: `${it.code} ${it.title} ${it.path} ${(it.rec && it.rec.notes) || ''}`, label: `${it.code ? it.code + ' · ' : ''}${it.title}`, href: itemHref(it) });
-    for (const a of SUBS) out.push({ kind: 'Sub-attr.', text: `${a.id} ${a.text} ${a.group_title}`, label: `${a.id} · ${a.text}`, href: '#sub/' + a.id });
+    for (const a of SUBS) out.push({ kind: cap1(LABEL.item), text: `${a.id} ${a.text} ${a.group_title}`, label: `${a.id} · ${a.text}`, href: '#sub/' + a.id });
     for (const k of KSBS) out.push({ kind: 'KSB', text: `${k.id} ${k.text}`, label: `${k.id} · ${k.text}`, href: '#ksbs?k=' + k.id });
     for (const f of feedbackItems()) out.push({ kind: 'Comment', text: `${f.author} ${f.text} ${f.anchor} ${f.response}`, label: `${f.sub || ''} ${f.author}: ${f.text}`, href: '#feedback?key=' + f.key });
     for (const m of P().meetings) {
@@ -1697,6 +1967,12 @@ function bindSearch() {
 document.addEventListener('keydown', (e) => {
   if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k' && $('#search')) { e.preventDefault(); $('#search').focus(); $('#search').select(); }
   if (e.key === 'Escape') closePreview();
+  // Ctrl+Z / Ctrl+Y undo and redo changes to the portfolio, except while typing in a field (the field keeps its own undo).
+  if ((e.ctrlKey || e.metaKey) && !e.altKey && S.data && !(e.target.closest && e.target.closest('input,textarea,select,[contenteditable],dialog'))) {
+    const k = e.key.toLowerCase();
+    if (k === 'z' && !e.shiftKey) { e.preventDefault(); undoStep(false); }
+    else if (k === 'y' || (k === 'z' && e.shiftKey)) { e.preventDefault(); undoStep(true); }
+  }
 });
 
 // ---------- dialogs ----------
@@ -1738,11 +2014,28 @@ async function start() {
       <p class="muted">Right-click <b>Pathway Pro.html</b> → <b>Open with</b> → <b>Microsoft Edge</b>.</p></div>`;
     return;
   }
-  S.own = await recall('own');
-  S.other = await recall('other');
-  if (!S.own) return welcome();
-  if (!(await permission(S.own, 'readwrite', false))) return reconnect();
-  await openAll();
+  // If reading the folder stalls (for example OneDrive is still syncing), say so instead of showing "Loading…" for ever.
+  const stalled = setTimeout(() => {
+    if (S.data) return;
+    $('#main').innerHTML = `<div class="welcome card"><h1>Still opening your folder…</h1>
+      <p>This is taking longer than usual. OneDrive may still be syncing, or Edge may be waiting for your permission.</p>
+      <div class="row"><button class="primary" id="stallReload">Try again</button><button id="stallForget">Use a different folder</button></div></div>`;
+    $('#stallReload').addEventListener('click', () => location.reload());
+    $('#stallForget').addEventListener('click', async () => { try { await remember('own', null); await remember('other', null); } catch (_) {} location.reload(); });
+  }, 10000);
+  try {
+    S.own = await recall('own');
+    S.other = await recall('other');
+    if (!S.own) return welcome();
+    if (!(await permission(S.own, 'readwrite', false))) return reconnect();
+    await openAll();
+  } catch (err) {
+    console.error(err);
+    $('#main').innerHTML = `<div class="welcome card"><h1>Could not open your folder</h1><p>${esc(err.message)}</p>
+      <p class="muted">Check that the folder still exists and OneDrive has finished syncing, then try again.</p>
+      <div class="row"><button class="primary" id="errReload">Try again</button></div></div>`;
+    $('#errReload').addEventListener('click', () => location.reload());
+  } finally { clearTimeout(stalled); }
 }
 
 async function openAll() {
@@ -1756,6 +2049,7 @@ async function openAll() {
   if (copies.length) S.warnings.push(`OneDrive made conflict copies of the data file (${copies.join(', ')}). The tool uses the main file; check whether anything in a copy is missing, then delete the copy.`);
   await scanEvidence();
   await loadReports();
+  undoReset();
   if (!location.hash) location.hash = P() && P().mode === 'cpd' ? '#cpd' : '#home';
   await render();
 }
@@ -1780,12 +2074,16 @@ function welcome(note = '') {
     <p>A tracker for a professional review or apprenticeship portfolio: evidence mapped to the attributes or requirements of your own framework (ICE IEng is built in; you can edit it or write your own for any institution or level),
     checks on your Word reports, your mentor's comments, meeting notes and CPD. No AI, no internet, no install: everything stays in your OneDrive folder.</p>
     ${note ? `<div class="banner">${note}</div>` : ''}
-    <div class="choices">
-      <button class="choice card" id="wNew"><b>Start my portfolio</b><span class="muted">Pick (or make) an empty folder in your OneDrive, e.g. <i>ICE Portfolio - Your Name</i>. The tool creates the Evidence, PRR, Meetings and CPD folders in it.</span></button>
-      <button class="choice card" id="wOpen"><b>Open my folder</b><span class="muted">You already use the tool: pick your portfolio or mentoring folder.</span></button>
-      <button class="choice card" id="wMentor"><b>I am a mentor</b><span class="muted">Pick an empty folder of your own for your assessments, then the apprentice's shared folder.</span></button>
-      <button class="choice card" id="wCpd"><b>CPD record only</b><span class="muted">Just the ICE Development Action Plan and Personal Development Record, without the Professional Review parts.</span></button>
-    </div>
+    <div class="card start-main"><h2>Start here</h2>
+      <p>Pick (or make) an empty folder in your OneDrive, for example <i>Portfolio - Your Name</i>. The tool sets up the folders for your evidence, reports, meetings and CPD inside it. It takes about a minute.</p>
+      <button class="primary big" id="wNew">Start my portfolio</button></div>
+    <p class="start-other"><b>Already use it, or a different job?</b>
+      <button id="wOpen" title="You already use the tool: pick your portfolio or mentoring folder">Open my folder</button>
+      <button id="wMentor" title="Pick an empty folder of your own for your assessments, then the apprentice's shared folder">I am a mentor</button>
+      <button id="wCpd" title="Just the ICE Development Action Plan and Personal Development Record, without the Professional Review parts">CPD record only</button>
+      <button id="wDemo" title="See the tool filled in with made-up data. Nothing is saved and no folder is needed">Look around with sample data</button></p>
+    <div class="card"><h2>New to this?</h2><p>You do not need to know how to organise your evidence first. See how the folders are laid out and what goes where, then follow a worked example.</p>
+      <div class="row"><button id="wFolders">Suggested folder layout</button><button id="wSteps">Example: empty folder to finished portfolio</button></div></div>
     <p class="small muted">Your files never leave your computer and OneDrive. Edge will ask to let this page see and save files in the folder you pick.</p></div>`;
   $('#wNew').addEventListener('click', () => setupPortfolio('ice'));
   $('#wCpd').addEventListener('click', () => setupPortfolio('cpd'));
@@ -1795,6 +2093,9 @@ function welcome(note = '') {
     await openAll();
   });
   $('#wMentor').addEventListener('click', setupMentor);
+  $('#wDemo').addEventListener('click', startDemo);
+  $('#wFolders').addEventListener('click', () => showGuide('folders'));
+  $('#wSteps').addEventListener('click', () => showGuide('steps'));
 }
 
 function askText(title, labelText, value = '', help = '') {
@@ -1815,7 +2116,7 @@ async function setupPortfolio(mode) {
   try { dir = await pickFolder('own', 'readwrite'); } catch (_) { return; }
   S.own = dir;
   if (await loadOwn()) { await remember('own', dir); return openAll(); }
-  const name = await askText('Your name', 'Name (as on your ICE application)', '', 'Shown on exports and to your mentor.');
+  const name = await askText('Your name', 'Your full name', '', 'Shown on exports and to your mentor.');
   if (!name) return;
   S.data = newPortfolio(name, mode);
   if (mode !== 'cpd') {
@@ -1830,7 +2131,7 @@ async function setupPortfolio(mode) {
   await save(true);
   await remember('own', dir);
   toast(`Set up in "${dir.name}"`);
-  location.hash = mode === 'cpd' ? '#cpd' : '#help';
+  location.hash = mode === 'cpd' ? '#cpd' : '#home';
   await openAll();
 }
 
@@ -1858,6 +2159,15 @@ async function setupMentor() {
   await openAll();
 }
 
+// "Skip to content" for keyboard and screen-reader users (a plain #main link would change the page route).
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('#skipLink')) return;
+  e.preventDefault();
+  const m = $('#main');
+  m.setAttribute('tabindex', '-1');
+  m.focus();
+});
+
 // Anything unexpected is shown, never a page stuck on "Loading…".
 window.addEventListener('error', (e) => toast('Something went wrong: ' + e.message, 'error'));
 window.addEventListener('unhandledrejection', (e) => toast('Something went wrong: ' + ((e.reason && e.reason.message) || e.reason), 'error'));
@@ -1880,25 +2190,44 @@ VIEWS.home = async () => {
   const yr = cpdYear(today());
   const hours = P().cpd.activities.filter((a) => cpdYear(a.dateFrom) === yr).reduce((n, a) => n + (+a.hours || 0), 0);
   const ms = M() ? SUBS.filter((a) => M().subs[a.id] && M().subs[a.id].status === 'met').length : null;
-  return `<h1>${isMentor() ? esc(P() ? P().name : 'Apprentice') + '’s portfolio' : 'Your ICE Professional Review'}</h1>
+  // Brand new portfolio: a short "start here" list instead of a screen of zeros.
+  if (!isMentor() && P().mode !== 'cpd' && !items.length && !Object.keys(S.prr).length && !P().meetings.length && !P().cpd.activities.length) {
+    return `<h1>Welcome, ${esc(P().name || 'there')}</h1>
+      <div class="card get-started"><h2>Three steps to get going</h2>
+        <ol class="steps">
+          <li><b>Check your framework.</b> This is the list of ${esc(LABEL.attr.toLowerCase())} you will map your evidence to. ${esc(FRAMEWORK.name)} is chosen. <a class="btn" href="#framework">Check or change it</a></li>
+          <li><b>Put your evidence files in your OneDrive folder.</b> Save them in <code>${esc(FOLDERS.evidence)}</code> (sub-folders are fine) and start each file name with a code such as <code>CO-14</code>. <button id="homeRefresh" class="primary">Look for my files</button></li>
+          <li><b>Map each file</b> to the ${esc(LABEL.attr.toLowerCase())} it shows. The tool then shows what is covered and what is missing. <a class="btn" href="#evidence">Open Evidence</a></li>
+        </ol>
+        <p class="small muted">The other pages (${esc(LABEL.attr)}, Reports, Feedback, Meetings and Mentor) appear as soon as you have something to put in them. <a href="#settings">Show every tab now</a>. Stuck? <a href="#help">Read the short guide</a>.</p></div>`;
+  }
+  return `<h1>${isMentor() ? esc(P() ? P().name : 'Apprentice') + '’s portfolio' : 'Your portfolio'}</h1>
+    ${(() => { const k = P().settings && P().settings.keyDate; if (!k) return ''; const days = Math.round((new Date(k + 'T00:00:00') - new Date(today() + 'T00:00:00')) / 86400000); const what = esc(P().settings.keyDateLabel || 'Key date'); return `<p class="key-date"><b>${what}:</b> ${esc(fmtDate(k))} · ${days > 1 ? days + ' days to go (about ' + Math.ceil(days / 7) + ' weeks)' : days === 1 ? 'tomorrow' : days === 0 ? 'today' : Math.abs(days) + ' days ago'}</p>`; })()}
+    <p class="muted small">Assessing against ${esc(FRAMEWORK.name)}.${isMentor() ? '' : ' <a href="#framework">Change</a>'} <a href="#summary">Print a one-page summary</a></p>
     <div class="kpis">
       <div class="kpi"><div class="label">Overall</div><div class="big-number">${Math.round(c.total * 100)}%</div>${meter(c.total)}</div>
       <div class="kpi"><div class="label">Evidence slots (${LEVELS.map((l) => LEVEL_SHORT[l]).join('/')} × ${goal()})</div><div class="big-number">${Math.round(c.evidence * 100)}%</div>${meter(c.evidence)}<div class="small muted">${met} of ${SUBS.length} sub-attributes full</div></div>
       <div class="kpi"><div class="label">PRR sections</div><div class="big-number">${Math.round(c.prr * 100)}%</div>${meter(c.prr)}<div class="small muted">${Object.keys(S.prr).length} Word file(s) in PRR</div></div>
-      <div class="kpi"><div class="label">Mentor comments</div><div class="big-number">${fbOpen}</div><div class="small muted">open · <a href="#feedback">answer them</a></div></div>
+      <div class="kpi"><div class="label">Mentor comments</div><div class="big-number">${fbOpen}</div><div class="small muted">open${fbOpen ? ' · <a href="#feedback">answer them</a>' : ''}</div></div>
       <div class="kpi"><div class="label">Evidence files</div><div class="big-number">${items.filter((i) => !i.missing).length}</div><div class="small muted">${items.filter((i) => !i.missing && !(i.rec && i.rec.maps && i.rec.maps.length)).length} not mapped yet</div></div>
       <div class="kpi"><div class="label">CPD ${cpdYearLabel(yr)}</div><div class="big-number">${hours}<small style="font-size:1rem"> / ${P().settings.cpdTarget} h</small></div>${meter(hours / (P().settings.cpdTarget || 30), hours >= P().settings.cpdTarget ? 'good' : '')}</div>
       ${ms !== null ? `<div class="kpi"><div class="label">Mentor: met</div><div class="big-number">${ms}<small style="font-size:1rem"> / ${SUBS.length}</small></div><div class="small muted"><a href="#mentor">assessment</a></div></div>` : ''}
     </div>
     <div class="grid">
+      ${!isMentor() && P().mode !== 'cpd' ? `<div class="card"><h2>Ready to submit?</h2><ul class="list-plain ready-list">${readiness().map((r) => `<li><span class="${r.ok ? 'good' : 'bad'}" aria-hidden="true">${r.ok ? '✓' : '✗'}</span> <span class="sr-only">${r.ok ? 'Done: ' : 'Not yet: '}</span>${r.ok ? esc(r.text) : `<a href="${r.href}">${esc(r.text)}</a>`}</li>`).join('')}</ul></div>` : ''}
       <div class="card"><h2>Next steps</h2>${steps.length ? `<ol>${steps.map((s) => `<li><a href="${s.href}">${esc(s.text)}</a></li>`).join('')}</ol>` : '<p class="good">Nothing outstanding. 🎉</p>'}</div>
       <div class="card"><h2>Open actions from meetings</h2>${actions.length ? `<ul class="list-plain">${actions.slice(0, 10).map((a) => `<li>${a.due ? `<span class="chip ${a.due < today() ? 'bad' : ''}">${fmtDate(a.due)}</span> ` : ''}${linkify(a.text)} <span class="small muted">· <a href="#meeting/${a.meeting.id}">${fmtDate(a.meeting.date)}</a></span></li>`).join('')}</ul>` : '<p class="muted">None. Actions come from tagging "To do" in a meeting.</p>'}</div>
-      <div class="card"><h2>By attribute</h2><table><tbody>${GROUPS.map((g) => {
+      <div class="card"><h2>${esc(LABEL.attr)}</h2><table><tbody>${GROUPS.map((g) => {
         const subs = SUBS.filter((a) => a.group === g.group);
         const frac = subs.reduce((n, a) => n + slots(cov[a.id]), 0) / subs.reduce((n, a) => n + slotMax(cov[a.id]), 0);
         return `<tr class="click" onclick="location.hash='#attributes?g=${g.group}'"><td class="nowrap"><b>${g.group}</b></td><td>${esc(g.title)}</td><td style="width:30%">${meter(frac, frac >= 1 ? 'good' : '')}</td></tr>`;
       }).join('')}</tbody></table></div>
     </div>`;
+};
+
+VIEWS.home.after = () => {
+  const b = $('#homeRefresh');
+  if (b) b.addEventListener('click', (e) => act(e.currentTarget, async () => { await scanEvidence(); await loadReports(); await render(); }, 'Evidence folder re-read'));
 };
 
 // ---------- evidence list ----------
@@ -1922,20 +2251,21 @@ VIEWS.evidence = async (arg, q) => {
   const qs = (patch) => '#evidence?' + new URLSearchParams({ show, folder, q: q.get('q') || '', ...patch }).toString();
   return `<div class="row spread"><h1>Evidence</h1><div class="row">
       <button id="rescan" title="Look for new, moved or deleted files">↻ Refresh</button>
+      ${canEdit() ? '<button id="addFiles" class="primary" title="Copy files into your evidence folder (or drag them onto this page)">Add files…</button>' : ''}
       ${canEdit() ? '<button id="autoCodes" title="Give codes to files that have none">Number files…</button>' : ''}
-      <button id="exportXlsx" class="primary">Export Excel matrix</button></div></div>
+      <button id="exportXlsx">Export Excel matrix</button></div></div>
     <p class="muted small">Every file in <code>${FOLDERS.evidence}</code> (and its sub-folders) is listed. Save each file in the folder for its kind (correspondence, markups, calculations…). Put a code such as <code>CO-14</code> at the start of a file name and it is picked up; otherwise type one in. Click a row to map it.</p>
     <div class="sub-tabs">${['all', 'unmapped', 'mapped', 'missing'].map((s) => `<a href="${qs({ show: s })}" class="${show === s ? 'active' : ''}">${{ all: 'All', unmapped: 'Not mapped', mapped: 'Mapped', missing: 'File missing' }[s]} (${counts[s]})</a>`).join('')}
       <select id="folderSel" aria-label="Folder"><option value="">All folders</option>${folders.map((f) => `<option ${f === folder ? 'selected' : ''}>${esc(f)}</option>`).join('')}</select>
       <input id="evFilter" type="search" placeholder="Filter…" value="${esc(q.get('q') || '')}"></div>
     ${list.length ? `<div class="card table-wrap" tabindex="0" role="region" aria-label="Table"><table><thead><tr><th>Code</th><th>Title</th><th>Folder</th><th>Mapped to</th><th>Date</th><th></th></tr></thead><tbody>
-      ${list.map((i) => `<tr class="click" data-href="${itemHref(i)}"><td class="nowrap"><b>${esc(i.code) || '<span class="muted">–</span>'}</b></td>
+      ${list.map((i) => `<tr class="click" data-href="${itemHref(i)}"><td class="nowrap"><b>${i.code ? `<a class="row-link" href="${itemHref(i)}">${esc(i.code)}</a>` : `<a class="row-link muted" href="${itemHref(i)}" aria-label="Open ${esc(i.title)}">–</a>`}</b></td>
         <td>${esc(i.title)}${i.missing ? ' ' + chip('file missing', 'bad') : ''}${M() && i.code && M().evidence[i.code] ? ' ' + chip('mentor note', 'accent') : ''}</td>
         <td class="small muted">${esc(i.folder)}</td>
         <td>${((i.rec && i.rec.maps) || []).sort((a, b) => natural(a.sub, b.sub)).map((m) => chip(`${m.sub} ${LEVEL_SHORT[m.level]}`, 'accent')).join('')}</td>
         <td class="small nowrap">${esc((i.rec && i.rec.date) || '')}</td>
-        <td>${i.missing ? '' : `<a href="#" data-preview="${esc(i.path)}" title="Preview">👁</a>`}</td></tr>`).join('')}</tbody></table></div>`
-      : `<div class="empty">${counts.all ? 'Nothing matches.' : `No files yet. Save your evidence into the <b>${FOLDERS.evidence}</b> folder (sub-folders are fine), then press Refresh.`}</div>`}`;
+        <td>${i.missing ? '' : `<a href="#" data-preview="${esc(i.path)}" class="preview-link small" aria-label="Preview ${esc(i.title)}"><span aria-hidden="true">👁</span> Preview</a>`}</td></tr>`).join('')}</tbody></table></div>`
+      : `<div class="empty">${counts.all ? 'Nothing matches. <a href="#evidence">Show everything</a>.' : `<b>No evidence files yet.</b><br>Press <b>Add files…</b> (or drag files onto this page), or save them into the <code>${FOLDERS.evidence}</code> folder in your OneDrive yourself (sub-folders are fine). Start each file name with a code such as <code>CO-14</code>, then press <b>Refresh</b> above. Not sure how to organise them? <a href="#help">See the suggested folder layout</a>.`}</div>`}`;
 };
 VIEWS.evidence.after = (arg, q) => {
   $$('tr[data-href]').forEach((tr) => tr.addEventListener('click', (e) => { if (!e.target.closest('a')) location.hash = tr.dataset.href; }));
@@ -1945,6 +2275,7 @@ VIEWS.evidence.after = (arg, q) => {
   filter.addEventListener('input', debounce(() => { q.set('q', filter.value); history.replaceState(null, '', '#evidence?' + q.toString()); render().then(() => { const f = $('#evFilter'); f.focus(); f.setSelectionRange(f.value.length, f.value.length); }); }, 300));
   $('#folderSel').addEventListener('change', (e) => { q.set('folder', e.target.value); location.hash = '#evidence?' + q.toString(); });
   if ($('#autoCodes')) $('#autoCodes').addEventListener('click', numberFiles);
+  if ($('#addFiles')) $('#addFiles').addEventListener('click', pickEvidenceFiles);
 };
 
 function evidenceRecord(it) {
@@ -2018,14 +2349,14 @@ VIEWS.item = async (arg) => {
         <datalist id="projects">${[...new Set(Object.values(P().evidence).map((r) => r.project).filter(Boolean))].map((p) => `<option>${esc(p)}</option>`).join('')}</datalist>
         <p class="small muted">File: ${it.missing ? esc(it.path) : fileLink(it.path, it.path)}${it.file ? ` · ${fmtSize(it.file.size)}` : ''}${usedIn.length ? ` · in your PRR for ${usedIn.map(subLink).join(' ')}` : ''}</p></div>
 
-        <div class="card"><h2>Sub-attributes and level</h2>
-          <p class="small muted">Click ${LEVELS.map((l) => LEVEL_SHORT[l]).join(', ')} for each sub-attribute this shows. ${LEVELS.map((l) => `<b>${esc(LEVEL_SHORT[l])}</b> ${esc(LEVEL_HELP[l].replace(/^[^:]*: /, ''))}`).join(' ')}</p>
+        <div class="card"><h2>${cap1(LABEL.items)} and level</h2>
+          <p class="small muted">Click ${LEVELS.map((l) => LEVEL_SHORT[l]).join(', ')} for each ${LABEL.item} this shows. ${LEVELS.map((l) => `<b>${esc(LEVEL_SHORT[l])}</b> ${esc(LEVEL_HELP[l].replace(/^[^:]*: /, ''))}`).join(' ')}</p>
           <div class="map-grid">${GROUPS.map((g) => `<div class="group-title">${g.group}. ${esc(g.title)}</div>` + SUBS.filter((a) => a.group === g.group).map((a) =>
             `<div class="map-row"><span class="sid">${subLink(a.id)}</span><span class="stext" title="${esc(a.text)}">${esc(a.text)}</span>${LEVELS.map((l) =>
               `<button class="small lvl-btn ${has(a.id, l) ? 'on' : ''}" data-sub="${a.id}" data-level="${l}" title="${esc(LEVEL_HELP[l])}"${dis(ed)}>${LEVEL_SHORT[l]}</button>`).join('')}</div>`).join('')).join('')}</div>
         </div>
 
-        ${(rec.maps || []).length ? `<div class="card"><h2>Mapping details</h2><table><thead><tr><th>Sub-attr.</th><th>Level</th><th>KSBs</th><th>Note (why it fits)</th><th></th></tr></thead><tbody>
+        ${(rec.maps || []).length ? `<div class="card"><h2>Mapping details</h2><table><thead><tr><th>${cap1(LABEL.item)}</th><th>Level</th><th>KSBs</th><th>Note (why it fits)</th><th></th></tr></thead><tbody>
           ${rec.maps.slice().sort((a, b) => natural(a.sub, b.sub)).map((m) => {
             const i = rec.maps.indexOf(m);
             const related = KSBS.filter((k) => k.attributes.includes(m.sub));
@@ -2100,7 +2431,7 @@ VIEWS.attributes = async (arg, q) => {
   const fb = feedbackItems();
   const only = q.get('g');
   return `<h1>${esc(LABEL.attr)}</h1>
-    <p class="muted small">Goal: ${goal()} different pieces of evidence at each level (${LEVELS.map((l) => LEVEL_NAME[l]).join(', ')}) for every sub-attribute. Click a row for everything about it.</p>
+    <p class="muted small">Goal: ${goal()} different pieces of evidence at each level (${LEVELS.map((l) => LEVEL_NAME[l]).join(', ')}) for every ${LABEL.item}. Click a row for everything about it.</p>
     ${GROUPS.filter((g) => !only || String(g.group) === only).map((g) => `<div class="card"><h2>${g.group}. ${esc(g.title)}</h2><div class="table-wrap" tabindex="0" role="region" aria-label="Table"><table class="attr">
       <thead><tr><th>Sub</th><th>Description</th><th>${LEVELS.map((l) => LEVEL_SHORT[l]).join(' / ')}</th><th>Evidence</th><th>PRR</th><th>Comments</th>${M() ? '<th>Mentor</th>' : ''}</tr></thead><tbody>
       ${SUBS.filter((a) => a.group === g.group).map((a) => {
@@ -2108,7 +2439,7 @@ VIEWS.attributes = async (arg, q) => {
         const codes = [...new Set(LEVELS.flatMap((l) => cell[l].map(label)))].sort(natural);
         const open = fb.filter((f) => f.sub === a.id && f.status === 'open').length;
         const ms = M() && M().subs[a.id];
-        return `<tr class="click" data-href="#sub/${a.id}"><td><b>${a.id}</b></td><td>${esc(a.text)}</td><td class="nowrap">${slotsHtml(cell)}</td>
+        return `<tr class="click" data-href="#sub/${a.id}"><td><b><a class="row-link" href="#sub/${a.id}">${a.id}</a></b></td><td>${esc(a.text)}</td><td class="nowrap">${slotsHtml(cell)}</td>
           <td class="small">${codes.slice(0, 12).map((c) => esc(c)).join(', ')}${codes.length > 12 ? ` +${codes.length - 12}` : ''}</td>
           <td>${prrChip(prr[a.id].state)}</td><td>${open ? chip(open + ' open', 'bad') : ''}</td>
           ${M() ? `<td>${ms && ms.status ? chip(MENTOR_STATUS[ms.status], ms.status === 'met' ? 'good' : 'part') : ''}</td>` : ''}</tr>`;
@@ -2119,7 +2450,7 @@ VIEWS.attributes.after = () => $$('tr[data-href]').forEach((tr) => tr.addEventLi
 // Everything about one sub-attribute on one page.
 VIEWS.sub = async (id) => {
   const a = SUB[id];
-  if (!a) return '<div class="empty">Unknown sub-attribute.</div>';
+  if (!a) return '<div class="empty">Unknown item.</div>';
   await loadReports();
   const cell = coverage()[id];
   const prr = prrBySub()[id];
@@ -2127,7 +2458,7 @@ VIEWS.sub = async (id) => {
   const meet = P().meetings.flatMap((m) => m.items.filter((i) => i.sub === id).map((i) => ({ ...i, meeting: m })));
   const ms = M() && M().subs[id];
   const i = SUBS.indexOf(a);
-  return `<div class="row spread"><a href="#attributes">← Attributes</a><div class="row">
+  return `<div class="row spread"><a href="#attributes">← ${esc(LABEL.attr)}</a><div class="row">
       ${SUBS[i - 1] ? `<a class="btn small" href="#sub/${SUBS[i - 1].id}">‹ ${SUBS[i - 1].id}</a>` : ''}${SUBS[i + 1] ? `<a class="btn small" href="#sub/${SUBS[i + 1].id}">${SUBS[i + 1].id} ›</a>` : ''}</div></div>
     <h1>${id} · ${esc(a.text)}</h1><p class="muted">${a.group}. ${esc(a.group_title)} · ${slotsHtml(cell)}</p>
     <div class="cols">
@@ -2155,14 +2486,14 @@ VIEWS.ksbs = async (arg, q) => {
   const cov = ksbCoverage();
   const focus = q.get('k');
   return `<h1>Knowledge, Skills and Behaviours</h1>
-    <p class="muted small">From the apprenticeship standard. <b>Direct</b>: evidence where you ticked the KSB on a mapping. <b>Via sub-attribute</b>: evidence mapped to a sub-attribute this KSB is linked to.</p>
-    <div class="card table-wrap" tabindex="0" role="region" aria-label="Table"><table><thead><tr><th>KSB</th><th>Description</th><th>Sub-attributes</th><th>Direct</th><th>Via sub-attribute</th></tr></thead><tbody>
+    ${ratingSummary()}<p class="muted small">From the apprenticeship standard. <b>Direct</b>: evidence where you ticked the KSB on a mapping. <b>Via ${LABEL.item}</b>: evidence mapped to a ${LABEL.item} this KSB is linked to.</p>
+    <div class="card table-wrap" tabindex="0" role="region" aria-label="Table"><table><thead><tr><th>KSB</th><th>Description</th><th>${cap1(LABEL.items)}</th><th>Direct</th><th>Via ${LABEL.item}</th><th>My rating</th></tr></thead><tbody>
     ${KSBS.map((k) => `<tr id="ksb-${k.id}" ${focus === k.id ? 'style="outline:2px solid var(--accent)"' : ''}><td><b>${k.id}</b><div class="small muted">${esc(k.kind)}</div></td><td class="small">${esc(k.text)}</td>
       <td>${k.attributes.map(subLink).join(' ')}</td>
       <td>${[...cov[k.id].direct].map(itemLink).join(' ') || '<span class="muted">–</span>'}</td>
-      <td>${cov[k.id].via.size ? chip(cov[k.id].via.size + ' items', cov[k.id].via.size >= 3 ? 'good' : 'part') : chip('none', 'bad')}</td></tr>`).join('')}</tbody></table></div>`;
+      <td>${cov[k.id].via.size ? chip(cov[k.id].via.size + ' items', cov[k.id].via.size >= 3 ? 'good' : 'part') : chip('none', 'bad')}</td><td>${ratingCell(k)}</td></tr>`).join('')}</tbody></table></div>`;
 };
-VIEWS.ksbs.after = (arg, q) => { const k = q.get('k'); if (k && $('#ksb-' + k)) $('#ksb-' + k).scrollIntoView({ block: 'center' }); };
+VIEWS.ksbs.after = (arg, q) => { ratingAfter(); const k = q.get('k'); if (k && $('#ksb-' + k)) $('#ksb-' + k).scrollIntoView({ block: 'center' }); };
 
 // PRRs (Word is the master: the tool only reads them) and the mentor's comments in them.
 
@@ -2195,7 +2526,7 @@ VIEWS.reports = async () => {
               <td class="small">${s.listed.map(codeLink).join(' ') || '<span class="muted">–</span>'}</td>
               <td class="small">${s.discussed.map(codeLink).join(' ') || '<span class="muted">–</span>'}</td>
               <td>${issues.map(([lv, msg]) => `<div class="issue ${lv}">${linkify(msg)}</div>`).join('') || '<span class="good small">✓</span>'}</td></tr>`;
-          }).join('')}</tbody></table></div>` : '<p class="muted">No sub-attribute headings found (a heading looks like "2b – Contribute to the design…").</p>'}</div>`;
+          }).join('')}</tbody></table></div>` : `<p class="muted">No ${LABEL.item} headings found (a heading looks like "2b – Contribute to the design…").</p>`}</div>`;
     }).join('') : `<div class="empty">No Word files in <b>${FOLDERS.prr}</b> yet.${canEdit() ? ' Press <b>New PRR from template</b> to start one.' : ''}</div>`}
     ${reports.length && missing.length ? `<div class="card"><h2>Not in any PRR yet</h2><p>${missing.map((a) => subLink(a.id)).join(' ')}</p></div>` : ''}`;
 };
@@ -2207,17 +2538,17 @@ VIEWS.reports.after = () => {
 
 const PRR_HELP = `<h2>Writing a PRR the tool can check</h2>
   <ol>
-    <li>Start each sub-attribute with a heading line such as <b>2b – Contribute to the design and development of engineering solutions</b> (number, letter, dash, then any text). Use Word's Heading style if you like; it is not required.</li>
+    <li>Start each ${LABEL.item} with a heading line such as <b>2b – Contribute to the design and development of engineering solutions</b> (number, letter, dash, then any text). Use Word's Heading style if you like; it is not required.</li>
     <li>Under it, list the evidence on one line: <b>Evidence: CO-14, DD-00 to DD-05</b>.</li>
     <li>Before you write about a piece of evidence, put its code in curly brackets, for example <b>{CO-14}</b>, then write about it (&ldquo;I checked the…&rdquo;). The write-up runs until the next tag or heading.</li>
-    <li>Your mentor comments in Word as normal (Review → New Comment, or Track Changes). The tool lists every comment under the right sub-attribute.</li>
+    <li>Your mentor comments in Word as normal (Review → New Comment, or Track Changes). The tool lists every comment under the right ${LABEL.item}.</li>
   </ol>
-  <p class="small muted">The checks: evidence listed but not written about, written about but not listed, codes that are not in your Evidence folder, very short write-ups, and evidence not yet mapped to that sub-attribute.</p>`;
+  <p class="small muted">The checks: evidence listed but not written about, written about but not listed, codes that are not in your Evidence folder, very short write-ups, and evidence not yet mapped to that ${LABEL.item}.</p>`;
 
 function newPrrDialog() {
   const d = dialog(`<h2>New PRR from the template</h2>
-    <p class="small muted">Makes a Word file in <code>${FOLDERS.prr}</code> with a heading and an Evidence line for each sub-attribute. Existing files are never overwritten.</p>
-    <label>Attribute</label><select id="prrGroup">${GROUPS.map((g) => `<option value="${g.group}">${g.group}. ${esc(g.title)}</option>`).join('')}<option value="all">All in one file</option></select>
+    <p class="small muted">Makes a Word file in <code>${FOLDERS.prr}</code> with a heading and an Evidence line for each ${LABEL.item}. Existing files are never overwritten.</p>
+    <label>${esc(LABEL.attr)}</label><select id="prrGroup">${GROUPS.map((g) => `<option value="${g.group}">${g.group}. ${esc(g.title)}</option>`).join('')}<option value="all">All in one file</option></select>
     <label><input type="checkbox" id="prrEvidence" checked> Fill the Evidence lines from what is already mapped</label>
     <div class="row" style="justify-content:flex-end;margin-top:1rem"><button value="no">Cancel</button><button class="primary" id="prrMake">Create</button></div>`);
   $('button[value=no]', d).addEventListener('click', () => d.close());
@@ -2265,9 +2596,9 @@ VIEWS.feedback = async (arg, q) => {
   const shown = focus ? list.slice(at, at + 1) : list;
   return `<div class="row spread"><h1>Mentor feedback</h1><div class="row">
       <button id="exportResp" class="primary">Export “Response to feedback” (Word)</button></div></div>
-    <p class="muted small">Comments and tracked changes from the Word files in <code>${FOLDERS.prr}</code>, sorted by sub-attribute. ${canEdit() ? 'Write what you changed under each one and mark it done: that becomes your response table for the mentor.' : 'The apprentice’s responses are shown under each comment.'}</p>
+    <p class="muted small">Comments and tracked changes from the Word files in <code>${FOLDERS.prr}</code>, sorted by ${LABEL.item}. ${canEdit() ? 'Write what you changed under each one and mark it done: that becomes your response table for the mentor.' : 'The apprentice’s responses are shown under each comment.'}</p>
     <div class="sub-tabs">${['open', 'done', 'wont', 'all'].map((s) => `<a href="${qs({ status: s, i: 0 })}" class="${status === s ? 'active' : ''}">${s === 'all' ? 'All' : FB_STATUS[s]} (${count(s)})</a>`).join('')}
-      <select id="fbSub" aria-label="Sub-attribute"><option value="">All sub-attributes</option>${subs.map((s) => `<option ${s === sub ? 'selected' : ''}>${s}</option>`).join('')}</select>
+      <select id="fbSub" aria-label="${cap1(LABEL.item)}"><option value="">All ${LABEL.items}</option>${subs.map((s) => `<option ${s === sub ? 'selected' : ''}>${s}</option>`).join('')}</select>
       <a href="${qs({ focus: focus ? '' : '1', i: 0 })}" class="${focus ? 'active' : ''}" title="Show one comment at a time">One at a time</a></div>
     ${focus && list.length ? `<div class="row" style="margin-bottom:8px"><a class="btn small" href="${qs({ i: Math.max(0, at - 1) })}">‹ Previous</a><span>${at + 1} of ${list.length}</span><a class="btn small" href="${qs({ i: Math.min(list.length - 1, at + 1) })}">Next ›</a></div>` : ''}
     ${shown.length ? shown.map(fbCard).join('') : `<div class="empty">${all.length ? 'Nothing here.' : 'No comments found yet. When your mentor comments in your Word PRR, they appear here.'}</div>`}`;
@@ -2636,7 +2967,7 @@ function cpdActivity(id) {
       <div class="card"><h2>Supporting documents</h2><p class="small muted">Certificates, handouts, notes. They are copied into <code>${FOLDERS.cpd}</code>. ICE does not ask for them, but they are handy.</p>
         <ul class="list-plain">${(a.documents || []).map((p, i) => `<li>${fileLink(p)} ${ed ? `<button class="small danger doc-del" data-i="${i}" title="Remove from this activity (the file stays)">✕</button>` : ''}</li>`).join('') || '<li class="muted">None.</li>'}</ul>
         ${ed ? '<label class="btn small" style="margin-top:.5rem;color:var(--ink)">Attach a file…<input type="file" id="attach" hidden multiple></label>' : ''}</div>
-      ${P().mode !== 'cpd' ? `<div class="card"><h2>ICE sub-attributes</h2><p class="small muted">Optional: which sub-attributes this learning supports (as Knowledge). To count it as evidence, save the certificate into the Evidence folder and map it there.</p>
+      ${P().mode !== 'cpd' ? `<div class="card"><h2>${cap1(LABEL.items)}</h2><p class="small muted">Optional: which ${LABEL.items} this learning supports (as Knowledge). To count it as evidence, save the certificate into the Evidence folder and map it there.</p>
         <div>${SUBS.map((s) => `<label style="display:inline;margin:0 .5rem 0 0;color:var(--ink)" title="${esc(s.text)}"><input type="checkbox" class="act-sub" value="${s.id}" ${(a.subs || []).includes(s.id) ? 'checked' : ''}${dis(ed)}> ${s.id}</label>`).join('')}</div></div>` : ''}
       ${ed ? '<button class="danger" id="delAct">Delete this activity</button>' : ''}
     </div></div>`;
@@ -2876,6 +3207,7 @@ VIEWS.settings = async () => {
   return `<h1>Settings</h1><div class="grid">
     <div class="card"><h2>You</h2><label for="setName">Name</label><input id="setName" value="${esc(d.name)}" style="width:100%">
       ${mentor ? '' : `<label for="setMode">What to use</label><select id="setMode"><option value="ice" ${d.mode !== 'cpd' ? 'selected' : ''}>Professional Review portfolio and CPD</option><option value="cpd" ${d.mode === 'cpd' ? 'selected' : ''}>CPD record only</option></select>`}</div>
+      ${mentor || d.mode === 'cpd' ? '' : `<label class="check"><input type="checkbox" id="setAllTabs" ${d.settings.showAllTabs ? 'checked' : ''}> Show every tab (otherwise pages appear when you have something to put in them)</label>`}
     <div class="card"><h2>Folders</h2>
       <p>Your folder: <b>${esc(S.own.name)}</b> <span class="small muted">(you can change things here)</span></p>
       <p>Linked ${otherLabel}: ${S.other ? `<b>${esc(S.other.name)}</b> ${otherOk ? chip('read only', 'good') : chip('needs permission', 'bad')}` : '<span class="muted">none</span>'}</p>
@@ -2886,14 +3218,17 @@ VIEWS.settings = async () => {
     <div class="card"><h2>Framework</h2><p>Assessing against <b>${esc(FRAMEWORK.name)}</b>: ${plural(SUBS.length, 'requirement')}, ${plural(LEVELS.length, 'level')}${KSBS.length ? `, ${plural(KSBS.length, 'standard')}` : ''}.</p>
       <p class="small muted">${mentor ? 'Set by the apprentice; shown here read-only.' : 'Edit the requirements, levels, evidence folders and folder names to match your institution or level, or start from a blank one.'}</p><a class="btn" href="#framework">${mentor ? 'View' : 'Edit'} framework</a></div>
     ${mentor ? '' : `<div class="card"><h2>Targets</h2>
-      ${d.mode !== 'cpd' ? `<label for="setGoal">Evidence goal per level (${LEVELS.map((l) => LEVEL_NAME[l]).join(', ')}) for each sub-attribute</label><input type="number" min="1" max="9" id="setGoal" value="${d.settings.goal}">` : ''}
+      ${d.mode !== 'cpd' ? `<label for="setGoal">Evidence goal per level (${LEVELS.map((l) => LEVEL_NAME[l]).join(', ')}) for each ${LABEL.item}</label><input type="number" min="1" max="9" id="setGoal" value="${d.settings.goal}">` : ''}
+      ${d.mode !== 'cpd' ? `<label for="setKeyDateLabel">Key date (optional): what is it?</label><input id="setKeyDateLabel" value="${esc(d.settings.keyDateLabel || '')}" placeholder="e.g. Submission, Gateway, Professional Review interview" style="width:100%">
+      <label for="setKeyDate">Key date</label><input type="date" id="setKeyDate" value="${esc(d.settings.keyDate || '')}">` : ''}
       <label for="setTarget">CPD hours a year</label><input type="number" min="0" id="setTarget" value="${d.settings.cpdTarget}">
       <label for="setYearStart">CPD year starts in</label><select id="setYearStart">${['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map((m, i) => `<option value="${i + 1}" ${d.settings.cpdYearStart === i + 1 ? 'selected' : ''}>${m}</option>`).join('')}</select>
       <label>ICE CPD Framework themes, one per line (start a line with * for a mandatory theme)</label>
       <textarea id="setThemes" rows="5" placeholder="Copy the theme names from the ICE website">${esc((d.settings.themes || []).join('\n'))}</textarea></div>`}
     <div class="card"><h2>Your data</h2>
       <p class="small">Saved as <code>${esc(myDataPath())}</code> in your folder, last at ${d.saved ? new Date(d.saved).toLocaleString('en-GB') : '–'}. A copy is kept each day in <code>${DATA_DIR}/backups</code> (the last 30).</p>
-      <p class="small muted">To restore a backup: close this page, rename the backup to <code>${esc(myDataPath().split('/').pop())}</code> and put it in <code>${DATA_DIR}</code>.</p>
+      <p class="small muted">Something went wrong? <b>Restore from a backup</b> gives back an earlier copy. Your current data is kept first, so a restore can itself be undone.</p>
+      <button id="restoreBackup">Restore from a backup…</button>
       ${!mentor && d.mode !== 'cpd' ? '<button id="exportAll" class="primary">Export everything to Excel</button>' : ''}</div>
   </div>`;
 };
@@ -2902,6 +3237,10 @@ VIEWS.settings.after = () => {
   $('#setName').addEventListener('input', (e) => { d.name = e.target.value; changed(); });
   if ($('#setMode')) $('#setMode').addEventListener('change', async (e) => { d.mode = e.target.value; if (d.mode === 'ice') await ensureFolders(S.own, 'ice'); changed(); render(); });
   if ($('#setGoal')) $('#setGoal').addEventListener('input', (e) => { d.settings.goal = Math.max(1, +e.target.value || 3); changed(); });
+  if ($('#restoreBackup')) $('#restoreBackup').addEventListener('click', restoreFromBackup);
+  if ($('#setKeyDate')) $('#setKeyDate').addEventListener('change', (e) => { d.settings.keyDate = e.target.value; changed(); });
+  if ($('#setKeyDateLabel')) $('#setKeyDateLabel').addEventListener('input', (e) => { d.settings.keyDateLabel = e.target.value; changed(); });
+  if ($('#setAllTabs')) $('#setAllTabs').addEventListener('change', (e) => { d.settings.showAllTabs = e.target.checked; changed(); renderHeader('settings'); });
   if ($('#setTarget')) $('#setTarget').addEventListener('input', (e) => { d.settings.cpdTarget = +e.target.value || 0; changed(); });
   if ($('#setYearStart')) $('#setYearStart').addEventListener('change', (e) => { d.settings.cpdYearStart = +e.target.value; changed(); });
   if ($('#setThemes')) $('#setThemes').addEventListener('input', (e) => { d.settings.themes = e.target.value.split('\n').map((t) => t.trim()).filter(Boolean); changed(); });
@@ -2947,12 +3286,12 @@ async function exportMatrix() {
         ...items.map((it) => [it.code, it.title, (it.rec && it.rec.project) || '', (it.rec && it.rec.date) || '', ...SUBS.map((a) => levelCell(it, a.id)),
           [...new Set(((it.rec && it.rec.maps) || []).flatMap((m) => m.ksbs || []))].sort(natural).join(', '), it.path])] },
     { name: 'Summary', freeze: { rows: 1 }, filter: true, widths: [6, 30, 6, 60, ...LEVELS.map(() => 7), 10, 12, 10, 14, 40],
-      rows: [['Attr.', 'Attribute', 'Sub', 'Sub-attribute', ...LEVELS.map((l) => LEVEL_SHORT[l]), 'Slots', 'PRR', 'Open comments', 'Mentor', 'Evidence'],
+      rows: [['Attr.', 'Attribute', 'Sub', cap1(LABEL.item), ...LEVELS.map((l) => LEVEL_SHORT[l]), 'Slots', 'PRR', 'Open comments', 'Mentor', 'Evidence'],
         ...SUBS.map((a) => [a.group, a.group_title, a.id, { v: a.text, s: 'wrap' }, ...LEVELS.map((l) => status(cov[a.id][l].length)),
           `${slots(cov[a.id])}/${slotMax(cov[a.id])}`, prr[a.id].state, fb.filter((f) => f.sub === a.id && f.status === 'open').length, M() ? MENTOR_STATUS[(M().subs[a.id] || {}).status || ''] : '',
           [...new Set(LEVELS.flatMap((l) => cov[a.id][l].map(label)))].sort(natural).join(', ')])] },
-    { name: 'KSBs', freeze: { rows: 1 }, widths: [6, 80, 16, 30], rows: [['KSB', 'Description', 'Sub-attributes', 'Evidence (ticked)'],
-      ...KSBS.map((k) => { const c = ksbCoverage()[k.id]; return [k.id, { v: k.text, s: 'wrap' }, k.attributes.join(', '), [...c.direct].map(label).join(', ')]; })] },
+    { name: 'KSBs', freeze: { rows: 1 }, widths: [6, 80, 16, 30, 22], rows: [['KSB', 'Description', cap1(LABEL.items), 'Evidence (ticked)', 'My rating'],
+      ...KSBS.map((k) => { const c = ksbCoverage()[k.id]; return [k.id, { v: k.text, s: 'wrap' }, k.attributes.join(', '), [...c.direct].map(label).join(', '), ratingText(k.id)]; })] },
     { name: 'Mentor feedback', freeze: { rows: 1 }, filter: true, widths: [6, 16, 12, 60, 60, 12, 30], rows: [['Sub', 'From', 'Date', 'Comment', 'Response', 'Status', 'File'],
       ...fb.map((f) => [f.sub, f.author, (f.date || '').slice(0, 10), { v: f.text, s: 'wrap' }, { v: f.response, s: 'wrap' }, FB_STATUS[f.status], f.file])] },
     { name: 'Actions', freeze: { rows: 1 }, filter: true, widths: [12, 30, 70, 6, 12, 8], rows: [['Meeting', 'Title', 'Action', 'Sub', 'Due', 'Status'],
@@ -2972,17 +3311,19 @@ VIEWS.help = async () => (P() && P().mode === 'cpd' ? `<h1>How to use the Pathwa
   <div class="card"><h2>Good to know</h2><ul>
     <li>Your folder holds <b>${FOLDERS.cpd}</b> (attached certificates and notes), <b>${FOLDERS.exports}</b> and <b>${DATA_DIR}</b> (the record itself: do not edit by hand).</li>
     <li>It saves as you type, and keeps one copy a day in <code>${DATA_DIR}/backups</code>.</li>
-    <li>To track a Professional Review as well, switch in <a href="#settings">Settings</a>.</li></ul></div></div>` : '') || `<h1>How to use the Pathway Pro</h1><div class="grid">
-  <div class="card"><h2>The idea</h2><p>One HTML file that keeps a tracker of your ICE Professional Review in your OneDrive folder. It does no thinking for you (no AI): it lists, links, counts and checks, so nothing gets missed.</p>
-    <p>Your folder holds: <b>${FOLDERS.prr}</b> (your Word PRRs), <b>${FOLDERS.matrix}</b> (the Excel matrix), <b>${FOLDERS.evidence}</b> (one sub-folder per kind of evidence), <b>${FOLDERS.feedback}</b> (response tables), <b>${FOLDERS.meetings}</b>, <b>${FOLDERS.cpd}</b>, <b>${FOLDERS.exports}</b>, and <b>${DATA_DIR}</b> (the tracker itself: do not edit by hand).</p></div>
+    <li>To track a Professional Review as well, switch in <a href="#settings">Settings</a>.</li></ul></div></div>` : '') || `<h1>How to use the Pathway Pro</h1>
+  <p>New to it? Start with the <a href="#help" onclick="jumpTo('guideFolders');return false">suggested folder layout</a> and the <a href="#help" onclick="jumpTo('guideSteps');return false">worked example</a> below.</p><div class="grid">
+  <div class="card wide"><h2>The idea</h2><p>One HTML file that keeps a tracker of your ${esc(P() && P().framework ? P().framework.name : 'ICE IEng')} in your OneDrive folder. It does no thinking for you (no AI): it lists, links, counts and checks, so nothing gets missed. Your files stay in your folder, laid out as shown below.</p></div>
+  <div class="card wide guide">${FOLDER_GUIDE_HTML()}</div>
+  <div class="card wide guide">${walkthroughHtml()}</div>
   <div class="card"><h2>1. Evidence</h2><ol><li>Save evidence files into <b>${FOLDERS.evidence}</b>. Start file names with a code such as <code>CO-14</code> to have it picked up (or use <b>Number files…</b>).</li>
-    <li>Open each one and click <b>K</b>, <b>E</b> or <b>A</b> against every sub-attribute it shows. Add a note on why.</li>
-    <li><b>Attributes</b> shows what is covered; the goal is ${P() ? goal() : 3} pieces at each level for every sub-attribute. <b>Home</b> lists the biggest gaps.</li></ol></div>
+    <li>Open each one and click <b>K</b>, <b>E</b> or <b>A</b> against every ${LABEL.item} it shows. Add a note on why.</li>
+    <li><b>${esc(LABEL.attr)}</b> shows what is covered; the goal is ${P() ? goal() : 3} pieces at each level for every ${LABEL.item}. <b>Home</b> lists the biggest gaps.</li></ol></div>
   <div class="card">${PRR_HELP}</div>
-  <div class="card"><h2>3. Mentor feedback</h2><p>Your mentor comments in your Word PRR as usual. <b>Feedback</b> lists every comment and suggested edit under its sub-attribute. Write what you changed, mark it Done (or Won't change), and export the <b>Response to feedback</b> table for your mentor. Use <b>One at a time</b> when there are lots.</p></div>
+  <div class="card"><h2>3. Mentor feedback</h2><p>Your mentor comments in your Word PRR as usual. <b>Feedback</b> lists every comment and suggested edit under its ${LABEL.item}. Write what you changed, mark it Done (or Won't change), and export the <b>Response to feedback</b> table for your mentor. Use <b>One at a time</b> when there are lots.</p></div>
   <div class="card"><h2>4. Meetings</h2><p>Download the Teams transcript (.vtt or .docx), import it, and tag each line with <kbd>D</kbd> done, <kbd>T</kbd> to do, <kbd>L</kbd> teaching. To-dos become actions; <b>Write notes to Word</b> makes tidy minutes in the Meetings folder.</p></div>
   <div class="card"><h2>5. CPD</h2><p>Follows ICE's CPD guidance: a <b>Development plan</b> (objectives with reference codes, after a yearly review of your learning needs) and a <b>Development record</b> (activities with effective learning time and an evaluation). <b>Export</b> makes Word files in the layout of ICE's templates.</p></div>
-  <div class="card"><h2>Working with your mentor</h2><ol>
+  <div class="card" id="help-mentor"><h2>Working with your mentor</h2><ol>
     <li>Share your portfolio folder with your mentor in OneDrive as <b>Can view</b>, and the <b>${FOLDERS.prr}</b> folder (or just the PRR files) as <b>Can edit</b> so they can comment in Word.</li>
     <li>Your mentor adds it to their OneDrive (Shared → <b>Add shortcut to My files</b>), opens this same file and picks <b>I am a mentor</b>: they make a folder of their own for their assessment and share it back with you as <b>Can view</b>.</li>
     <li>You add theirs to your OneDrive the same way, then <b>Settings → Link mentor's folder</b>.</li></ol>
@@ -2993,6 +3334,52 @@ VIEWS.help = async () => (P() && P().mode === 'cpd' ? `<h1>How to use the Pathwa
     <li><kbd>Ctrl</kbd>+<kbd>K</kbd> searches everything. Click any code or file name to preview it beside the page.</li>
     <li>One copy of the tracker is kept per day in <code>${DATA_DIR}/backups</code>.</li></ul></div>
 </div>`;
+
+
+// Give back an earlier daily copy from ice-data/backups. The current data is saved beside the backups first.
+async function restoreFromBackup() {
+  if (demoBlocked()) return;
+  const base = isMentor() ? 'mentor' : 'portfolio';
+  const names = [];
+  try {
+    const dir = await subDir(S.own, `${DATA_DIR}/backups`);
+    for await (const [name, h] of dir.entries()) if (h.kind === 'file' && name.startsWith(base + '-') && name.endsWith('.json')) names.push(name);
+  } catch (_) { /* no folder yet */ }
+  names.sort().reverse();
+  if (!names.length) { toast('There are no backups yet. One is made the first time you save each day.'); return; }
+  const nice = (n) => n.replace(base + '-', '').replace('.json', '');
+  const rows = [];
+  for (const n of names.slice(0, 30)) {
+    let info = '';
+    try {
+      const { json } = await readJson(S.own, `${DATA_DIR}/backups/${n}`);
+      const d = upgrade(json);
+      const cpd = ((d.cpd && d.cpd.activities) || []).length;
+      info = d.mode === 'cpd' ? `${cpd} CPD activities` : `${Object.keys(d.evidence).length} evidence records, ${(d.meetings || []).length} meetings, ${cpd} CPD activities`;
+    } catch (_) { info = 'cannot be read'; }
+    rows.push(`<li><b>${esc(nice(n))}</b> <span class="small muted">${esc(info)}</span> <button data-restore="${esc(n)}">Restore this one</button></li>`);
+  }
+  const d = dialog(`<h2>Restore from a backup</h2><p class="small muted">A copy is made the first time you save each day, and the last 30 are kept. Pick the day you want to go back to.</p>
+    <ul class="list-plain restore-list">${rows.join('')}</ul><div class="row" style="justify-content:flex-end;margin-top:1rem"><button value="" id="restoreClose">Close</button></div>`);
+  $$('button', d).forEach((b) => b.addEventListener('click', async () => {
+    if (!b.dataset.restore) { d.close(); return; }
+    if (!(await ask(`Go back to the copy from <b>${esc(nice(b.dataset.restore))}</b>? Anything you changed since then is replaced. A copy of your current data is kept first.`, 'Restore'))) return;
+    try {
+      const { json } = await readJson(S.own, `${DATA_DIR}/backups/${b.dataset.restore}`);
+      const restored = upgrade(json);
+      const stamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
+      await writeFile(S.own, `${DATA_DIR}/backups/${base}-${stamp}-before-restore.json`, JSON.stringify(S.data, null, 1));
+      S.data = restored;
+      applyFramework(P() && P().framework);
+      await save(true);
+      await scanEvidence();
+      await loadReports();
+      d.close();
+      await render();
+      toast('Restored. Your previous data is kept in the backups folder.');
+    } catch (err) { toast('Could not restore: ' + err.message, 'error'); }
+  }));
+}
 
 // The Framework page (Settings → Framework): edit levels, requirements, standards and folders.
 
@@ -3012,7 +3399,9 @@ VIEWS.framework = async () => {
       <div class="card"><h2>Name and words</h2>
         <label>Framework name</label><input id="fwName" value="${esc(fw.name)}" style="width:100%"${dd}>
         <div class="form-grid"><div><label>Tab name for the requirements</label><input id="fwLabelAttr" value="${esc(LABEL.attr)}"${dd}></div>
-          <div><label>Tab name for the standards (leave the list empty to hide the tab)</label><input id="fwLabelKsb" value="${esc(LABEL.ksb)}"${dd}></div></div>
+          <div><label>Tab name for the standards (leave the list empty to hide the tab)</label><input id="fwLabelKsb" value="${esc(LABEL.ksb)}"${dd}></div>
+          <div><label>One requirement is called (singular, e.g. competence)</label><input id="fwLabelItem" value="${esc(LABEL.item)}"${dd}></div>
+          <div><label>Many requirements are called (plural)</label><input id="fwLabelItems" value="${esc(LABEL.items)}"${dd}></div></div>
         <label>Start from</label><div class="row"><select id="fwPreset"${dd}><option value="">Choose…</option>${Object.entries(PRESETS).map(([k, p]) => `<option value="${k}">${esc(p.name)}</option>`).join('')}</select><span class="small muted">replaces everything in the boxes below (nothing is saved until you press Save)</span></div></div>
       <div class="card"><h2>Levels</h2><p class="small muted">Letters | Name | What it means. Each requirement needs the goal number of evidence items at every level (set in Settings). One level is fine.</p>
         <textarea id="fwLevels"${rows(4)}${dd}>${esc(toLevelText(fw))}</textarea></div>
@@ -3033,6 +3422,7 @@ VIEWS.framework.after = () => {
   const val = (id) => $(id).value;
   const fill = (fw) => {
     $('#fwName').value = fw.name; $('#fwLabelAttr').value = (fw.labels || {}).attr || 'Attributes'; $('#fwLabelKsb').value = (fw.labels || {}).ksb || 'KSBs';
+    { const il = itemLabels(fw.labels); $('#fwLabelItem').value = il.item; $('#fwLabelItems').value = il.items; }
     $('#fwLevels').value = toLevelText(fw); $('#fwGroups').value = toGroupText(fw); $('#fwAttrs').value = toAttrText(fw); $('#fwKsbs').value = toKsbText(fw);
     $('#fwEvFolders').value = (fw.evidenceFolders || []).join('\n');
     for (const i of $$('[data-folder]')) i.value = (fw.folders || {})[i.dataset.folder] || DEFAULT_FOLDERS[i.dataset.folder];
@@ -3040,7 +3430,7 @@ VIEWS.framework.after = () => {
   const read = () => {
     const folders = {};
     for (const i of $$('[data-folder]')) folders[i.dataset.folder] = i.value;
-    return buildFramework({ name: val('#fwName'), labelAttr: val('#fwLabelAttr'), labelKsb: val('#fwLabelKsb'), levels: val('#fwLevels'), groups: val('#fwGroups'), attributes: val('#fwAttrs'), ksbs: val('#fwKsbs'), evidenceFolders: val('#fwEvFolders'), folders }, FRAMEWORK);
+    return buildFramework({ name: val('#fwName'), labelAttr: val('#fwLabelAttr'), labelKsb: val('#fwLabelKsb'), labelItem: val('#fwLabelItem'), labelItems: val('#fwLabelItems'), levels: val('#fwLevels'), groups: val('#fwGroups'), attributes: val('#fwAttrs'), ksbs: val('#fwKsbs'), evidenceFolders: val('#fwEvFolders'), folders }, FRAMEWORK);
   };
   $('#fwPreset').addEventListener('change', (e) => { if (e.target.value) { fill(PRESETS[e.target.value].fw); e.target.value = ''; toast('Filled in: press Save to use it'); } });
   $('#fwExport').addEventListener('click', () => {
@@ -3076,6 +3466,866 @@ VIEWS.framework.after = () => {
     await render();
   }, 'Framework saved'));
 };
+
+// Guidance for people new to the tool: the suggested folder layout (built from the real folder names of the
+// current framework) and a worked example from an empty folder to a finished portfolio. Shown on the Help
+// page and, from the start screen, in dialogs. The Word guide (make_howto.py) has the same text.
+
+const EVIDENCE_KIND_HELP = {
+  CO: 'emails, letters and meeting minutes about your work. Save emails as PDF.',
+  MO: 'screenshots of models you built or checked.',
+  MU: 'drawings and documents you marked up or checked.',
+  DR: 'reports you wrote or helped to write.',
+  CA: 'calculations you did or checked.',
+  MM: 'spreadsheets, scripts and other tools you made or improved.',
+  DD: 'drawings you produced or worked on.',
+  CE: 'training certificates and course records.',
+  PR: 'presentations and talks you gave.',
+};
+
+const folderBadge = (who) => `<span class="chip">${who === 'you' ? 'You make it' : who === 'both' ? 'Tool makes it, you fill it' : 'Tool makes and fills it'}</span>`;
+const folderItem = (name, who, text, children = '') => `<li><span class="tree-name"><span aria-hidden="true">📁 </span><b>${esc(name)}</b></span> ${folderBadge(who)}<span class="tree-text">${text}</span>${children}</li>`;
+
+// The folder tree as nested lists, so screen readers announce the levels.
+function folderTreeHtml() {
+  const cats = EVIDENCE_CATEGORIES.map((c) => {
+    const p = categoryPrefix(c);
+    return folderItem(c, 'both', `${p ? `Codes start <code>${p}-</code>: ` : ''}${EVIDENCE_KIND_HELP[p] || 'evidence of this kind.'}`);
+  }).join('');
+  return `<ul class="tree"><li><span class="tree-name"><span aria-hidden="true">☁️ </span><b>OneDrive</b></span>
+    <ul>${folderItem('Portfolio - Your Name', 'you', 'Make this empty folder yourself, then pick it when you press <b>Start my portfolio</b>. The tool makes everything below.', `<ul>
+      ${folderItem(FOLDERS.prr, 'both', 'Your reports (PRR) in Word. <b>Reports → New PRR from template…</b> makes a starter file here. Your mentor comments in these files.')}
+      ${folderItem(FOLDERS.matrix, 'tool', 'The Excel evidence matrix, written by <b>Evidence → Export Excel matrix</b>. Nothing to add yourself.')}
+      ${folderItem(FOLDERS.evidence, 'both', 'Your evidence, one sub-folder per kind:', `<ul>${cats}</ul>`)}
+      ${folderItem(FOLDERS.feedback, 'tool', 'The “Response to feedback” tables you export from <b>Feedback</b>.')}
+      ${folderItem(FOLDERS.meetings, 'both', 'Teams transcripts you download, and the meeting notes the tool writes.')}
+      ${folderItem(FOLDERS.cpd, 'tool', 'Certificates and handouts you attach to CPD activities, copied in by year.')}
+      ${folderItem(FOLDERS.exports, 'tool', 'CPD records exported in Word or Excel.')}
+      ${folderItem(DATA_DIR, 'tool', 'The tracker itself, with daily backups. Never edit or move these files.')}
+    </ul>`)}</ul></li></ul>
+    <p class="small muted">The numbers in the names only keep the folders in order. You can rename folders in <b>Settings → Framework</b>, but it is easiest to keep them as they are.</p>`;
+}
+
+const NAMING_HTML = `<h3>Naming evidence files</h3>
+  <p>Start every file name with a code: the folder’s letters, a dash and a number. Then add what it is, the project and the subject.</p>
+  <p><code>CO-00 - Email - Project - Subject.pdf</code></p>
+  <ul>
+    <li><code>CO-00 - Email - Riverside Car Park - Agreed bearing loads.pdf</code></li>
+    <li><code>CA-03 - Calc - Riverside Car Park - Pile capacity check.pdf</code></li>
+    <li><code>DD-12 - Drawing - Station Road - General arrangement rev C.pdf</code></li>
+  </ul>
+  <ul>
+    <li>Each code is used once. Codes do not need to be in order, and gaps are fine.</li>
+    <li>Use two digits (<code>CO-07</code>), or three once you pass 99.</li>
+    <li>Forgot the code? <b>Evidence → Number files…</b> gives codes to files without one.</li>
+    <li>You quote these codes in your report, for example <code>Evidence: CO-00, CA-03</code>.</li>
+  </ul>`;
+
+const FOLDER_GUIDE_HTML = () => `<h2 id="guideFolders">Suggested folder layout</h2>
+  <p>Keep everything for your review in one OneDrive folder. This is the layout the tool uses. Only the top folder is yours to make.</p>
+  ${folderTreeHtml()}${NAMING_HTML}`;
+
+function walkthroughHtml() {
+  const lv = LEVELS.map((l) => `<b>${LEVEL_SHORT[l]}</b> ${esc(LEVEL_NAME[l])}`).join(', ');
+  const step = (title, body, see) => `<li><h3>${title}</h3>${body}<p class="see"><b>What you’ll see:</b> ${see}</p></li>`;
+  return `<h2 id="guideSteps">Example: from an empty folder to a finished portfolio</h2>
+  <p>A typical route. Steps 3 to 9 repeat as your portfolio grows.</p>
+  <ol class="steps">
+    ${step('Set up the folder', '<p>In OneDrive, make an empty folder called <b>Portfolio - Your Name</b>. Open Pathway Pro in Edge, press <b>Start my portfolio</b> and pick that folder. Type your name and choose your framework.</p>',
+      `Edge asks to view and save files in the folder: allow it. The folders <b>${esc(FOLDERS.prr)}</b>, <b>${esc(FOLDERS.evidence)}</b> and the rest appear in OneDrive.`)}
+    ${step('Share it with your mentor', `<p>In OneDrive, share the portfolio folder with your mentor as <b>Can view</b>, and <b>${esc(FOLDERS.prr)}</b> as <b>Can edit</b>. Your mentor then follows <b>Working with your mentor</b> on the Help page.</p>`,
+      'once their folder is linked in Settings, their assessment shows on the <b>Mentor</b> page.')}
+    ${step('Drop in your first evidence', `<p>Save three to five files into the right sub-folders of <b>${esc(FOLDERS.evidence)}</b>, each named with a code. Then open <b>Evidence</b> and press <b>Refresh</b>.</p>`,
+      'each file listed with its code and title, and a count of files “not mapped yet”.')}
+    ${step('Map each file', `<p>Click a file. For each ${LABEL.item} it shows, press a level: ${lv}. Add a short note on why.</p>`,
+      'the level buttons light up, and the file no longer counts as “not mapped”.')}
+    ${step(`Check ${esc(LABEL.attr)} for gaps`, `<p>Open <b>${esc(LABEL.attr)}</b>. Each ${LABEL.item} needs ${P() ? goal() : 3} pieces of evidence at each level. Plan what to collect next.</p>`,
+      `a bar per ${LABEL.item}. <b>Home</b> lists the biggest gaps under <b>Next steps</b>.`)}
+    ${step('Write your report in Word', `<p><b>Reports → New PRR from template…</b> makes a Word file in <b>${esc(FOLDERS.prr)}</b>. Under each heading such as <b>2b – …</b>, add a line like <b>Evidence: CO-00, CA-03</b>. Put <b>{CO-00}</b> before you write about that file.</p>`,
+      'the file listed on <b>Reports</b> with its sections.')}
+    ${step('Run the Reports checks', '<p>Save the Word file, then press <b>Re-read Word files</b> on <b>Reports</b>. Fix what it flags in Word and check again.</p>',
+      'warnings such as evidence listed but not written about, codes that do not exist, or very short write-ups.')}
+    ${step('Get your mentor’s comments', '<p>Your mentor comments in your Word file as usual (Review → New Comment, or Track Changes).</p>',
+      `each comment on the <b>Feedback</b> page, under its ${LABEL.item}.`)}
+    ${step('Respond to feedback', `<p>Change your report, then on <b>Feedback</b> write what you changed and mark it <b>Done</b> or <b>Won’t change</b>. Export the <b>Response to feedback</b> table for your mentor.</p>`,
+      `the open comment count on <b>Home</b> goes down. The table is saved in <b>${esc(FOLDERS.feedback)}</b>.`)}
+    ${step('Meetings and CPD along the way', '<p>After each mentor meeting, import the Teams transcript on <b>Meetings</b> and tag lines as done, to do or teaching. Record training and learning on <b>CPD</b> as it happens.</p>',
+      'to-dos listed as open actions on <b>Home</b>, and your CPD hours for the year.')}
+    ${step('Final check before you submit', `<p>On <b>Home</b>, aim for full evidence slots, no Reports warnings and no open comments. Export the Excel matrix and your CPD record. Check your institution’s current submission rules.</p>`,
+      `the files in <b>${esc(FOLDERS.matrix)}</b> and <b>${esc(FOLDERS.exports)}</b>, ready to attach.`)}
+  </ol>`;
+}
+
+// Start screen: open either guide in a dialog.
+function showGuide(which) {
+  const html = which === 'steps' ? walkthroughHtml() : FOLDER_GUIDE_HTML();
+  const d = dialog(`<div class="guide">${html}</div><div class="row" style="justify-content:flex-end;margin-top:1rem"><button class="primary">Close</button></div>`);
+  d.setAttribute('aria-labelledby', which === 'steps' ? 'guideSteps' : 'guideFolders');
+  d.classList.add('wide');
+  $('button.primary', d).addEventListener('click', () => d.close());
+  const h = $('h2', d);
+  h.setAttribute('tabindex', '-1');
+  h.focus();
+}
+
+// In-page jump on the Help page (the hash is used for routing, so plain #anchors cannot be used).
+function jumpTo(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.setAttribute('tabindex', '-1');
+  el.scrollIntoView({ block: 'start' });
+  el.focus({ preventScroll: true });
+}
+
+// Guided tour: a main tour plus a short tour per page. No libraries. Targets are found by selector (steps with no
+// visible target are skipped silently). Progress is kept in localStorage 'pathwayPro.tour' (every access in try/catch).
+//
+// Test (test build, in the browser console or a script, after testReset/testSeed and opening the portfolio):
+//   testTour.start()                  // main tour, step 1
+//   testTour.state()                  // {active, key, index, total, title, focusInPopover, ...}
+//   await testTour.next()             // then state() again; testTour.back(); testTour.stop()
+//   testTour.start('evidence')        // a page tour (framework, evidence, attributes, reports, feedback, mentor, cpd)
+//   Esc closes and returns focus to the launcher; reload and testTour.progress() shows the saved state.
+//   Storage blocked: Object.defineProperty(window,'localStorage',{get(){throw 1}}) then start() still works.
+
+const TOUR_KEY = 'pathwayPro.tour';
+let tourMem = null;
+const itemWord = () => (typeof LABEL !== 'undefined' && LABEL && LABEL.item) || 'item';
+const itemsWord = () => (typeof LABEL !== 'undefined' && LABEL && LABEL.items) || itemWord() + 's';
+const attrWord = () => (typeof LABEL !== 'undefined' && LABEL && LABEL.attr) || 'Attributes';
+
+function tourRead() {
+  let s = null;
+  try { const raw = localStorage.getItem(TOUR_KEY); if (raw) s = JSON.parse(raw); } catch (_) { s = null; }
+  if (!s || typeof s !== 'object') s = tourMem ? JSON.parse(JSON.stringify(tourMem)) : {};
+  if (!s.pages || typeof s.pages !== 'object') s.pages = {};
+  return s;
+}
+function tourWrite(change) {
+  const s = tourRead();
+  change(s);
+  tourMem = JSON.parse(JSON.stringify(s));
+  try { localStorage.setItem(TOUR_KEY, JSON.stringify(s)); } catch (_) { /* blocked: the tour is simply offered again next visit */ }
+}
+
+// ---------- target helpers ----------
+const tourVisible = (el) => { if (!el || !el.isConnected) return false; const r = el.getBoundingClientRect(); return r.width > 0 && r.height > 0; };
+const tq = (sel) => $$(sel).find(tourVisible) || null;
+const tCard = (sel) => { const el = tq(sel); return el ? el.closest('.card') || el : null; };
+const tCardTitled = (title) => { const h = $$('#main h2').find((x) => x.textContent.trim().toLowerCase().startsWith(title.toLowerCase())); return h ? h.closest('.card') || h : null; };
+
+// ---------- the tours (plain data: edit the wording here) ----------
+// step: { title, text (string or function), page (hash page to be on), sel: [selector | function], action: {label, hash} }
+const TOURS = {
+  main: { name: 'Tour', steps: [
+    { title: 'Welcome', text: 'This is your tracker. Your files stay in your OneDrive folder; nothing is sent anywhere. We will go through the five things you need first.' },
+    { title: 'Choose your framework', page: 'settings', sel: [() => tCardTitled('Framework'), 'a.btn[href="#framework"]'], action: { label: 'Open framework settings', hash: '#framework' },
+      text: () => `First choose what you are assessed against. This sets the list of ${attrWord()} you map evidence to. You can change it later.` },
+    { title: 'Name and wording', page: 'framework', sel: [() => tCard('#fwName')],
+      text: 'Check this is the right framework and edit any wording that is out of date. Built-in lists were read from published guidance and may contain mistakes.' },
+    { title: 'Your evidence folder', page: 'evidence', sel: ['#main > p.muted', '#rescan'],
+      text: 'Save your files in the Evidence folder in OneDrive and start each file name with a code such as CO-14. Then press Refresh on the Evidence tab.' },
+    { title: 'Map a file', page: 'evidence', sel: ['#main table tr[data-href]', '#main .empty'],
+      text: () => `Click a file, then tick each ${itemWord()} it shows and at what level.` },
+    { title: () => `Check your ${attrWord()}`, page: 'attributes', sel: ['#main > p.muted', '#main h1'],
+      text: () => `This shows what is covered and what is missing. The goal is shown in the note at the top of the ${attrWord()} page.` },
+    { title: 'Reports', page: 'reports', sel: ['#main > p.muted', '#reload'],
+      text: 'Write your report in Word and save it in the Reports folder. The tool checks it and shows any problems here.' },
+    { title: 'Mentor feedback', page: 'feedback', sel: ['#exportResp', '#main .sub-tabs'],
+      text: 'Your mentor\'s comments from the Word report are listed here. Answer each one and mark it done.' },
+    { title: 'What to do next', page: 'home', sel: [() => tCardTitled('Next steps')],
+      text: 'Come back to Home any time: the Next steps list tells you the most useful thing to do now.' },
+  ] },
+  framework: { name: 'Framework settings', steps: [
+    { title: 'Start from a preset', sel: ['#fwPreset'], text: 'Pick a ready-made framework to fill the page in, then adjust it. Nothing changes until you press Save.' },
+    { title: 'Name and labels', sel: [() => tCard('#fwName')], text: () => `Name your framework and choose the tab names. The tab for the requirements is called "${attrWord()}" at the moment.` },
+    { title: 'Levels and goal', sel: [() => tCard('#fwLevels')], text: 'Levels say how well something is shown, for example Knowledge, Experience and Ability. The goal (set in Settings) is how many pieces of evidence each level needs. Use one level if your institution has none.' },
+    { title: 'Edit as text lines', sel: [() => tCard('#fwAttrs')], text: () => `One ${itemWord()} per line: id | group id | text. For example: A1 | A | Plan the work. You can paste a table from Excel.` },
+    { title: 'Share it', sel: ['#fwExport'], text: 'Export the framework as a file to give to another apprentice, who can then import it.' },
+  ] },
+  evidence: { name: 'Evidence', steps: [
+    { title: 'Filters', sel: ['#main .sub-tabs'], text: 'Show all files, or only those not mapped yet. The Not mapped chip is the quickest way to find what still needs doing.' },
+    { title: 'Codes', sel: ['#main table thead th'], text: 'Each file starts with a code such as CO-14: two or three letters for the kind of evidence, then a number.' },
+    { title: 'Open a file', sel: ['#main table tr[data-href]'], text: () => `Click a row to map that file to ${itemsWord().toLowerCase()} and levels.` },
+    { title: 'Refresh and number files', sel: ['#rescan'], text: 'After saving new files in OneDrive, press Refresh. Number files... gives codes to files that have none.' },
+    { title: 'Export', sel: ['#exportXlsx'], text: 'Make an Excel matrix of everything mapped, to share or print.' },
+  ] },
+  attributes: { name: 'Attributes', steps: [
+    { title: 'The boxes', sel: ['#main table thead th:nth-child(3)'], text: 'Each small box is one piece of evidence at that level. A filled box means a file has been mapped there.' },
+    { title: 'The goal', sel: ['#main > p.muted', '#main h1'], text: 'The note at the top says how many different pieces of evidence are needed at each level.' },
+    { title: 'Reports and comments', sel: ['#main table thead th:nth-child(5)'], text: 'The PRR column shows whether your Word report covers it. Comments shows open mentor comments.' },
+    { title: 'Open a row', sel: ['#main tr.click'], text: 'Click a row to see all the evidence, report text and comments for it.' },
+  ] },
+  reports: { name: 'Reports', steps: [
+    { title: 'Where the files live', sel: ['#main > p.muted'], text: 'Write your reports in Word and save them in the Reports folder. The tool reads them but never changes them.' },
+    { title: 'Headings', sel: ['#howWrite'], text: () => `Start each ${itemWord()} with a heading such as "2b – Contribute to the design". This link shows exactly how.` },
+    { title: 'The check list', sel: ['#main table', '#main .card'], text: 'Each heading is listed with its state and any checks, such as evidence listed but not written about.' },
+    { title: 'New report', sel: ['#newPrr', '#reload'], text: 'New PRR from template makes a Word file with the headings already in place. Existing files are never overwritten.' },
+  ] },
+  feedback: { name: 'Feedback', steps: [
+    { title: 'Open, done, won\'t change', sel: ['#main .sub-tabs'], text: 'Switch between comments still open and those you have dealt with.' },
+    { title: 'Mark each one', sel: ['#main .fb-status'], text: 'Use the buttons to say whether you changed it (Done) or decided not to (Won\'t change).' },
+    { title: 'Write a response', sel: ['#main .fb-resp'], text: 'Say what you changed, or why not. This becomes your response to your mentor.' },
+    { title: 'One at a time', sel: ['#main .sub-tabs a[title*="one comment"]'], text: 'Work through the comments one by one to stay focused.' },
+    { title: 'Export the response', sel: ['#exportResp'], text: 'Export "Response to feedback" as a Word table to send to your mentor.' },
+  ] },
+  mentor: { name: 'Mentor', steps: [
+    { title: 'Link up in three steps', sel: ['#main ol', '#main .ms'], text: 'Your mentor creates their own folder and shares it with you. You add it to your OneDrive, then link it in Settings.' },
+    { title: 'Settings button', sel: ['#main a[href="#settings"]', '#main .mc'], text: 'The link button is in Settings. Once linked, your mentor\'s assessment shows here.' },
+    { title: 'Who sees what', sel: ['#main p.small.muted'], text: 'You can only read their folder and they can only read yours. Each of you edits only your own.' },
+  ] },
+  cpd: { name: 'CPD', steps: [
+    { title: 'Record an activity', sel: ['#addAct'], text: 'Add each piece of learning as you do it: what it was, the hours and what you learnt.' },
+    { title: 'Three views', sel: ['#main .sub-tabs'], text: 'Overview shows your hours against the target. Development plan is what you intend to do; Development record is what you did.' },
+    { title: 'Export', sel: ['#main .sub-tabs a[href="#cpd/export"]'], text: 'Export your record when your institution asks for it.' },
+  ] },
+};
+const TOUR_PAGES = ['framework', 'evidence', 'attributes', 'reports', 'feedback', 'mentor', 'cpd'];
+
+// ---------- engine ----------
+let T = null;                 // the running tour, or null
+let tourRenderTick = 0, tourLastMut = 0;
+const tval = (x) => (typeof x === 'function' ? x() : x);
+const tsleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const tourHashName = () => { try { return parseHash().name; } catch (_) { return ''; } };
+
+function tourFindTarget(step) {
+  for (const s of step.sel || []) { const el = typeof s === 'function' ? s() : tq(s); if (el && tourVisible(el)) return el; }
+  return null;
+}
+async function tourWaitTarget(step, ms = 2200) {
+  const end = Date.now() + ms;
+  for (;;) {
+    const el = tourFindTarget(step);
+    if (el) return el;
+    if (Date.now() > end || !T) return null;
+    await tsleep(80);
+  }
+}
+async function tourGoPage(page) {
+  if (tourHashName() === page) return;
+  const tick = tourRenderTick;
+  const t = T;
+  if (!t) return;
+  t.nav = true;
+  location.hash = '#' + page;
+  const end = Date.now() + 3000;
+  while (Date.now() < end && !(tourRenderTick > tick && Date.now() - tourLastMut > 150)) await tsleep(50);
+  t.nav = false;
+}
+
+function tourBuild() {
+  const hole = document.createElement('div'); hole.className = 'tour-hole none'; hole.setAttribute('aria-hidden', 'true');
+  const pop = document.createElement('div'); pop.className = 'tour-pop'; pop.setAttribute('role', 'dialog'); pop.setAttribute('aria-modal', 'false');
+  pop.setAttribute('aria-labelledby', 'tourTitle'); pop.setAttribute('aria-describedby', 'tourText'); pop.tabIndex = -1;
+  pop.innerHTML = '<h2 id="tourTitle"></h2><p id="tourText"></p><div class="tour-foot"><span class="tour-count" id="tourCount"></span>'
+    + '<button type="button" id="tourBack">Back</button><button type="button" class="primary" id="tourNext">Next</button>'
+    + '<button type="button" id="tourAction" hidden></button><button type="button" class="tour-skip" id="tourSkip">Skip tour</button></div>';
+  let live = $('#tourLive');
+  if (!live) { live = document.createElement('div'); live.id = 'tourLive'; live.className = 'tour-live'; live.setAttribute('role', 'status'); live.setAttribute('aria-live', 'polite'); document.body.append(live); }
+  document.body.append(hole, pop);
+  $('#tourBack', pop).addEventListener('click', () => tourStep(-1));
+  $('#tourNext', pop).addEventListener('click', () => tourStep(1));
+  $('#tourSkip', pop).addEventListener('click', () => tourStop('skipped'));
+  $('#tourAction', pop).addEventListener('click', async () => {
+    const a = T && T.steps[T.idx].action;
+    if (a) { T.nav = true; go(a.hash); T.nav = false; }
+    tourStep(1);
+  });
+  return { hole, pop, live };
+}
+
+function tourPlace() {
+  if (!T || !T.pop) return;
+  const { hole, pop } = T;
+  const vw = innerWidth, vh = innerHeight, narrow = vw <= 640;
+  let el = T.target;
+  if (el && !tourVisible(el)) { el = T.target = tourFindTarget(T.steps[T.idx]); }
+  if (!el) {
+    hole.className = 'tour-hole none'; hole.removeAttribute('style');
+    if (!narrow) { pop.style.left = Math.max(8, (vw - pop.offsetWidth) / 2) + 'px'; pop.style.top = Math.max(8, (vh - pop.offsetHeight) / 3) + 'px'; }
+    return;
+  }
+  const r = el.getBoundingClientRect(), pad = 4;
+  hole.className = 'tour-hole';
+  Object.assign(hole.style, { left: r.left - pad + 'px', top: r.top - pad + 'px', width: r.width + pad * 2 + 'px', height: r.height + pad * 2 + 'px' });
+  if (narrow) return;
+  const w = pop.offsetWidth, h = pop.offsetHeight, gap = 14;
+  let top, left = Math.min(Math.max(r.left, 8), vw - w - 8);
+  if (r.bottom + pad + gap + h <= vh - 8) top = r.bottom + pad + gap;
+  else if (r.top - pad - gap - h >= 8) top = r.top - pad - gap - h;
+  else if (r.right + pad + gap + w <= vw - 8) { left = r.right + pad + gap; top = Math.min(Math.max(r.top, 8), vh - h - 8); }
+  else if (r.left - pad - gap - w >= 8) { left = r.left - pad - gap - w; top = Math.min(Math.max(r.top, 8), vh - h - 8); }
+  else top = Math.max(8, vh - h - 8);
+  pop.style.left = left + 'px'; pop.style.top = top + 'px';
+}
+let tourRaf = 0;
+const tourSchedule = () => { if (!tourRaf) tourRaf = requestAnimationFrame(() => { tourRaf = 0; tourPlace(); }); };
+
+// Show step i (moving in direction dir), skipping steps whose target is missing.
+async function tourShow(i, dir) {
+  const my = ++T.token;
+  const stepsN = T.steps.length;
+  for (; i >= 0 && i < stepsN; i += dir) {
+    const step = T.steps[i];
+    if (step.page) { await tourGoPage(step.page); if (!T || T.token !== my) return; }
+    let el = null;
+    if (step.sel) { el = await tourWaitTarget(step); if (!T || T.token !== my) return; if (!el) continue; }
+    T.idx = i; T.target = el;
+    tourRender(step, el);
+    return;
+  }
+  if (dir > 0) tourStop('done');
+  else if (T.idx < 0 || T.idx >= stepsN) tourStop('done');   // nothing earlier: stay on the current step
+}
+
+function tourRender(step, el) {
+  const { pop, live } = T;
+  const title = tval(step.title), text = tval(step.text), n = T.idx + 1, total = T.steps.length;
+  $('#tourTitle', pop).textContent = title;
+  $('#tourText', pop).textContent = text;
+  $('#tourCount', pop).textContent = `Step ${n} of ${total}`;
+  $('#tourBack', pop).hidden = n === 1;
+  $('#tourNext', pop).textContent = n === total ? 'Finish' : 'Next';
+  const act = $('#tourAction', pop);
+  act.hidden = !step.action; act.textContent = step.action ? step.action.label : '';
+  live.textContent = '';
+  setTimeout(() => { if (T) live.textContent = `Step ${n} of ${total}: ${title}`; }, 30);
+  if (T.key === 'main') tourWrite((s) => { s.main = n; });
+  if (el && !el.closest('#top')) {
+    const tall = el.getBoundingClientRect().height > innerHeight * 0.6;
+    try { el.scrollIntoView({ block: innerWidth <= 640 || tall ? 'start' : 'center', behavior: 'instant' }); } catch (_) { el.scrollIntoView(); }
+  }
+  tourPlace();
+  pop.focus({ preventScroll: true });
+  tourSchedule();
+}
+
+function tourStep(dir) { if (T) tourShow(T.idx + dir, dir); }
+
+function tourStop(how) {
+  if (!T) return;
+  const t = T; T = null;
+  t.token++;
+  document.removeEventListener('keydown', tourKeys, true);
+  window.removeEventListener('resize', tourSchedule);
+  window.removeEventListener('scroll', tourSchedule, true);
+  window.removeEventListener('hashchange', tourHash);
+  if (t.hole) t.hole.remove();
+  if (t.pop) t.pop.remove();
+  if (how === 'done' || how === 'skipped') {
+    tourWrite((s) => { if (t.key === 'main') s.main = how; else s.pages[t.key] = how; });
+  }
+  let back = t.launcher && t.launcher.isConnected ? t.launcher : null;
+  if (!back) back = $('#tourBtn');
+  if (!back) { const h = $('#main h1'); if (h) { h.tabIndex = -1; back = h; } }
+  if (back) back.focus({ preventScroll: true });
+  const live = $('#tourLive');
+  if (live) live.textContent = how === 'done' ? 'Tour finished' : 'Tour closed';
+  tourDecorate();
+}
+
+async function tourStart(key = 'main', from = 0, launcher) {
+  if (!S.data) return false;
+  if (!TOURS[key]) return false;
+  if (T) tourStop('closed');
+  const steps = TOURS[key].steps;
+  T = { key, steps, idx: -1, token: 0, nav: false, target: null, launcher: launcher || (document.activeElement !== document.body ? document.activeElement : null) };
+  Object.assign(T, tourBuild());
+  document.addEventListener('keydown', tourKeys, true);
+  window.addEventListener('resize', tourSchedule);
+  window.addEventListener('scroll', tourSchedule, true);
+  window.addEventListener('hashchange', tourHash);
+  const offer = $('.tour-offer'); if (offer) offer.remove();
+  await tourShow(Math.max(0, Math.min(from, steps.length - 1)), 1);
+  return true;
+}
+
+function tourKeys(e) {
+  if (!T) return;
+  const pop = T.pop, inPop = pop.contains(document.activeElement);
+  if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); tourStop('closed'); return; }
+  if (e.key === 'Tab' && inPop) {
+    const f = $$('button', pop).filter((b) => !b.hidden && !b.disabled);
+    if (!f.length) return;
+    const first = f[0], last = f[f.length - 1];
+    if (document.activeElement === pop) { e.preventDefault(); (e.shiftKey ? last : first).focus(); }
+    else if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    return;
+  }
+  if ((e.key === 'Enter' || e.key === ' ') && document.activeElement === pop) { e.preventDefault(); tourStep(1); return; }
+  const t = e.target;
+  const typing = t && (/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName) || t.isContentEditable);
+  if ((e.key === 'ArrowRight' || e.key === 'ArrowLeft') && !typing && !e.ctrlKey && !e.metaKey && !e.altKey && !e.shiftKey) {
+    e.preventDefault(); tourStep(e.key === 'ArrowRight' ? 1 : -1);
+  }
+}
+
+// The user moved to another page by themselves: carry on if it is where the next step lives, otherwise pause the tour.
+function tourHash() {
+  if (!T || T.nav) return;
+  const name = tourHashName(), cur = T.steps[T.idx], next = T.steps[T.idx + 1];
+  if (cur && (!cur.page || cur.page === name)) return;
+  if (next && next.page === name) tourStep(1);
+  else tourStop('closed');
+}
+
+// ---------- entry points, injected after every render ----------
+function tourStatus() { const s = tourRead(); return { main: s.main, resume: typeof s.main === 'number' && s.main > 1 && s.main <= TOURS.main.steps.length ? s.main : 0 }; }
+
+function tourDecorate() {
+  const main = $('#main');
+  if (!main || !S.data || !P() || $('.tour-link', main) || $('.tour-offer', main)) return;
+  const name = tourHashName();
+  const h1 = $('h1', main);
+  if (!h1) return;
+  let top = h1; while (top.parentElement && top.parentElement !== main) top = top.parentElement;
+  if (top.parentElement !== main) return;
+  const { main: st, resume } = tourStatus();
+  const cpd = P().mode === 'cpd';
+  if (name === 'home' && !T && !isMentor() && !cpd && (st === undefined || resume)) {
+    const card = document.createElement('div');
+    card.className = 'card tour-offer'; card.setAttribute('role', 'region'); card.setAttribute('aria-label', 'Guided tour');
+    card.innerHTML = resume
+      ? `<p><b>You stopped part way through the tour.</b></p><div class="row"><button type="button" class="primary" data-tour-start="resume">Continue the tour (step ${resume} of ${TOURS.main.steps.length})</button><button type="button" data-tour-start="main">Start again</button><button type="button" data-tour-dismiss>Not now</button></div>`
+      : '<p><b>Want a two-minute walk-through?</b> It shows the first things to do, and you can stop at any time.</p><div class="row"><button type="button" class="primary" data-tour-start="main">Show me around</button><button type="button" data-tour-dismiss>Not now</button></div>';
+    top.after(card);
+  } else if (name === 'help') {
+    const p = document.createElement('p'); p.className = 'tour-link';
+    p.innerHTML = `<button type="button" data-tour-start="${cpd ? 'cpd' : 'main'}">Show me around</button>${resume && !cpd ? `<button type="button" data-tour-start="resume">Continue the tour (step ${resume} of ${TOURS.main.steps.length})</button>` : ''}`;
+    top.after(p);
+  } else if (TOUR_PAGES.includes(name) && TOURS[name]) {
+    const p = document.createElement('p'); p.className = 'tour-link';
+    p.innerHTML = '<button type="button" data-tour-start="page">Tour of this page</button>';
+    top.after(p);
+  }
+  if (name === 'settings' && !$('.tour-reset', main)) {
+    const p = document.createElement('p'); p.className = 'small muted tour-reset';
+    p.innerHTML = '<button type="button" data-tour-reset>Reset tours</button> Offers the guided tours again, as if you had never seen them.';
+    main.append(p);
+  }
+}
+
+document.addEventListener('click', (e) => {
+  const b = e.target.closest && e.target.closest('#tourBtn, [data-tour-start], [data-tour-dismiss], [data-tour-reset]');
+  if (!b) return;
+  if (b.matches('[data-tour-dismiss]')) { tourWrite((s) => { s.main = 'skipped'; }); const c = $('.tour-offer'); if (c) c.remove(); const h = $('#main h1'); if (h) { h.tabIndex = -1; h.focus(); } return; }
+  if (b.matches('[data-tour-reset]')) { tourWrite((s) => { delete s.main; s.pages = {}; }); toast('Tours reset: they will be offered again on Home'); return; }
+  let key = b.dataset.tourStart || 'main', from = 0;
+  if (b.id === 'tourBtn') key = P() && P().mode === 'cpd' ? 'cpd' : 'main';
+  if (key === 'page') key = tourHashName();
+  if (key === 'resume') { key = 'main'; from = Math.max(0, tourStatus().resume - 1); }
+  tourStart(key, from, b.isConnected && !b.closest('.tour-offer') ? b : null);
+});
+
+new MutationObserver(() => {
+  tourRenderTick++; tourLastMut = Date.now();
+  setTimeout(() => { tourDecorate(); if (T && !T.nav) tourSchedule(); }, 40);
+}).observe($('#main'), { childList: true });
+
+// Test hook (works in the normal build too; harmless).
+window.testTour = {
+  start: (key = 'main', from = 0) => tourStart(key, from),
+  next: () => { if (T) return tourShow(T.idx + 1, 1); },
+  back: () => { if (T) return tourShow(T.idx - 1, -1); },
+  stop: () => tourStop('closed'),
+  reset: () => { tourWrite((s) => { delete s.main; s.pages = {}; }); },
+  progress: () => tourRead(),
+  steps: (key = 'main') => TOURS[key].steps.map((s) => tval(s.title)),
+  state: () => (T ? {
+    active: true, key: T.key, index: T.idx, total: T.steps.length, title: $('#tourTitle').textContent, text: $('#tourText').textContent,
+    count: $('#tourCount').textContent, hasTarget: !!T.target, focusInPopover: T.pop.contains(document.activeElement), hash: location.hash,
+  } : { active: false, activeElement: document.activeElement && (document.activeElement.id || document.activeElement.tagName) }),
+};
+
+// Add evidence files from the Evidence page: pick files (or drop them on the page), choose the kind of evidence,
+// and the tool copies them into the right folder of your own OneDrive folder, with the next free code in the name.
+
+async function addEvidenceFiles(fileList) {
+  const files = [...fileList].filter((f) => f && f.size !== undefined && f.name);
+  if (!files.length) return;
+  if (!canEdit() || demoBlocked()) return;
+  const cats = EVIDENCE_CATEGORIES.length ? EVIDENCE_CATEGORIES : [''];
+  const needCode = files.some((f) => !codeFromName(f.name));
+  const d = dialog(`<h2>Add ${plural(files.length, 'file')} to your evidence</h2>
+    <p class="small muted">The files are copied into your evidence folder in OneDrive. The originals are not moved or changed.</p>
+    <ul class="list-plain add-list">${files.slice(0, 12).map((f) => `<li>${esc(f.name)} <span class="small muted">${esc(fmtSize(f.size))}</span></li>`).join('')}${files.length > 12 ? `<li class="muted">and ${files.length - 12} more</li>` : ''}</ul>
+    <label for="addKind">What kind of evidence is this?</label>
+    <select id="addKind">${cats.map((c) => `<option value="${esc(c)}">${esc(c || '(top level)')}</option>`).join('')}</select>
+    ${needCode ? '<label class="check"><input type="checkbox" id="addCode" checked> Put the next free code at the start of each file name (for example CO-15)</label>' : ''}
+    <div class="row" style="justify-content:flex-end;margin-top:1rem"><button value="no" id="addCancel">Cancel</button><button class="primary" id="addGo">Add</button></div>`);
+  $('#addCancel', d).addEventListener('click', () => d.close());
+  $('#addGo', d).addEventListener('click', async () => {
+    const kind = $('#addKind', d).value;
+    const withCode = !!($('#addCode', d) && $('#addCode', d).checked);
+    const goBtn = $('#addGo', d);
+    goBtn.disabled = true;
+    goBtn.textContent = 'Adding…';
+    try {
+      const prefix = categoryPrefix(kind) || 'EV';
+      const used = evidenceItems().map((i) => i.code).filter((c) => c && c.startsWith(prefix + '-')).map((c) => +c.split('-')[1]);
+      let next = used.length ? Math.max(...used) + 1 : 0;
+      let added = 0;
+      for (const f of files) {
+        let name = f.name.replace(/[\\/:*?"<>|]/g, '_');
+        if (withCode && !codeFromName(name)) name = `${prefix}-${String(next++).padStart(2, '0')} ${name}`;
+        const base = `${FOLDERS.evidence}${kind ? '/' + kind : ''}`;
+        let path = `${base}/${name}`;
+        for (let n = 2; await exists(S.own, path); n++) path = `${base}/${name.replace(/(\.[^.]*)?$/, ` (${n})$1`)}`;
+        await writeFile(S.own, path, f);
+        added++;
+      }
+      d.close();
+      await scanEvidence();
+      await render();
+      toast(`${plural(added, 'file')} added to your evidence`);
+    } catch (err) {
+      goBtn.disabled = false;
+      goBtn.textContent = 'Add';
+      toast('Could not add the files: ' + err.message, 'error');
+    }
+  });
+}
+
+function pickEvidenceFiles() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.multiple = true;
+  input.addEventListener('change', () => { if (input.files.length) addEvidenceFiles(input.files); });
+  input.click();
+}
+
+// Drag files from Explorer onto the Evidence page.
+(() => {
+  const onEvidence = () => /^#evidence(\?|$)/.test(location.hash) && S.data && canEdit() && P() && P().mode !== 'cpd';
+  const hasFiles = (e) => e.dataTransfer && [...(e.dataTransfer.types || [])].includes('Files');
+  document.addEventListener('dragover', (e) => { if (onEvidence() && hasFiles(e)) { e.preventDefault(); document.body.classList.add('dropping'); } });
+  document.addEventListener('dragleave', (e) => { if (!e.relatedTarget) document.body.classList.remove('dropping'); });
+  document.addEventListener('drop', (e) => {
+    document.body.classList.remove('dropping');
+    if (!onEvidence() || !hasFiles(e)) return;
+    e.preventDefault();
+    addEvidenceFiles(e.dataTransfer.files);
+  });
+})();
+
+// A one-page summary to print or save as PDF (Ctrl+P): where the portfolio stands, for a mentor meeting or a review.
+// Everything on it is worked out from the data; there is nothing to fill in.
+
+VIEWS.summary = async () => {
+  await scanEvidence();
+  await loadReports();
+  const cov = coverage();
+  const prr = prrBySub();
+  const fb = feedbackItems();
+  const open = fb.filter((f) => f.status === 'open');
+  const c = completion();
+  const items = evidenceItems().filter((i) => !i.missing);
+  const actions = allActions().filter((a) => a.status !== 'done');
+  const yr = cpdYear(today());
+  const hours = P().cpd.activities.filter((a) => cpdYear(a.dateFrom) === yr).reduce((n, a) => n + (+a.hours || 0), 0);
+  const k = P().settings && P().settings.keyDate;
+  const ready = readiness();
+  const levelHead = LEVELS.map((l) => `<th scope="col">${esc(LEVEL_SHORT[l])}</th>`).join('');
+  const rows = GROUPS.map((g) => {
+    const subs = SUBS.filter((a) => a.group === g.group);
+    return `<tr class="group"><th colspan="${LEVELS.length + 4}" scope="colgroup">${esc(g.group)}. ${esc(g.title)}</th></tr>` + subs.map((a) => {
+      const cell = cov[a.id];
+      const counts = cell._need ? `<td colspan="${LEVELS.length}">${distinctNeeded(cell)} of ${goal()} at ${esc(LEVEL_NAME[cell._need[0]])} or above</td>` : LEVELS.map((l) => `<td>${cell[l].length}</td>`).join('');
+      const openN = open.filter((f) => f.sub === a.id).length;
+      return `<tr><th scope="row">${esc(a.id)}</th><td class="sum-text">${esc(a.text)}</td>${counts}<td>${esc((PRR_STATE[prr[a.id].state] || [prr[a.id].state])[0])}</td><td>${openN || ''}</td></tr>`;
+    }).join('');
+  }).join('');
+  return `<div class="row spread no-print"><h1>Summary to print</h1><div class="row"><button class="primary" id="sumPrint">Print or save as PDF</button></div></div>
+    <p class="muted small no-print">One page for a mentor meeting or a review. Press <b>Print</b>, then choose <b>Save as PDF</b> as the printer if you want a file.</p>
+    <div class="card summary">
+      <h2 class="sum-title">${esc(P().name || 'Portfolio')}: ${esc(FRAMEWORK.name)}</h2>
+      <p class="small">Printed ${esc(fmtDate(today()))}${k ? ` · ${esc(P().settings.keyDateLabel || 'Key date')}: ${esc(fmtDate(k))}` : ''}</p>
+      <ul class="sum-kpis">
+        <li><b>${Math.round(c.total * 100)}%</b> overall</li>
+        <li><b>${items.length}</b> evidence files, <b>${items.filter((i) => !((i.rec && i.rec.maps) || []).length).length}</b> not mapped</li>
+        <li><b>${open.length}</b> open mentor comments</li>
+        <li><b>${hours}</b> of ${P().settings.cpdTarget} CPD hours (${esc(cpdYearLabel(yr))})</li>
+        <li><b>${actions.length}</b> open actions from meetings</li>
+      </ul>
+      <h3>Ready to submit?</h3>
+      <ul class="list-plain ready-list">${ready.map((r) => `<li><span aria-hidden="true">${r.ok ? '✓' : '✗'}</span> <span class="sr-only">${r.ok ? 'Done: ' : 'Not yet: '}</span>${esc(r.text)}</li>`).join('')}</ul>
+      <h3>${esc(LABEL.attr)}: evidence at each level (goal ${goal()})</h3>
+      <table class="sum-table" data-cards="off"><thead><tr><th scope="col">${esc(LABEL.item)}</th><th scope="col">Description</th>${levelHead}<th scope="col">Report</th><th scope="col">Open comments</th></tr></thead><tbody>${rows}</tbody></table>
+      ${actions.length ? `<h3>Open actions</h3><ul class="list-plain">${actions.slice(0, 15).map((a) => `<li>${a.due ? esc(fmtDate(a.due)) + ': ' : ''}${esc(a.text)}</li>`).join('')}</ul>` : ''}
+    </div>`;
+};
+VIEWS.summary.after = () => { const b = $('#sumPrint'); if (b) b.addEventListener('click', () => window.print()); };
+
+// Phone layout for tables: on a narrow screen each table row becomes a small card, with the column name shown beside
+// each value. The column names are copied from the table header after every render, so no page needs changing.
+
+function labelTableCells(root) {
+  for (const table of $$('table', root)) {
+    if (table.dataset.cards === 'off') continue;
+    const heads = $$('thead th', table).map((th) => th.textContent.trim());
+    if (!heads.length) continue;
+    table.classList.add('cardable');
+    for (const tr of $$('tbody tr', table)) {
+      let i = 0;
+      for (const td of tr.children) {
+        if (td.tagName !== 'TD' && td.tagName !== 'TH') continue;
+        if (!td.hasAttribute('data-label') && heads[i]) td.setAttribute('data-label', heads[i]);
+        i += td.colSpan || 1;
+      }
+    }
+  }
+}
+
+// "Look around with sample data": an in-memory demo portfolio. No folder is picked and nothing is written anywhere.
+// While S.demo is true every writer is blocked (save, daily backup, writeFile, folder picking, Add files, restore):
+// they check S.demo or call demoBlocked() (04-store.js, 05-framework.js, 06-model.js, 12-mentor-settings.js, 16-add.js).
+// The sample is plain data in the real shapes (see DESIGN.md). The reports and mentor comments are made up in S.prr,
+// the evidence files exist only as entries in S.files, so previews show a "sample file" message.
+
+// One helper for every blocked write: says so and tells the caller to stop.
+function demoBlocked() {
+  if (!S.demo) return false;
+  toast('Not available with sample data');
+  return true;
+}
+
+const DEMO_NAME = 'Sample Apprentice';
+const demoDay = (n) => localIso(new Date(Date.now() - n * 864e5)).slice(0, 10);
+
+// A folder handle that has nothing in it and refuses everything, so code that expects a folder fails quietly.
+function demoFolder() {
+  const none = async () => { throw new DOMException('Not found', 'NotFoundError'); };
+  return { kind: 'directory', name: 'Sample data (no folder)', getDirectoryHandle: none, getFileHandle: none, removeEntry: none,
+    entries: async function* () { /* empty */ }, queryPermission: async () => 'denied', requestPermission: async () => 'denied', isSameEntry: async () => false };
+}
+
+// Evidence: [folder index, file name, size KB, days ago, project, notes, maps [[sub, level letter, ksbs]]]
+const DEMO_EVIDENCE = [
+  [0, 'CO-01 Email to contractor about drainage query.pdf', 120, 160, 'Harbour Road drainage', 'Asked the contractor to confirm the invert levels before the pipes were laid.',
+    [['8a', 'E'], ['8b', 'K'], ['3c', 'K']]],
+  [0, 'CO-02 Site photos sent to the client.pdf', 2400, 40, 'Harbour Road drainage', '', []],
+  [1, 'MO-01 Ground model snapshot.png', 640, 150, 'Harbour Road drainage', 'Section through the trial pits used to pick the design groundwater level.',
+    [['1a', 'K'], ['2a', 'K', ['K1']]]],
+  [2, 'MU-01 Marked-up temporary works drawing.pdf', 380, 90, 'Harbour Road drainage', 'My mark-ups on the trench support drawing, agreed with the site team.',
+    [['6a', 'E'], ['6b', 'E'], ['6c', 'K']]],
+  [3, 'DR-01 Drainage strategy report.docx', 900, 120, 'Harbour Road drainage', 'I wrote sections 3 and 4 and checked the rest.',
+    [['2b', 'A', ['S4']], ['2b', 'E'], ['2a', 'E'], ['2c', 'E'], ['7b', 'K']]],
+  [3, 'DR-02 Sustainability appraisal summary.docx', 410, 70, 'Car park extension', 'Compared the options by embodied carbon and whole-life cost.',
+    [['7a', 'K'], ['7b', 'K'], ['2b', 'K']]],
+  [4, 'CA-01 Retaining wall stability calculation.xlsx', 150, 130, 'Car park extension', 'Sliding, overturning and bearing checks, reviewed by my supervisor.',
+    [['1b', 'A', ['K3']], ['2a', 'A'], ['2b', 'E', ['S4']], ['2b', 'K']]],
+  [4, 'CA-02 Pipe sizing check.xlsx', 90, 110, 'Harbour Road drainage', 'Checked the design flows and pipe sizes against the design standard.',
+    [['1b', 'E'], ['2a', 'E'], ['2b', 'A'], ['2b', 'K'], ['1b', 'K']]],
+  [5, 'MM-01 Quantities and cost tracker.xlsx', 70, 80, 'Car park extension', 'Kept the cost plan up to date for the team.',
+    [['5a', 'E', ['S8']], ['3b', 'K']]],
+  [6, 'DD-01 Drainage general arrangement drawing.pdf', 520, 100, 'Harbour Road drainage', 'Drew the pipe layout and long sections in the CAD model.',
+    [['2b', 'E'], ['2b', 'A'], ['2c', 'E']]],
+  [7, 'CE-01 CDM awareness course certificate.pdf', 60, 200, '', '',
+    [['6a', 'K'], ['6c', 'K'], ['9b', 'K']]],
+  [7, 'CE-02 Site safety passport.pdf', 55, 170, '', '',
+    [['6a', 'K'], ['6c', 'E']]],
+  [8, 'PR-01 Toolbox talk on excavation safety.pptx', 1800, 55, 'Harbour Road drainage', 'Gave this talk to eight site operatives and answered their questions.',
+    [['8a', 'A', ['K8']], ['8b', 'E', ['S10']], ['6c', 'E']]],
+];
+const DEMO_LEVEL = { K: 'knowledge', E: 'experience', A: 'ability' };
+
+function demoPortfolio() {
+  const folder = (i) => `${FOLDERS.evidence}/${EVIDENCE_CATEGORIES[i]}`;
+  const evidence = {};
+  const files = [];
+  for (const [fi, name, kb, ago, project, notes, maps] of DEMO_EVIDENCE) {
+    const path = `${folder(fi)}/${name}`;
+    const mtime = Date.now() - ago * 864e5;
+    files.push({ path, name, size: kb * 1024, mtime, handle: null });
+    evidence[path] = { code: codeFromName(name), title: titleFromName(name), date: demoDay(ago), project, notes, size: kb * 1024, mtime,
+      maps: maps.map(([sub, lv, ksbs]) => ({ sub, level: DEMO_LEVEL[lv], ksbs: ksbs || [], note: '' })) };
+  }
+  const d = newPortfolio(DEMO_NAME, 'ice');
+  d.created = demoDay(220) + 'T09:00:00';
+  d.profile = { jobRole: 'Graduate civil engineer (apprentice)', responsibilities: 'Drainage and earthworks design, site visits, cost tracking.', sector: 'Civil engineering consultancy' };
+  d.settings = { ...d.settings, cpdTarget: 30, keyDate: demoDay(-60), keyDateLabel: 'Review meeting' };
+  d.evidence = evidence;
+  const obj = d.cpd.objectives[0];
+  const plan = { id: 'demo-obj-1', ref: 'DAP1', title: 'Get better at drainage design', date: demoDay(200), status: 'active', area: 'Drainage design', learn: 'Design standards for surface water drainage.',
+    action: 'Complete a course and design a small system with supervision.', resources: 'Company training budget, my supervisor.', evaluate: 'Supervisor review of my next design.', deadline: demoDay(-90), notes: '' };
+  d.cpd.objectives = [plan, obj];
+  const act = (id, ago, days, hours, details, type, learning, benefits, objective) => ({ id, ref: '', objective, details, theme: '', type, dateFrom: demoDay(ago), dateTo: demoDay(ago - days + 1), hours,
+    learning, benefits, helped: 'I could do the next task with less supervision.', future: 'I will use it on my next design.', dap: '', documents: [], subs: [] });
+  d.cpd.activities = [
+    act('demo-act-1', 190, 1, 7, 'Surface water drainage design course', 'Course', 'Sizing pipes and checking flood routes.', 'I understood the design checks I was doing.', plan.id),
+    act('demo-act-2', 120, 1, 3, 'Lunch and learn: temporary works', 'Seminar', 'What a temporary works coordinator checks.', 'Better mark-ups on site.', obj.id),
+    act('demo-act-3', 75, 1, 4, 'Site visit to a pumping station', 'Site visit', 'How the pumps are controlled.', 'See what my design looks like when built.', plan.id),
+    act('demo-act-4', 30, 1, 2, 'Reading: sustainable drainage guidance', 'Reading', 'Options to slow and clean runoff.', 'More ideas for the report.', plan.id),
+    act('demo-act-5', 12, 1, '', 'Webinar on carbon in design', 'Webinar', '', '', obj.id),
+  ];
+  const lines = [
+    ['00:00:12', 'Sample Mentor', 'Welcome back. Let us start with the drainage report.'],
+    ['00:00:40', DEMO_NAME, 'I finished sections three and four and the supervisor has checked the pipe sizing.'],
+    ['00:01:30', 'Sample Mentor', 'Good. I think the pipe sizing check is strong evidence for 2b at ability level.'],
+    ['00:02:15', DEMO_NAME, 'I gave the toolbox talk on excavation safety to the site team last week.'],
+    ['00:03:05', 'Sample Mentor', 'Please write that up and map it. Also send me the cost tracker so I can look at it.'],
+    ['00:04:00', 'Sample Mentor', 'Next time we will go through the comments on your report.'],
+  ];
+  const tags = ['', 'done', 'teaching', 'done', 'todo', ''];
+  d.meetings = [
+    { id: 'demo-m-1', date: demoDay(21), title: 'Mentor meeting: drainage report', attendees: `${DEMO_NAME}, Sample Mentor`, source: '',
+      lines: lines.map(([time, speaker, text], i) => ({ time, speaker, text, tag: tags[i] })),
+      items: [
+        { id: 'demo-i-1', kind: 'done', text: 'Finished sections 3 and 4 of the drainage report', who: DEMO_NAME, time: lines[1][0], line: 1, sub: '2b', due: '', status: 'open', evidence: 'DR-01' },
+        { id: 'demo-i-2', kind: 'teaching', text: 'Pipe sizing check is strong evidence for 2b at ability level', who: 'Sample Mentor', time: lines[2][0], line: 2, sub: '2b', due: '', status: 'open', evidence: 'CA-02' },
+        { id: 'demo-i-3', kind: 'done', text: 'Gave a toolbox talk on excavation safety', who: DEMO_NAME, time: lines[3][0], line: 3, sub: '8a', due: '', status: 'open', evidence: 'PR-01' },
+        { id: 'demo-i-4', kind: 'todo', text: 'Send the cost tracker to my mentor', who: 'Sample Mentor', time: lines[4][0], line: 4, sub: '5a', due: demoDay(-7), status: 'open', evidence: 'MM-01' },
+      ] },
+    { id: 'demo-m-2', date: demoDay(70), title: 'Mentor meeting: planning the year', attendees: `${DEMO_NAME}, Sample Mentor`, source: '',
+      lines: [
+        { time: '00:00:20', speaker: 'Sample Mentor', text: 'Let us agree what you want to cover before the review.', tag: '' },
+        { time: '00:01:10', speaker: DEMO_NAME, text: 'I will book the CDM course and ask to join a site safety walk.', tag: 'todo' },
+      ],
+      items: [{ id: 'demo-i-5', kind: 'todo', text: 'Book the CDM course and join a site safety walk', who: DEMO_NAME, time: '00:01:10', line: 1, sub: '6a', due: demoDay(50), status: 'done', evidence: 'CE-01' }] },
+  ];
+  return { data: d, files };
+}
+
+function demoMentor() {
+  const m = newMentor('Sample Mentor', DEMO_NAME);
+  m.created = demoDay(200) + 'T09:00:00';
+  m.saved = demoDay(5) + 'T16:30:00';
+  m.subs = {
+    '2b': { status: 'met', comment: 'Good range of design evidence at every level.', date: demoDay(5) },
+    '1b': { status: 'developing', comment: 'Needs one more calculation at experience level.', date: demoDay(5) },
+    '6a': { status: 'developing', comment: 'Add something from your own site work.', date: demoDay(5) },
+    '8a': { status: 'met', comment: 'The toolbox talk is a good example.', date: demoDay(5) },
+    '7a': { status: 'notyet', comment: 'Nothing beyond knowledge yet.', date: demoDay(5) },
+  };
+  m.actions = [{ id: 'demo-ma-1', text: 'Write up the toolbox talk for 8a', due: demoDay(-14), status: 'open' }];
+  return m;
+}
+
+// Made-up Word reports in S.prr, parsed by the real parser, with mentor comments (two open, one resolved).
+function demoPrr() {
+  const long = (s) => s + ' I checked the figures against the design standard, compared two options and recorded why I chose the one I did. My supervisor reviewed the result and I changed the layout after their comments.';
+  const p = (text, style = '') => ({ text, style });
+  const paras = [
+    p('Professional Review Report: Sample Apprentice', 'Title'),
+    p('1b – Solve engineering problems using a sound theoretical approach', 'Heading2'),
+    p('Evidence: CA-01, CA-02'),
+    p(long('{CA-01} I checked the retaining wall for sliding, overturning and bearing.')),
+    p(long('{CA-02} I sized the drainage pipes for the design flows.')),
+    p('2b – Contribute to the design and development of engineering solutions', 'Heading2'),
+    p('Evidence: DR-01, CA-02, DR-02'),
+    p(long('{DR-01} I wrote sections 3 and 4 of the drainage strategy report.')),
+    p(long('{CA-02} I checked the pipe sizes and the flood route.')),
+    p('6a – Demonstrate a sound knowledge of legislation, hazards and safe systems', 'Heading2'),
+    p('Evidence: MU-01, CE-01'),
+    p('{MU-01} …'),
+    p('8a – Communicate well with others at all levels', 'Heading2'),
+    p('Evidence: CO-01, PR-01'),
+    p(long('{PR-01} I gave a toolbox talk on excavation safety.')),
+    p('9b – Plan, carry out and record Continuing Professional Development', 'Heading2'),
+  ];
+  const doc = parsePrr(paras);
+  const path = `${FOLDERS.prr}/Sample Apprentice PRR draft 1.docx`;
+  const c = (n, sub, ago, text, anchor, resolved = false, replies = []) => ({ kind: 'comment', key: 'demo-c' + n, author: 'Sample Mentor', date: demoDay(ago) + 'T10:00:00', text, anchor, sub, file: path, resolved, replies });
+  return { [path]: { path, name: 'Sample Apprentice PRR draft 1.docx', mtime: Date.now() - 6 * 864e5, doc, edits: [], error: null, comments: [
+    c(1, '2b', 6, 'Say which parts of the design were yours and which were your supervisor\'s.', 'I wrote sections 3 and 4 of the drainage strategy report.'),
+    c(2, '6a', 6, 'This section is only a placeholder. Describe what you did on site and which hazards you controlled.', '{MU-01} …'),
+    c(3, '1b', 20, 'Please state the design standard you used for the checks.', 'I checked the retaining wall for sliding, overturning and bearing.', true, [{ author: DEMO_NAME, date: demoDay(18) + 'T09:00:00', text: 'Added the standard to the first paragraph.' }]),
+  ] } };
+}
+
+// ---------- starting, leaving, and the banner ----------
+async function startDemo() {
+  const { data, files } = demoPortfolio();
+  S.demo = true;
+  S.own = demoFolder();
+  S.other = null;
+  S.warnings = [];
+  S.data = upgrade(data);
+  S.otherData = upgrade(demoMentor());
+  S.files = files;
+  S.dirty = false;
+  applyFramework(null);   // also installs the sample reports (S.prr)
+  undoReset();
+  location.hash = '#home';
+  await render();
+  toast('Sample data: nothing you do here is saved');
+}
+
+// Back to the start screen. Synchronous, so "Start my own portfolio" can open the folder picker straight away.
+function leaveDemo() {
+  S.demo = false;
+  S.data = S.otherData = S.own = S.other = null;
+  S.files = []; S.warnings = []; S.dirty = false; S.loadedStamp = 0;
+  applyFramework(null);
+  S.prr = {};
+  undoReset();
+  closePreview();
+  history.replaceState(null, '', location.pathname + location.search);
+  document.title = 'Pathway Pro';
+  welcome();
+}
+
+function demoBanner() {
+  $('#top').insertAdjacentHTML('beforeend', `<div class="demo-banner" role="region" aria-label="Sample data notice">
+    <span><b>Sample data:</b> nothing here is saved.</span>
+    <span class="row"><button class="primary small" id="demoStart">Start my own portfolio</button><button class="small" id="demoLeave">Leave the sample</button></span></div>`);
+  $('#demoLeave').addEventListener('click', leaveDemo);
+  $('#demoStart').addEventListener('click', () => { leaveDemo(); setupPortfolio('ice'); });
+}
+
+function demoPreviewHtml(path) {
+  return `<div class="empty demo-sample-file" style="margin:20px"><b>Sample file</b><br>This file is made up for the sample, so there is nothing to show.
+    In your own portfolio, clicking a file shows it here.<div class="small muted">${esc(path.split('/').pop())}</div></div>`;
+}
+
+// Self-rating per KSB: P().ksbRatings = { "<ksb id>": [ { date, rating } ] }, rating 1-5, one entry per day.
+const RATING_LABELS = ['', 'Not yet', 'Starting', 'Getting there', 'Confident', 'Could teach it'];
+const ratingHist = (id) => (((P() || {}).ksbRatings || {})[id] || []).filter((r) => r && r.rating >= 1 && r.rating <= 5).sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
+const ratingLatest = (id) => ratingHist(id).slice(-1)[0] || null;
+function ratingTrend(id) {
+  const h = ratingHist(id);
+  if (h.length < 2) return '';
+  const prev = h[h.length - 2];
+  return `was ${prev.rating} on ${fmtDate(prev.date)}`;
+}
+function ratingText(id) {
+  const r = ratingLatest(id);
+  return r ? `${r.rating} ${RATING_LABELS[r.rating]} (${r.date})` : '';
+}
+function ratingCell(k) {
+  const r = ratingLatest(k.id), tr = ratingTrend(k.id);
+  const note = r ? `<div class="small muted">${esc(RATING_LABELS[r.rating])}, ${esc(fmtDate(r.date))}${tr ? ' · ' + esc(tr) : ''}</div>` : '<div class="small muted">Not rated</div>';
+  if (isMentor()) return r ? `<b>${r.rating} of 5</b>${note}` : note;
+  return `<select class="rate-sel" data-k="${esc(k.id)}" aria-label="My rating for ${esc(k.id)}"><option value="">Not rated</option>${[1, 2, 3, 4, 5].map((n) => `<option value="${n}" ${r && r.rating === n ? 'selected' : ''}>${n} – ${RATING_LABELS[n]}</option>`).join('')}</select>${note}`;
+}
+function ratingSummary() {
+  if (!P() || !KSBS.length) return '';
+  const link = (k) => `<a href="#ksbs?k=${encodeURIComponent(k.id)}">${esc(k.id)}</a>`;
+  const rated = KSBS.filter((k) => ratingLatest(k.id));
+  const unrated = KSBS.filter((k) => !ratingLatest(k.id));
+  let t = `<b>Rated ${rated.length} of ${KSBS.length}.</b>`;
+  if (rated.length) {
+    const m = Math.min(...rated.map((k) => ratingLatest(k.id).rating));
+    t += ` Lowest rated (${m} of 5): ${rated.filter((k) => ratingLatest(k.id).rating === m).slice(0, 5).map(link).join(', ')}.`;
+  }
+  if (unrated.length) t += ` Not rated yet: ${unrated.slice(0, 5).map(link).join(', ')}${unrated.length > 5 ? ' and ' + (unrated.length - 5) + ' more' : ''}.`;
+  return `<p class="rate-summary" role="status">${t}</p>`;
+}
+function ratingAfter() {
+  $$('.rate-sel').forEach((sel) => sel.addEventListener('change', () => {
+    const id = sel.dataset.k, n = +sel.value, d = P();
+    if (!d) return;
+    d.ksbRatings = d.ksbRatings || {};
+    const h = (d.ksbRatings[id] = d.ksbRatings[id] || []);
+    const i = h.findIndex((r) => r.date === today());
+    if (!n) { if (i >= 0) h.splice(i, 1); } else if (i >= 0) h[i].rating = n; else h.push({ date: today(), rating: n });
+    if (!h.length) delete d.ksbRatings[id];
+    changed();
+    render().then(() => { const s = $(`.rate-sel[data-k="${CSS.escape(id)}"]`); if (s) s.focus(); });
+  }));
+}
 
 </script>
 

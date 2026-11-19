@@ -3,25 +3,47 @@
 const VIEWS = {};      // name -> function(arg, query) that renders into #main
 const canEdit = () => !isMentor();   // the portfolio data belongs to the apprentice
 
+// Every page that exists for this person (used for routing); the tab bar shows only some of them (tabsShown).
 function tabsFor() { return tabsAll().filter((t) => t[0] !== 'ksbs' || KSBS.length); }
+// Progressive tabs: a new apprentice sees only Home, Evidence, CPD, Settings and Help. The others appear as soon as
+// there is something for them to show (or always, with Settings -> "Show every tab"); the rest stay under "More".
+function tabUnlocked(id) {
+  if (isMentor() || !P() || P().mode === 'cpd' || (P().settings && P().settings.showAllTabs)) return true;
+  const hasEvidence = evidenceItems().length > 0 || Object.values(P().evidence || {}).some((r) => r.maps && r.maps.length);
+  switch (id) {
+    case 'attributes': case 'ksbs': case 'reports': return hasEvidence || Object.keys(S.prr || {}).length > 0;
+    case 'feedback': return feedbackItems().length > 0;
+    case 'meetings': return (P().meetings || []).length > 0;
+    case 'mentor': return !!S.other || !!S.otherData;
+    default: return true;
+  }
+}
+function tabsShown(active) {
+  const all = tabsFor();
+  const shown = all.filter((t) => tabUnlocked(t[0]) || t[0] === active);
+  return { shown, more: all.filter((t) => !shown.includes(t)) };
+}
 function tabsAll() {
   if (!S.data) return [];
   if (isMentor()) return [['home', 'Home'], ['evidence', 'Evidence'], ['attributes', LABEL.attr], ['ksbs', LABEL.ksb], ['reports', 'Reports'], ['feedback', 'Feedback'], ['meetings', 'Meetings'], ['mentor', 'Assessment'], ['cpd', 'CPD'], ['settings', 'Settings'], ['help', 'Help']];
   if (P().mode === 'cpd') return [['cpd', 'CPD'], ['settings', 'Settings'], ['help', 'Help']];
   return [['home', 'Home'], ['evidence', 'Evidence'], ['attributes', LABEL.attr], ['ksbs', LABEL.ksb], ['reports', 'Reports'], ['feedback', 'Feedback'], ['meetings', 'Meetings'], ['cpd', 'CPD'], ['mentor', 'Mentor'], ['settings', 'Settings'], ['help', 'Help']];
 }
-const ACTIVE_TAB = { framework: 'settings', item: 'evidence', sub: 'attributes', report: 'reports', meeting: 'meetings', ksb: 'ksbs' };
+const ACTIVE_TAB = { summary: 'home', framework: 'settings', item: 'evidence', sub: 'attributes', report: 'reports', meeting: 'meetings', ksb: 'ksbs' };
 
 function renderHeader(active) {
   const who = S.data ? (isMentor() ? `Mentor: ${esc(S.data.name)} · apprentice: ${esc((P() && P().name) || S.data.apprentice || '?')}` : esc(S.data.name)) : '';
   const openFb = S.data && P() ? feedbackItems().filter((f) => f.status === 'open').length : 0;
   $('#top').innerHTML = `<div class="bar">
     <a class="brand" href="#${S.data && P() && P().mode === 'cpd' ? 'cpd' : 'home'}">Pathway Pro<small>${who}</small></a>
-    <nav class="tabs">${tabsFor().map(([id, name]) => `<a href="#${id}" class="${active === id ? 'active' : ''}"${active === id ? ' aria-current="page"' : ''}>${name}${
-      id === 'feedback' && openFb ? `<span class="count" title="open comments">${openFb}</span>` : ''}</a>`).join('')}</nav>
-    <div class="top-right">${S.data ? `<div class="search-wrap"><input id="search" type="search" placeholder="Search (Ctrl+K)" autocomplete="off"><div id="searchResults" hidden></div></div>
+    <nav class="tabs" aria-label="Pages">${tabsShown(active).shown.map(([id, name]) => `<a href="#${id}" class="${active === id ? 'active' : ''}"${active === id ? ' aria-current="page"' : ''}>${name}${
+      id === 'feedback' && openFb ? `<span class="count" title="open comments">${openFb}</span>` : ''}</a>`).join('')}${tabsShown(active).more.length ? `<details class="more-tabs"><summary>More</summary><div class="more-list">${tabsShown(active).more.map(([id, name]) => `<a href="#${id}">${name}</a>`).join('')}</div></details>` : ''}</nav>
+    <div class="top-right">${S.data ? `<button id="tourBtn" class="small" title="A short guided tour of this tool">Show me around</button><div class="search-wrap"><input id="search" type="search" placeholder="Search (Ctrl+K)" autocomplete="off"><div id="searchResults" hidden></div></div>
+      <button id="undoBtn" class="small" title="Undo the last change (Ctrl+Z)" ${UNDO.stack.length ? '' : 'hidden'}>↶ Undo</button><button id="redoBtn" class="small" title="Redo (Ctrl+Y)" ${UNDO.redo.length ? '' : 'hidden'}>Redo</button>
       <span id="saveState" class="save-state">${S.dirty ? 'Saving…' : isMentor() || S.data.saved ? 'Saved' : ''}</span>` : ''}</div></div>`;
+  if (S.demo) demoBanner();
   if (S.data) bindSearch();
+  if ($('#undoBtn')) { $('#undoBtn').addEventListener('click', () => undoStep(false)); $('#redoBtn').addEventListener('click', () => undoStep(true)); }
 }
 
 function parseHash() {
@@ -31,6 +53,26 @@ function parseHash() {
   return { name: i < 0 ? path : path.slice(0, i), arg: i < 0 ? '' : path.slice(i + 1), q: new URLSearchParams(query || '') };
 }
 const go = (hash) => { if (location.hash === hash) render(); else location.hash = hash; };
+
+// Tie each <label> that has no "for" to the form control that follows it, so every field has an accessible name.
+let autoLabelId = 0;
+function autoLabel(root) {
+  for (const l of $$('label:not([for])', root)) {
+    if (l.querySelector('input,select,textarea')) continue;
+    const next = l.nextElementSibling;
+    const ctl = next && (next.matches('input,select,textarea') ? next : next.querySelector('input,select,textarea'));
+    if (!ctl || (ctl.id && document.querySelector(`label[for="${ctl.id}"]`))) continue;
+    if (!ctl.id) ctl.id = 'auto-' + (++autoLabelId);
+    l.setAttribute('for', ctl.id);
+  }
+  // Any field still without a name takes the heading of the card it sits in (for example the framework text boxes).
+  for (const ctl of $$('input:not([type=hidden]):not([type=file]),select,textarea', root)) {
+    if (ctl.getAttribute('aria-label') || ctl.getAttribute('aria-labelledby') || ctl.closest('label') || (ctl.id && document.querySelector(`label[for="${ctl.id}"]`))) continue;
+    const box = ctl.closest('.card, section');
+    const h = box && box.querySelector('h2, h3');
+    if (h) ctl.setAttribute('aria-label', h.textContent.trim());
+  }
+}
 
 async function render() {
   const main = $('#main');
@@ -48,6 +90,8 @@ async function render() {
     const html = await VIEWS[name](arg, q);
     if (html !== undefined) { main.innerHTML = banners + html; }
     if (VIEWS[name].after) VIEWS[name].after(arg, q);
+    autoLabel(main);
+    labelTableCells(main);
   } catch (err) {
     console.error(err);
     main.innerHTML = banners + `<div class="banner bad">This page failed to load: ${esc(err.message)}</div>`;
@@ -104,6 +148,7 @@ document.addEventListener('click', (e) => {
 
 let previewUrl = null;
 async function previewHtml(path) {
+  if (S.demo) return demoPreviewHtml(path);
   const file = await getFile(path);
   if (previewUrl) URL.revokeObjectURL(previewUrl);
   const ext = (path.split('.').pop() || '').toLowerCase();
@@ -151,7 +196,7 @@ function searchIndex() {
   const out = [];
   if (P() && P().mode !== 'cpd') {
     for (const it of evidenceItems()) out.push({ kind: 'Evidence', text: `${it.code} ${it.title} ${it.path} ${(it.rec && it.rec.notes) || ''}`, label: `${it.code ? it.code + ' · ' : ''}${it.title}`, href: itemHref(it) });
-    for (const a of SUBS) out.push({ kind: 'Sub-attr.', text: `${a.id} ${a.text} ${a.group_title}`, label: `${a.id} · ${a.text}`, href: '#sub/' + a.id });
+    for (const a of SUBS) out.push({ kind: cap1(LABEL.item), text: `${a.id} ${a.text} ${a.group_title}`, label: `${a.id} · ${a.text}`, href: '#sub/' + a.id });
     for (const k of KSBS) out.push({ kind: 'KSB', text: `${k.id} ${k.text}`, label: `${k.id} · ${k.text}`, href: '#ksbs?k=' + k.id });
     for (const f of feedbackItems()) out.push({ kind: 'Comment', text: `${f.author} ${f.text} ${f.anchor} ${f.response}`, label: `${f.sub || ''} ${f.author}: ${f.text}`, href: '#feedback?key=' + f.key });
     for (const m of P().meetings) {
@@ -193,6 +238,12 @@ function bindSearch() {
 document.addEventListener('keydown', (e) => {
   if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k' && $('#search')) { e.preventDefault(); $('#search').focus(); $('#search').select(); }
   if (e.key === 'Escape') closePreview();
+  // Ctrl+Z / Ctrl+Y undo and redo changes to the portfolio, except while typing in a field (the field keeps its own undo).
+  if ((e.ctrlKey || e.metaKey) && !e.altKey && S.data && !(e.target.closest && e.target.closest('input,textarea,select,[contenteditable],dialog'))) {
+    const k = e.key.toLowerCase();
+    if (k === 'z' && !e.shiftKey) { e.preventDefault(); undoStep(false); }
+    else if (k === 'y' || (k === 'z' && e.shiftKey)) { e.preventDefault(); undoStep(true); }
+  }
 });
 
 // ---------- dialogs ----------
@@ -234,11 +285,28 @@ async function start() {
       <p class="muted">Right-click <b>Pathway Pro.html</b> → <b>Open with</b> → <b>Microsoft Edge</b>.</p></div>`;
     return;
   }
-  S.own = await recall('own');
-  S.other = await recall('other');
-  if (!S.own) return welcome();
-  if (!(await permission(S.own, 'readwrite', false))) return reconnect();
-  await openAll();
+  // If reading the folder stalls (for example OneDrive is still syncing), say so instead of showing "Loading…" for ever.
+  const stalled = setTimeout(() => {
+    if (S.data) return;
+    $('#main').innerHTML = `<div class="welcome card"><h1>Still opening your folder…</h1>
+      <p>This is taking longer than usual. OneDrive may still be syncing, or Edge may be waiting for your permission.</p>
+      <div class="row"><button class="primary" id="stallReload">Try again</button><button id="stallForget">Use a different folder</button></div></div>`;
+    $('#stallReload').addEventListener('click', () => location.reload());
+    $('#stallForget').addEventListener('click', async () => { try { await remember('own', null); await remember('other', null); } catch (_) {} location.reload(); });
+  }, 10000);
+  try {
+    S.own = await recall('own');
+    S.other = await recall('other');
+    if (!S.own) return welcome();
+    if (!(await permission(S.own, 'readwrite', false))) return reconnect();
+    await openAll();
+  } catch (err) {
+    console.error(err);
+    $('#main').innerHTML = `<div class="welcome card"><h1>Could not open your folder</h1><p>${esc(err.message)}</p>
+      <p class="muted">Check that the folder still exists and OneDrive has finished syncing, then try again.</p>
+      <div class="row"><button class="primary" id="errReload">Try again</button></div></div>`;
+    $('#errReload').addEventListener('click', () => location.reload());
+  } finally { clearTimeout(stalled); }
 }
 
 async function openAll() {
@@ -252,6 +320,7 @@ async function openAll() {
   if (copies.length) S.warnings.push(`OneDrive made conflict copies of the data file (${copies.join(', ')}). The tool uses the main file; check whether anything in a copy is missing, then delete the copy.`);
   await scanEvidence();
   await loadReports();
+  undoReset();
   if (!location.hash) location.hash = P() && P().mode === 'cpd' ? '#cpd' : '#home';
   await render();
 }
@@ -276,12 +345,16 @@ function welcome(note = '') {
     <p>A tracker for a professional review or apprenticeship portfolio: evidence mapped to the attributes or requirements of your own framework (ICE IEng is built in; you can edit it or write your own for any institution or level),
     checks on your Word reports, your mentor's comments, meeting notes and CPD. No AI, no internet, no install: everything stays in your OneDrive folder.</p>
     ${note ? `<div class="banner">${note}</div>` : ''}
-    <div class="choices">
-      <button class="choice card" id="wNew"><b>Start my portfolio</b><span class="muted">Pick (or make) an empty folder in your OneDrive, e.g. <i>ICE Portfolio - Your Name</i>. The tool creates the Evidence, PRR, Meetings and CPD folders in it.</span></button>
-      <button class="choice card" id="wOpen"><b>Open my folder</b><span class="muted">You already use the tool: pick your portfolio or mentoring folder.</span></button>
-      <button class="choice card" id="wMentor"><b>I am a mentor</b><span class="muted">Pick an empty folder of your own for your assessments, then the apprentice's shared folder.</span></button>
-      <button class="choice card" id="wCpd"><b>CPD record only</b><span class="muted">Just the ICE Development Action Plan and Personal Development Record, without the Professional Review parts.</span></button>
-    </div>
+    <div class="card start-main"><h2>Start here</h2>
+      <p>Pick (or make) an empty folder in your OneDrive, for example <i>Portfolio - Your Name</i>. The tool sets up the folders for your evidence, reports, meetings and CPD inside it. It takes about a minute.</p>
+      <button class="primary big" id="wNew">Start my portfolio</button></div>
+    <p class="start-other"><b>Already use it, or a different job?</b>
+      <button id="wOpen" title="You already use the tool: pick your portfolio or mentoring folder">Open my folder</button>
+      <button id="wMentor" title="Pick an empty folder of your own for your assessments, then the apprentice's shared folder">I am a mentor</button>
+      <button id="wCpd" title="Just the ICE Development Action Plan and Personal Development Record, without the Professional Review parts">CPD record only</button>
+      <button id="wDemo" title="See the tool filled in with made-up data. Nothing is saved and no folder is needed">Look around with sample data</button></p>
+    <div class="card"><h2>New to this?</h2><p>You do not need to know how to organise your evidence first. See how the folders are laid out and what goes where, then follow a worked example.</p>
+      <div class="row"><button id="wFolders">Suggested folder layout</button><button id="wSteps">Example: empty folder to finished portfolio</button></div></div>
     <p class="small muted">Your files never leave your computer and OneDrive. Edge will ask to let this page see and save files in the folder you pick.</p></div>`;
   $('#wNew').addEventListener('click', () => setupPortfolio('ice'));
   $('#wCpd').addEventListener('click', () => setupPortfolio('cpd'));
@@ -291,6 +364,9 @@ function welcome(note = '') {
     await openAll();
   });
   $('#wMentor').addEventListener('click', setupMentor);
+  $('#wDemo').addEventListener('click', startDemo);
+  $('#wFolders').addEventListener('click', () => showGuide('folders'));
+  $('#wSteps').addEventListener('click', () => showGuide('steps'));
 }
 
 function askText(title, labelText, value = '', help = '') {
@@ -311,7 +387,7 @@ async function setupPortfolio(mode) {
   try { dir = await pickFolder('own', 'readwrite'); } catch (_) { return; }
   S.own = dir;
   if (await loadOwn()) { await remember('own', dir); return openAll(); }
-  const name = await askText('Your name', 'Name (as on your ICE application)', '', 'Shown on exports and to your mentor.');
+  const name = await askText('Your name', 'Your full name', '', 'Shown on exports and to your mentor.');
   if (!name) return;
   S.data = newPortfolio(name, mode);
   if (mode !== 'cpd') {
@@ -326,7 +402,7 @@ async function setupPortfolio(mode) {
   await save(true);
   await remember('own', dir);
   toast(`Set up in "${dir.name}"`);
-  location.hash = mode === 'cpd' ? '#cpd' : '#help';
+  location.hash = mode === 'cpd' ? '#cpd' : '#home';
   await openAll();
 }
 
@@ -353,6 +429,15 @@ async function setupMentor() {
   await remember('other', other);
   await openAll();
 }
+
+// "Skip to content" for keyboard and screen-reader users (a plain #main link would change the page route).
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('#skipLink')) return;
+  e.preventDefault();
+  const m = $('#main');
+  m.setAttribute('tabindex', '-1');
+  m.focus();
+});
 
 // Anything unexpected is shown, never a page stuck on "Loading…".
 window.addEventListener('error', (e) => toast('Something went wrong: ' + e.message, 'error'));

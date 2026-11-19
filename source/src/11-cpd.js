@@ -110,7 +110,7 @@ function cpdActivity(id) {
       <div class="card"><h2>Supporting documents</h2><p class="small muted">Certificates, handouts, notes. They are copied into <code>${FOLDERS.cpd}</code>. ICE does not ask for them, but they are handy.</p>
         <ul class="list-plain">${(a.documents || []).map((p, i) => `<li>${fileLink(p)} ${ed ? `<button class="small danger doc-del" data-i="${i}" title="Remove from this activity (the file stays)">✕</button>` : ''}</li>`).join('') || '<li class="muted">None.</li>'}</ul>
         ${ed ? '<label class="btn small" style="margin-top:.5rem;color:var(--ink)">Attach a file…<input type="file" id="attach" hidden multiple></label>' : ''}</div>
-      ${P().mode !== 'cpd' ? `<div class="card"><h2>ICE sub-attributes</h2><p class="small muted">Optional: which sub-attributes this learning supports (as Knowledge). To count it as evidence, save the certificate into the Evidence folder and map it there.</p>
+      ${P().mode !== 'cpd' ? `<div class="card"><h2>${cap1(LABEL.items)}</h2><p class="small muted">Optional: which ${LABEL.items} this learning supports (as Knowledge). To count it as evidence, save the certificate into the Evidence folder and map it there.</p>
         <div>${SUBS.map((s) => `<label style="display:inline;margin:0 .5rem 0 0;color:var(--ink)" title="${esc(s.text)}"><input type="checkbox" class="act-sub" value="${s.id}" ${(a.subs || []).includes(s.id) ? 'checked' : ''}${dis(ed)}> ${s.id}</label>`).join('')}</div></div>` : ''}
       ${ed ? '<button class="danger" id="delAct">Delete this activity</button>' : ''}
     </div></div>`;

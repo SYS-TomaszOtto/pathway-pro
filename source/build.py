@@ -20,7 +20,8 @@ js = [f'const INST_DATA = {json.dumps(INST, ensure_ascii=False, separators=(",",
       f'// ICE IEng sub-attributes and apprenticeship KSBs, from "IEng Attributes and KSB List.xlsx".\nconst REF = {json.dumps(ref, ensure_ascii=False, separators=(",", ":"))};\n']
 js += [p.read_text() for p in sorted(src.glob('*.js'))]
 page = (src / 'index.html').read_text()
-page = page.replace('__CSS__', (src / 'style.css').read_text()).replace('__VERSION__', version)
+css = (src / 'style.css').read_text() + ((src / 'tour.css').read_text() if (src / 'tour.css').exists() else '') + ((src / 'selfrate.css').read_text() if (src / 'selfrate.css').exists() else '') + ((src / 'demo.css').read_text() if (src / 'demo.css').exists() else '')
+page = page.replace('__CSS__', css).replace('__VERSION__', version)
 out = root / 'dist'
 out.mkdir(exist_ok=True)
 main = page.replace('__JS__', '\n'.join(js))

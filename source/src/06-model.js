@@ -132,6 +132,7 @@ function sectionChecks(s, codes, accepted) {
 }
 
 async function loadReports() {
+  if (S.demo) return;   // sample reports are made up in S.prr
   const root = portfolioRoot();
   if (!root) return;
   const files = (await listDir(root, FOLDERS.prr)).filter((f) => /\.docx$/i.test(f.name));
@@ -230,7 +231,7 @@ function nextSteps(limit = 8) {
   const missing = evidenceItems().filter((i) => i.missing);
   if (missing.length) out.push({ text: `${plural(missing.length, 'evidence record')} lost ${missing.length === 1 ? 'its file' : 'their files'} (moved or renamed): relink them`, href: '#evidence?show=missing' });
   if (fb.length) out.push({ text: `Answer ${plural(fb.length, 'open mentor comment')}`, href: '#feedback' });
-  if (unmapped.length) out.push({ text: `Map ${plural(unmapped.length, 'evidence file')} to sub-attributes`, href: '#evidence?show=unmapped' });
+  if (unmapped.length) out.push({ text: `Map ${plural(unmapped.length, 'evidence file')} to ${LABEL.items}`, href: '#evidence?show=unmapped' });
   const gaps = SUBS.map((a) => ({ a, s: slots(cov[a.id]) })).sort((x, y) => x.s - y.s);
   for (const { a, s } of gaps.slice(0, 4)) {
     if (s >= slotMax(cov[a.id])) break;
@@ -317,4 +318,30 @@ function cpdWarnings(a) {
   if (!a.learning || !a.benefits) out.push('evaluation missing: key learning points and benefits');
   if (!a.objective) out.push('no development plan reference');
   return out;
+}
+
+
+// A plain yes/no list of what should be true before the portfolio goes in. Worked out from the data; nothing is guessed.
+function readiness() {
+  const cov = coverage();
+  const prr = prrBySub();
+  const items = evidenceItems();
+  const full = SUBS.filter((a) => slotStatus(cov[a.id]) === 'met').length;
+  const open = feedbackItems().filter((f) => f.status === 'open').length;
+  const unmapped = items.filter((i) => !i.missing && !(i.rec && i.rec.maps && i.rec.maps.length)).length;
+  const missing = items.filter((i) => i.missing).length;
+  const notWritten = SUBS.filter((a) => ['missing', 'empty', 'placeholder'].includes(prr[a.id].state)).length;
+  const warned = SUBS.filter((a) => prr[a.id].state === 'draft').length;
+  const yr = cpdYear(today());
+  const hours = P().cpd.activities.filter((a) => cpdYear(a.dateFrom) === yr).reduce((n, a) => n + (+a.hours || 0), 0);
+  const target = P().settings.cpdTarget || 0;
+  const list = [
+    { ok: full === SUBS.length, text: `Every ${LABEL.item} has enough evidence (${full} of ${SUBS.length})`, href: '#attributes' },
+    { ok: unmapped === 0 && missing === 0, text: unmapped || missing ? `${unmapped ? plural(unmapped, 'evidence file') + ' not mapped' : ''}${unmapped && missing ? ', ' : ''}${missing ? plural(missing, 'evidence record') + ' with a missing file' : ''}` : 'All evidence files are mapped and found', href: '#evidence?show=' + (missing ? 'missing' : 'unmapped') },
+    { ok: notWritten === 0, text: notWritten ? `${notWritten} of ${SUBS.length} ${LABEL.items} not written up in a report yet` : `Every ${LABEL.item} is written up in a report`, href: '#reports' },
+    { ok: warned === 0, text: warned ? `${plural(warned, 'report section')} with check warnings` : 'No report check warnings', href: '#reports' },
+    { ok: open === 0, text: open ? `${plural(open, 'mentor comment')} still open` : 'No open mentor comments', href: '#feedback' },
+    { ok: !target || hours >= target, text: `CPD this year: ${hours} of ${target} hours`, href: '#cpd' },
+  ];
+  return list;
 }
