@@ -72,7 +72,7 @@ VIEWS.evidence = async (arg, q) => {
     if (show === 'mapped' && !maps.length) return false;
     if (show === 'missing' && !i.missing) return false;
     if (folder && i.folder !== folder) return false;
-    if (text && !`${i.code} ${i.title} ${i.path} ${(i.rec && i.rec.notes) || ''} ${(i.rec && i.rec.project) || ''}`.toLowerCase().includes(text)) return false;
+    if (text && !`${i.code} ${i.title} ${i.path} ${(i.rec && i.rec.notes) || ''} ${(i.rec && i.rec.project) || ''} ${(i.rec && i.rec.tags) || ''}`.toLowerCase().includes(text)) return false;
     return true;
   });
   const counts = { all: items.filter((i) => !i.missing).length, unmapped: items.filter((i) => !i.missing && !((i.rec && i.rec.maps) || []).length).length, mapped: items.filter((i) => ((i.rec && i.rec.maps) || []).length).length, missing: items.filter((i) => i.missing).length };
@@ -96,7 +96,7 @@ VIEWS.evidence = async (arg, q) => {
       <button type="button" class="small filter-toggle" id="evFilterToggle" aria-expanded="false" aria-controls="evFilterControls">Filters</button></div>
     ${list.length ? `<div class="card table-wrap" tabindex="0" role="region" aria-label="Table"><table><thead><tr><th>Code</th><th>Title</th><th>Folder</th><th>Mapped to</th><th>Date</th><th></th></tr></thead><tbody>
       ${list.map((i) => `<tr class="click" data-href="${itemHref(i)}"><td class="nowrap"><b>${i.code ? `<a class="row-link" href="${itemHref(i)}">${esc(i.code)}</a>` : `<a class="row-link muted" href="${itemHref(i)}" aria-label="Open ${esc(i.title)}">–</a>`}</b></td>
-        <td>${esc(i.title)}${i.missing ? ' ' + chip('file missing', 'bad') : ''}${M() && i.code && M().evidence[i.code] ? ' ' + chip('mentor note', 'accent') : ''}</td>
+        <td>${esc(i.title)}${((i.rec && i.rec.tags) || '').split(',').map((t) => t.trim()).filter(Boolean).map((t) => ' ' + chip(t)).join('')}${i.missing ? ' ' + chip('file missing', 'bad') : ''}${M() && i.code && M().evidence[i.code] ? ' ' + chip('mentor note', 'accent') : ''}</td>
         <td class="small muted">${esc(i.folder)}</td>
         <td>${((i.rec && i.rec.maps) || []).sort((a, b) => natural(a.sub, b.sub)).map((m) => chip(`${m.sub} ${LEVEL_SHORT[m.level]}`, 'accent')).join('')}</td>
         <td class="small nowrap">${esc((i.rec && i.rec.date) || '')}</td>
@@ -180,7 +180,8 @@ VIEWS.item = async (arg) => {
           <div><label>Date</label><input type="date" data-field="date" value="${esc(rec.date || '')}"${dis(ed)}></div>
           <div class="full"><label>Title</label><input data-field="title" value="${esc(rec.title || it.title)}"${dis(ed)}></div>
           <div class="full"><label>Project / job</label><input data-field="project" value="${esc(rec.project || '')}"${dis(ed)} list="projects"></div>
-          <div class="full"><label>Notes (what it shows, your part in it)</label><textarea data-field="notes"${dis(ed)}>${esc(rec.notes || '')}</textarea></div>
+          <div class="full"><label>Tags (comma-separated, searchable)</label><input data-field="tags" value="${esc(rec.tags || '')}" placeholder="e.g. foundations, Eurocode 7, client meeting"${dis(ed)}></div>
+          <div class="full"><label>Summary &amp; background notes (what it shows, your part in it, extra context for your PRR)</label><textarea data-field="notes"${dis(ed)}>${esc(rec.notes || '')}</textarea></div>
         </div>
         <datalist id="projects">${[...new Set(Object.values(P().evidence).map((r) => r.project).filter(Boolean))].map((p) => `<option>${esc(p)}</option>`).join('')}</datalist>
         <p class="small muted">File: ${it.missing ? esc(it.path) : fileLink(it.path, it.path)}${it.file ? ` · ${fmtSize(it.file.size)}` : ''}${usedIn.length ? ` · in your PRR for ${usedIn.map(subLink).join(' ')}` : ''}</p></div>
@@ -196,8 +197,10 @@ VIEWS.item = async (arg) => {
           ${rec.maps.slice().sort((a, b) => natural(a.sub, b.sub)).map((m) => {
             const i = rec.maps.indexOf(m);
             const related = KSBS.filter((k) => k.attributes.includes(m.sub));
+            const extraKsbs = (m.ksbs || []).filter((id) => !related.some((k) => k.id === id)).map((id) => KSBS.find((k) => k.id === id) || { id, text: '' });
+            const otherKsbs = KSBS.filter((k) => !related.includes(k) && !(m.ksbs || []).includes(k.id));
             return `<tr><td>${subLink(m.sub)}</td><td>${esc(m.level)}</td>
-              <td>${related.map((k) => `<label class="nowrap" style="display:inline;margin:0 .4rem 0 0;color:var(--ink)" title="${esc(k.text)}"><input type="checkbox" class="ksb-box" data-i="${i}" value="${k.id}" ${(m.ksbs || []).includes(k.id) ? 'checked' : ''}${dis(ed)}> ${k.id}</label>`).join('') || '<span class="muted small">none linked</span>'}</td>
+              <td>${[...related, ...extraKsbs].map((k) => `<label class="nowrap" style="display:inline;margin:0 .4rem 0 0;color:var(--ink)" title="${esc(k.text)}"><input type="checkbox" class="ksb-box" data-i="${i}" value="${k.id}" ${(m.ksbs || []).includes(k.id) ? 'checked' : ''}${dis(ed)}> ${k.id}</label>`).join('') || '<span class="muted small">none linked</span>'}${ed && otherKsbs.length ? ` <select class="ksb-add" data-i="${i}" aria-label="Add another KSB" style="padding:1px 4px;font-size:.8rem;margin-left:4px"><option value="">+ KSB…</option>${otherKsbs.map((k) => `<option value="${k.id}">${k.id} · ${esc(k.text.slice(0, 40))}</option>`).join('')}</select>` : ''}</td>
               <td><input class="map-note" data-i="${i}" value="${esc(m.note || '')}" style="width:100%"${dis(ed)}></td>
               <td>${ed ? `<button class="small danger map-del" data-i="${i}" title="Remove">✕</button>` : ''}</td></tr>`;
           }).join('')}</tbody></table></div>` : ''}
@@ -227,6 +230,14 @@ VIEWS.item.after = async (arg) => {
       const m = rec.maps[+b.dataset.i];
       m.ksbs = $$(`.ksb-box[data-i="${b.dataset.i}"]:checked`).map((x) => x.value);
       changed();
+    }));
+    $$('.ksb-add').forEach((sel) => sel.addEventListener('change', () => {
+      if (!sel.value) return;
+      const m = rec.maps[+sel.dataset.i];
+      m.ksbs = [...new Set([...(m.ksbs || []), sel.value])];
+      changed();
+      const y = window.scrollY;
+      render().then(() => window.scrollTo(0, y));
     }));
     $$('.map-note').forEach((inp) => inp.addEventListener('input', () => { rec.maps[+inp.dataset.i].note = inp.value; changed(); }));
     $$('.map-del').forEach((b) => b.addEventListener('click', () => { rec.maps.splice(+b.dataset.i, 1); changed(); render(); }));

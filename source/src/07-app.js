@@ -202,7 +202,7 @@ function closePreview() { const d = $('#drawer'); if (d) d.hidden = true; }
 function searchIndex() {
   const out = [];
   if (P() && P().mode !== 'cpd') {
-    for (const it of evidenceItems()) out.push({ kind: 'Evidence', text: `${it.code} ${it.title} ${it.path} ${(it.rec && it.rec.notes) || ''}`, label: `${it.code ? it.code + ' · ' : ''}${it.title}`, href: itemHref(it) });
+    for (const it of evidenceItems()) out.push({ kind: 'Evidence', text: `${it.code} ${it.title} ${it.path} ${(it.rec && it.rec.notes) || ''} ${(it.rec && it.rec.tags) || ''}`, label: `${it.code ? it.code + ' · ' : ''}${it.title}`, href: itemHref(it) });
     for (const a of SUBS) out.push({ kind: cap1(LABEL.item), text: `${a.id} ${a.text} ${a.group_title}`, label: `${a.id} · ${a.text}`, href: '#sub/' + a.id });
     for (const k of KSBS) out.push({ kind: 'KSB', text: `${k.id} ${k.text}`, label: `${k.id} · ${k.text}`, href: '#ksbs?k=' + k.id });
     for (const f of feedbackItems()) out.push({ kind: 'Comment', text: `${f.author} ${f.text} ${f.anchor} ${f.response}`, label: `${f.sub || ''} ${f.author}: ${f.text}`, href: '#feedback?key=' + f.key });
