@@ -45,13 +45,16 @@ const TOURS = {
     { title: 'Name and wording', page: 'framework', sel: [() => tCard('#fwName')],
       text: 'Check this is the right framework and edit any wording that is out of date. Built-in lists were read from published guidance and may contain mistakes.' },
     { title: 'Your evidence folder', page: 'evidence', sel: ['#main > p.muted', '#rescan'],
-      text: 'Save your files in the Evidence folder in OneDrive and start each file name with a code such as CO-14. Then press Refresh on the Evidence tab.' },
+      text: 'Save your files in the Evidence folder in OneDrive and start each file name with a code such as CO-14. Then press Refresh on the Evidence tab.',
+      key: 'A file only counts once its name starts with a code.' },
     { title: 'Map a file', page: 'evidence', sel: ['#main table tr[data-href]', '#main .empty'],
-      text: () => `Click a file, then tick each ${itemWord()} it shows and at what level.` },
+      text: () => `Click a file, then tick each ${itemWord()} it shows and at what level.`,
+      key: () => `One file can count towards several ${itemsWord()}.` },
     { title: () => `Check your ${attrWord()}`, page: 'attributes', sel: ['#main > p.muted', '#main h1'],
       text: () => `This shows what is covered and what is missing. The goal is shown in the note at the top of the ${attrWord()} page.` },
     { title: 'Reports', page: 'reports', sel: ['#main > p.muted', '#reload'],
-      text: 'Write your report in Word and save it in the Reports folder. The tool checks it and shows any problems here.' },
+      text: 'Write your report in Word and save it in the Reports folder. The tool checks it and shows any problems here.',
+      key: 'Word stays the master copy: the tool reads your report and never changes it.' },
     { title: 'Mentor feedback', page: 'feedback', sel: ['#exportResp', '#main .sub-tabs'],
       text: 'Your mentor\'s comments from the Word report are listed here. Answer each one and mark it done.' },
     { title: 'What to do next', page: 'home', sel: [() => tCardTitled('Next steps')],
@@ -138,8 +141,10 @@ async function tourGoPage(page) {
 function tourBuild() {
   const hole = document.createElement('div'); hole.className = 'tour-hole none'; hole.setAttribute('aria-hidden', 'true');
   const pop = document.createElement('div'); pop.className = 'tour-pop'; pop.setAttribute('role', 'dialog'); pop.setAttribute('aria-modal', 'false');
-  pop.setAttribute('aria-labelledby', 'tourTitle'); pop.setAttribute('aria-describedby', 'tourText'); pop.tabIndex = -1;
-  pop.innerHTML = '<h2 id="tourTitle"></h2><p id="tourText"></p><div class="tour-foot"><span class="tour-count" id="tourCount"></span>'
+  pop.setAttribute('aria-labelledby', 'tourTitle'); pop.tabIndex = -1;
+  pop.setAttribute('aria-describedby', 'tourText tourKeyText');
+  pop.innerHTML = '<h2 id="tourTitle"></h2><p id="tourText"></p><div class="keypoint" id="tourKey" hidden><b class="keypoint-label">Key point</b> <span id="tourKeyText"></span></div>'
+    + '<div class="tour-foot"><ol class="tour-dots" id="tourDots" aria-hidden="true"></ol><span class="tour-count" id="tourCount"></span>'
     + '<button type="button" id="tourBack">Back</button><button type="button" class="primary" id="tourNext">Next</button>'
     + '<button type="button" id="tourAction" hidden></button><button type="button" class="tour-skip" id="tourSkip">Skip tour</button></div>';
   let live = $('#tourLive');
@@ -206,6 +211,9 @@ function tourRender(step, el) {
   $('#tourTitle', pop).textContent = title;
   $('#tourText', pop).textContent = text;
   $('#tourCount', pop).textContent = `Step ${n} of ${total}`;
+  const key = tval(step.key);
+  $('#tourKey', pop).hidden = !key; $('#tourKeyText', pop).textContent = key || '';
+  $('#tourDots', pop).innerHTML = T.steps.map((_, k) => `<li class="${k < T.idx ? 'past' : k === T.idx ? 'now' : ''}"></li>`).join('');
   $('#tourBack', pop).hidden = n === 1;
   $('#tourNext', pop).textContent = n === total ? 'Finish' : 'Next';
   const act = $('#tourAction', pop);

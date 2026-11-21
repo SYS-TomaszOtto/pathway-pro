@@ -1,0 +1,41 @@
+/* ---------- Journal style: an editorial report. Serif headings over a masthead rule, hairlines instead of boxes,
+   small-caps labels, status shown as a small dot and a word (no filled pills). Midnight navy in the dark. ---------- */
+[data-style=journal] :is(h1, h2, h3) { font-weight: 600; letter-spacing: -.005em; }
+[data-style=journal] h1 { font-size: 1.85rem; font-weight: 700; padding-bottom: .35rem; border-bottom: 2px solid var(--rule); margin-bottom: .9rem; }
+[data-style=journal] .row.spread:has(> h1) { border-bottom: 2px solid var(--rule); margin-bottom: .9rem; }
+[data-style=journal] .row.spread > h1 { border-bottom: 0; margin-bottom: .35rem; }
+[data-style=journal] h2 { font-size: 1.25rem; }
+/* cards: no box, a hairline top rule and space */
+[data-style=journal] :is(.card, .kpi) { background: transparent; border: 0; border-top: 1px solid var(--card-line); border-radius: 0; box-shadow: none; padding: 16px 2px 18px; }
+[data-style=journal] :is(.fb, .mitem) { border-radius: 0; border-width: 1px 0 0; background: transparent; }
+[data-style=journal] :is(dialog, .more-sheet, .tour-pop) { border-radius: 8px; box-shadow: none; border: 1px solid var(--line-strong); }
+[data-style=journal] :is(button, .btn, input, select, textarea) { border-radius: var(--radius-btn); }
+[data-style=journal] header.top { box-shadow: none; }
+/* small-caps labels */
+[data-style=journal] :is(label, legend, .kpi .label, .more-sheet h2, .tab-label, .sub-tabs a, .chip, .tour-count, .look-quick-title, th, .keypoint-label) {
+  font-variant-caps: all-small-caps; letter-spacing: var(--label-tracking); text-transform: none; }
+[data-style=journal] :is(.kpi .label, th) { font-size: .95rem; }
+[data-style=journal] .big-number { font-family: var(--font-display); font-weight: 600; }
+/* status: a dot in the status colour and the word, no box */
+[data-style=journal] .chip { background: transparent; border: 0; color: var(--ink); padding: 0 .3rem 0 0; font-size: .95rem; }
+[data-style=journal] .chip::before { content: "● "; content: "● " / ""; color: var(--line-strong); font-variant-caps: normal; }
+[data-style=journal] .chip.good::before { color: var(--good); }
+[data-style=journal] .chip.part::before { color: var(--part); }
+[data-style=journal] .chip.bad::before { color: var(--bad); }
+[data-style=journal] .chip.accent::before { color: var(--accent); }
+[data-style=journal] ul.facts { gap: 0 .2rem; }
+[data-style=journal] ul.facts li + li::before { content: "·"; color: var(--muted); margin-right: .35rem; }
+[data-style=journal] ul.facts .chip { color: var(--muted); }
+[data-style=journal] ul.facts .chip::before { content: none; }
+[data-style=journal] .sub-tabs a { border-radius: 0; border-width: 0 0 2px; border-color: transparent; background: transparent; }
+[data-style=journal] .sub-tabs a.active { background: transparent; color: var(--ink); border-color: var(--ink); font-weight: 700; }
+/* key point: a claret pull-quote */
+[data-style=journal] .keypoint { border-left: 3px solid var(--keypoint-line); border-radius: 0; }
+[data-style=journal] .keypoint-label { font-family: var(--font-display); font-size: 1rem; }
+[data-style=journal] .bar-meter { height: 6px; border-radius: 0; }
+[data-style=journal] .bar-meter > span { border-radius: 0; background: var(--ink); }
+[data-style=journal] .bar-meter.good > span { background: var(--good); }
+/* tab bar: small caps, the active tab is an ink label with a 2px ink underline */
+[data-style=journal] .tabbar [role=tab] { border-top: 0; font-size: .88rem; }
+[data-style=journal] .tabbar [role=tab].active .tab-label { text-decoration: underline 2px; text-underline-offset: 4px; }
+[data-style=journal] .tabbar [role=tab]:hover { background: transparent; color: var(--ink); }

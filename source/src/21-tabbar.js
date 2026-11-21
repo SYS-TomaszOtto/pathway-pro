@@ -63,7 +63,7 @@ function renderTabbar(active, openFb = 0) {
   nav.innerHTML = `<div class="tabbar-in" role="tablist" aria-label="Main pages" aria-orientation="horizontal">${bar.map(tab).join('')}${more.length
     ? `<button type="button" role="tab" id="moreBtn" class="${inMore ? 'active' : ''}" aria-selected="${inMore}" aria-haspopup="dialog" aria-expanded="false" aria-controls="moreSheet" tabindex="${inMore ? 0 : -1}">${tabIcon('more')}<span class="tab-label">More</span>${inMore ? `<span class="sr-only">, now on ${esc(more.find((t) => t[0] === active)[1])}</span>` : ''}${more.some((t) => t[0] === 'feedback') ? count('feedback') : ''}</button>`
     : ''}</div>`;
-  sheet.innerHTML = more.length ? `<h2 id="moreTitle">More pages</h2><ul>${more.map(([id, name]) => `<li><a href="#${id}" data-tab="${id}" class="${active === id ? 'active' : ''}"${active === id ? ' aria-current="page"' : ''}>${tabIcon(id)}<span>${esc(name)}</span>${count(id)}</a></li>`).join('')}</ul>` : '';
+  sheet.innerHTML = more.length ? `<h2 id="moreTitle">More pages</h2><ul>${more.map(([id, name]) => `<li><a href="#${id}" data-tab="${id}" class="${active === id ? 'active' : ''}"${active === id ? ' aria-current="page"' : ''}>${tabIcon(id)}<span>${esc(name)}</span>${count(id)}</a></li>`).join('')}</ul>${lookQuickHtml()}` : '';
   document.body.classList.add('has-tabbar');
   if (hadFocus) { const t = $('[role=tab][tabindex="0"]', nav); if (t) t.focus({ preventScroll: true }); }
 }

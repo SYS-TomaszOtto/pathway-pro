@@ -72,6 +72,7 @@ VIEWS.settings = async () => {
       <label for="setYearStart">CPD year starts in</label><select id="setYearStart">${['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map((m, i) => `<option value="${i + 1}" ${d.settings.cpdYearStart === i + 1 ? 'selected' : ''}>${m}</option>`).join('')}</select>
       <label>ICE CPD Framework themes, one per line (start a line with * for a mandatory theme)</label>
       <textarea id="setThemes" rows="5" placeholder="Copy the theme names from the ICE website">${esc((d.settings.themes || []).join('\n'))}</textarea></div>`}
+    ${lookCardHtml()}
     <div class="card"><h2>Your data</h2>
       <p class="small">Saved as <code>${esc(myDataPath())}</code> in your folder, last at ${d.saved ? new Date(d.saved).toLocaleString('en-GB') : '–'}. A copy is kept each day in <code>${DATA_DIR}/backups</code> (the last 30).</p>
       <p class="small muted">Something went wrong? <b>Restore from a backup</b> gives back an earlier copy. Your current data is kept first, so a restore can itself be undone.</p>
@@ -160,6 +161,7 @@ VIEWS.help = async () => (P() && P().mode === 'cpd' ? `<h1>How to use the Pathwa
     <li>It saves as you type, and keeps one copy a day in <code>${DATA_DIR}/backups</code>.</li>
     <li>To track a Professional Review as well, switch in <a href="#settings">Settings</a>.</li></ul></div></div>` : '') || `<h1>How to use the Pathway Pro</h1>
   <p>New to it? Start with the <a href="#help" onclick="jumpTo('guideFolders');return false">suggested folder layout</a> and the <a href="#help" onclick="jumpTo('guideSteps');return false">worked example</a> below.</p><div class="grid">
+  ${lessonsCardHtml()}
   <div class="card wide"><h2>The idea</h2><p>One HTML file that keeps a tracker of your ${esc(P() && P().framework ? P().framework.name : 'ICE IEng')} in your OneDrive folder. It does no thinking for you (no AI): it lists, links, counts and checks, so nothing gets missed. Your files stay in your folder, laid out as shown below.</p></div>
   <div class="card wide guide">${FOLDER_GUIDE_HTML()}</div>
   <div class="card wide guide">${walkthroughHtml()}</div>

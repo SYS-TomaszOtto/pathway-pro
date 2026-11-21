@@ -133,3 +133,7 @@ The lists for the other institutions were read from their published guidance and
 ## Licence
 
 MIT: see [LICENSE](LICENSE). Free to use, copy and change.
+
+## Credits
+
+The **Clear** style uses **Atkinson Hyperlegible Next** by the Braille Institute of America (the Atkinson Hyperlegible Next Project Authors), embedded unmodified as the Fontsource Latin subset under the **SIL Open Font License 1.1**. "Atkinson" and "Hyperlegible" are Reserved Font Names. The full licence text is inside `Pathway Pro.html` (a comment above the font) and in `src/fonts/OFL-AtkinsonHyperlegibleNext.txt`. The font is licensed separately from the MIT licence above.

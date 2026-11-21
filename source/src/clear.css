@@ -1,0 +1,35 @@
+/* ---------- Clear style: accessibility first. Larger, roomier text; thick dark control borders; a GOV-style yellow focus;
+   underlined links; status tags with a symbol as well as a word; calm motion (no meter fill, no slide-ins). ---------- */
+[data-style=clear] :is(h1, h2, h3) { font-weight: 700; letter-spacing: 0; }
+[data-style=clear] h1 { font-size: 1.75rem; }
+[data-style=clear] h2 { font-size: 1.3rem; }
+[data-style=clear] :is(p, li) { max-width: 75ch; }
+[data-style=clear] :is(.card, .kpi, .fb) { border: 1px solid var(--card-line); border-radius: var(--radius); box-shadow: none; padding: 20px 22px; }
+[data-style=clear] :is(button, .btn) { border: 2px solid var(--ink); border-radius: var(--radius-btn); min-height: 44px; font-weight: 700; }
+[data-style=clear] :is(button, .btn).small { min-height: 36px; }
+[data-style=clear] :is(button.primary, .btn.primary) { border-color: var(--accent); }
+[data-style=clear] :is(.map-row button, .tline .tags button, .tabbar [role=tab], .tour-link button, .tour-reset button) { min-height: 0; border-width: 1px; }
+[data-style=clear] .tabbar [role=tab] { border: 0; }
+[data-style=clear] a:hover { text-decoration-thickness: 2px; }
+[data-style=clear] :is(input, select, textarea) { min-height: 40px; }
+/* focus: ink ring with a yellow halo (light), a yellow ring (dark) */
+[data-style=clear] :is(input, select, textarea):focus, [data-style=clear] :is(button, a, summary, [tabindex]):focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; box-shadow: 0 0 0 8px var(--focus-halo); }
+/* status tags: rectangular, bold, a border in the status colour and a symbol */
+[data-style=clear] .chip { border-radius: var(--radius-pill); font-weight: 700; font-size: max(.9rem, 14px); color: var(--pill-ink); border: 2px solid var(--pill-line); background: var(--soft); padding: 0 .45rem; }
+[data-style=clear] .chip.good { background: var(--good-soft); border-color: var(--good); }
+[data-style=clear] .chip.part { background: var(--part-soft); border-color: var(--part); }
+[data-style=clear] .chip.bad { background: var(--bad-soft); border-color: var(--bad); }
+[data-style=clear] .chip.accent { background: var(--accent-soft); border-color: var(--accent); }
+[data-style=clear] .chip.good::before { content: "✓ "; content: "✓ " / ""; }
+[data-style=clear] .chip.part::before { content: "◐ "; content: "◐ " / ""; }
+[data-style=clear] .chip.bad::before { content: "✕ "; content: "✕ " / ""; }
+[data-style=clear] .keypoint { border-left-width: 6px; }
+[data-style=clear] .bar-meter { height: 12px; border: 1px solid var(--line-strong); }
+/* tab bar: 2px ink top rule, the active tab is a filled block with white bold text */
+[data-style=clear] .tabbar { border-top: 2px solid var(--ink); }
+[data-style=clear] .tabbar [role=tab] { font-size: .8125rem; }
+[data-style=clear] .tabbar [role=tab].active { background: var(--tab-active-bg); color: var(--tab-active-ink); border-top-color: transparent; font-weight: 700; border-radius: var(--radius); }
+[data-style=clear] .tabbar [role=tab]:focus-visible { outline-offset: -5px; outline-color: var(--focus); box-shadow: none; }
+[data-style=clear][data-theme=light] .tabbar [role=tab].active:focus-visible { outline-color: var(--focus-halo); }
+/* calm: no meter fill, no draw-ins */
+[data-style=clear] :is(.progress-strip .bar-meter > span, .lesson-art .pop, .lesson-art .grow) { animation: none !important; }

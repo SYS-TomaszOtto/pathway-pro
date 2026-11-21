@@ -11,6 +11,7 @@ VIEWS.reports = async () => {
   const stateChip = (st) => chip({ draft: 'draft', placeholder: 'placeholder', empty: 'heading only' }[st] || st, st === 'draft' ? 'part' : 'outline');
   return `<div class="row spread"><h1>Professional Review Reports</h1><div class="row">
       <button id="reload">↻ Re-read Word files</button>${canEdit() ? '<button class="primary" id="newPrr">New PRR from template…</button>' : ''}</div></div>
+    ${facts([[plural(reports.length, 'Word file')], [(SUBS.length - missing.length) + ' of ' + SUBS.length + ' written', missing.length ? 'part' : 'good']])}
     <p class="muted small">Write your PRRs in Word, in the <code>${FOLDERS.prr}</code> folder. The tool reads them (it never changes them) and checks the structure.
       <a href="#" id="howWrite">How to write them so the checks work</a></p>
     ${reports.length ? reports.map((r) => {

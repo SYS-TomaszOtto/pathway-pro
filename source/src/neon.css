@@ -1,0 +1,36 @@
+/* ---------- Neon style: neon on lines, small text and indicators only (never large fills); sharp corners; uppercase mono labels.
+   Light ("daylight") keeps a light header and tab bar; dark is OLED black throughout with a static glow on focus and the active tab. ---------- */
+[data-style=neon] :is(h1, h2, h3) { font-weight: 600; letter-spacing: -.01em; }
+[data-style=neon] h1 { font-size: 1.6rem; }
+[data-style=neon] :is(.card, .kpi, .fb, .mitem, dialog, .more-sheet, .tour-pop, #searchResults, .banner) { border: 1px solid var(--card-line); border-radius: var(--radius); box-shadow: none; }
+[data-style=neon] :is(.card, .kpi) { border-top: 2px solid var(--accent); }
+[data-style=neon] :is(button, .btn, input, select, textarea) { border-radius: var(--radius-btn); }
+[data-style=neon] header.top { box-shadow: none; border-bottom: 1px solid var(--card-line); }
+/* uppercase mono labels */
+[data-style=neon] :is(label, legend, .kpi .label, .more-sheet h2, .tab-label, .sub-tabs a, .chip, .save-state, .tour-count, .look-quick-title, th, kbd, .keypoint-label) {
+  font-family: var(--font-label); text-transform: var(--label-transform); letter-spacing: var(--label-tracking); }
+[data-style=neon] :is(label, .kpi .label, .sub-tabs a, .chip, th) { font-size: .74rem; }
+[data-style=neon] .tab-label { font-size: .66rem; }
+[data-style=neon] .big-number { font-family: var(--font-mono); letter-spacing: -.03em; }
+/* pills: outline only, text in the status colour; accent pills are filled */
+[data-style=neon] .chip { background: transparent; border: 1px solid var(--line-strong); color: var(--ink); border-radius: var(--radius-pill); padding: 0 .4rem; }
+[data-style=neon] .chip.good { color: var(--good); border-color: var(--good); background: transparent; }
+[data-style=neon] .chip.part { color: var(--part); border-color: var(--part); background: transparent; }
+[data-style=neon] .chip.bad { color: var(--bad); border-color: var(--bad); background: transparent; }
+[data-style=neon] .chip.accent { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+[data-style=neon] .sub-tabs a { border-radius: var(--radius-pill); }
+/* thin neon meters */
+[data-style=neon] .bar-meter { height: 4px; border-radius: 0; }
+[data-style=neon] .bar-meter > span { border-radius: 0; }
+[data-style=neon] .keypoint { border: 1px solid var(--keypoint-line); border-left-width: 3px; border-radius: var(--radius); }
+/* tab bar: mono uppercase labels, a 2px neon line on top of the active tab */
+[data-style=neon] .tabbar { border-top: 1px solid var(--card-line); }
+[data-style=neon] .tabbar [role=tab] { border-top: 2px solid transparent; }
+[data-style=neon] .tabbar [role=tab].active { border-top-color: var(--tab-active-ink); box-shadow: inset 0 2px 0 var(--tab-active-ink); }
+[data-style=neon] .tabbar [role=tab]:hover { background: var(--soft); }
+/* dark: static glow on focus, the active tab and full meters (no animation, no flicker) */
+[data-style=neon][data-theme=dark] .tabbar [role=tab].active .tab-icon { filter: drop-shadow(0 0 4px var(--tab-active-ink)); }
+[data-style=neon][data-theme=dark] .tabbar [role=tab].active { box-shadow: inset 0 2px 0 var(--tab-active-ink), 0 -6px 14px -8px var(--tab-active-ink); }
+[data-style=neon][data-theme=dark] :is(input, select, textarea):focus, [data-style=neon][data-theme=dark] :is(button, a, [tabindex]):focus-visible { box-shadow: var(--focus-glow, none); }
+[data-style=neon][data-theme=dark] .bar-meter.good > span { box-shadow: var(--glow); }
+[data-style=neon][data-theme=dark] :is(button.primary, .btn.primary) { box-shadow: var(--glow); }

@@ -1,0 +1,87 @@
+/* ---------- Paper style (New Look plan, phase 2). Basic is untouched: every rule is under [data-style=paper].
+   Colours come only from the tokens in style.css. Monospace for headings, labels, buttons and the tab bar;
+   body text and tables stay sans so they are quick to read. Paper dark keeps the same outlines, offset shadows and pills. ---------- */
+
+/* paper: a faint grid plus a fine grain, all CSS gradients (no images) */
+[data-style=paper] body { background-color: var(--bg);
+  background-image:
+    radial-gradient(var(--grain) .6px, transparent .9px), radial-gradient(var(--grain) .5px, transparent .8px),
+    linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 5px 5px, 7px 7px, 24px 24px, 24px 24px; background-position: 0 0, 2px 3px, -1px -1px, -1px -1px; }
+
+/* cards: thin ink outline, rounder corners, a small offset hard shadow */
+[data-style=paper] :is(.card, .kpi, .fb, .welcome .choice) { border: 1px solid var(--card-line); border-radius: var(--radius); box-shadow: 3px 3px 0 var(--card-shadow); }
+[data-style=paper] :is(.mitem, .transcript, .preview-inline, #searchResults, .banner) { border-color: var(--card-line); border-radius: var(--radius); }
+[data-style=paper] :is(dialog, .more-sheet, .tour-pop) { border: 1px solid var(--card-line); border-radius: var(--radius); box-shadow: 4px 4px 0 var(--card-shadow); }
+[data-style=paper] header.top { border-bottom: 1px solid var(--card-line); box-shadow: none; }
+[data-style=paper] .empty { border: 1.5px dashed var(--line-strong); border-radius: var(--radius); }
+@media (max-width: 640px) { [data-style=paper] table.cardable tr { border-color: var(--card-line); border-radius: 10px; } }
+
+/* hand-drawn feel: card titles sit on a wavy rule, group titles on a dashed one */
+[data-style=paper] :is(.card > h2:first-child, .card > .row > h2:first-child) { text-decoration: underline wavy var(--rule) 1px; text-underline-offset: .45em; text-decoration-skip-ink: none; padding-bottom: .15rem; }
+[data-style=paper] .group-title { border-bottom: 1.5px dashed var(--rule); }
+[data-style=paper] hr { border: 0; height: 8px; margin: 1rem 0; background: radial-gradient(circle at 4px 50%, var(--rule) 1px, transparent 1.5px) 0 0 / 10px 8px repeat-x; }
+
+/* typewriter type for headings, labels, buttons, pills and the tab bar */
+[data-style=paper] :is(label, legend, button, .btn, .kpi .label, .more-sheet h2, .tab-label, .sub-tabs a, .chip, .save-state, .tour-count,
+  .look-quick-title, .group-title, header.top .brand, th, .big-number, kbd) { font-family: var(--font-display); }
+[data-style=paper] :is(button, .btn) { font-size: .9em; letter-spacing: -.01em; }
+[data-style=paper] :is(label, .kpi .label, .sub-tabs a, .chip) { font-size: .9em; letter-spacing: -.01em; }
+[data-style=paper] th { font-size: .78rem; text-transform: uppercase; letter-spacing: .03em; }
+[data-style=paper] .kpi .label { text-transform: uppercase; letter-spacing: .04em; font-size: .76rem; }
+[data-style=paper] h1 { letter-spacing: -.03em; font-size: 1.55rem; }
+[data-style=paper] h2 { letter-spacing: -.02em; }
+
+/* buttons: outlined in ink with a small offset shadow that presses in */
+[data-style=paper] :is(button, .btn) { border-radius: var(--radius-btn); box-shadow: 2px 2px 0 var(--card-shadow); }
+[data-style=paper] :is(button, .btn):active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--card-shadow); }
+[data-style=paper] :is(button, .btn):disabled { box-shadow: none; }
+[data-style=paper] :is(input, select, textarea) { border-radius: var(--radius-btn); }
+[data-style=paper] :is(.map-row button, .tline .tags button, .seg button, .tabbar [role=tab], .tour-link button, .tour-reset button) { box-shadow: none; }
+[data-style=paper] .seg button:first-child { border-radius: var(--radius-btn) 0 0 var(--radius-btn); }
+[data-style=paper] .seg button:last-child { border-radius: 0 var(--radius-btn) var(--radius-btn) 0; }
+
+/* soft pastel pills: dark ink text on a soft fill, a light outline */
+[data-style=paper] .chip { color: var(--pill-ink); background: var(--soft); border: 1px solid var(--pill-line); padding: .05rem .6rem; }
+[data-style=paper] .chip.good { background: var(--good-soft); }
+[data-style=paper] .chip.part { background: var(--part-soft); }
+[data-style=paper] .chip.bad { background: var(--bad-soft); }
+[data-style=paper] .chip.accent { background: var(--accent-soft); }
+[data-style=paper] .chip.outline { background: transparent; }
+[data-style=paper] .sub-tabs a { border-color: var(--control-line); }
+[data-style=paper] .bar-meter { border: 1px solid var(--card-line); height: 12px; background: var(--panel); }
+[data-style=paper] .bar-meter > span { border-radius: 0; }
+[data-style=paper] .slots i { border-radius: 2px; border-color: var(--line-strong); }
+
+/* Key point: lavender, outlined, label in caps */
+[data-style=paper] .keypoint { border: 1px solid var(--keypoint-line); border-radius: var(--radius-btn); }
+
+/* search as a pill with a Ctrl K hint (not on touch screens) */
+[data-style=paper] #search { border-radius: var(--radius-pill); padding-left: .8rem; padding-right: 3.6rem; }
+[data-style=paper] .kbd-hint { display: block; position: absolute; right: .55rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: .72rem; color: var(--muted); background: var(--panel); border-color: var(--line-strong); }
+[data-style=paper] #search:focus ~ .kbd-hint, [data-style=paper] #search:not(:placeholder-shown) ~ .kbd-hint { display: none; }
+@media (pointer: coarse), (max-width: 700px) { [data-style=paper] .kbd-hint { display: none; } [data-style=paper] #search { padding-right: .8rem; } }
+
+/* bottom tab bar: cream bar, ink top rule, mono labels; the active tab gets an outlined pill behind its icon and a bold label */
+[data-style=paper] .tabbar { border-top: 1px solid var(--card-line); }
+[data-style=paper] .tabbar [role=tab] { border-top: 0; }
+[data-style=paper] .tab-label { font-size: .72rem; }
+[data-style=paper] .tabbar [role=tab] .tab-icon { box-sizing: content-box; padding: 2px 12px; border: 1px solid transparent; border-radius: var(--radius-pill); }
+[data-style=paper] .tabbar [role=tab].active { color: var(--accent); }
+[data-style=paper] .tabbar [role=tab].active .tab-icon { background: var(--accent-soft); border-color: var(--accent); }
+[data-style=paper] .tabbar [role=tab]:hover { background: none; }
+[data-style=paper] .tabbar [role=tab]:hover .tab-icon { background: var(--soft); }
+[data-style=paper] .tabbar .count { top: 0; left: calc(50% + 10px); border: 1px solid var(--pill-line); color: var(--pill-ink); }
+
+/* guided tour popover */
+[data-style=paper] .tour-pop h2 { font-size: 1rem; }
+
+/* Home: the KPI tiles become one progress strip across the top */
+[data-style=paper] .progress-strip { gap: 0; border: 1px solid var(--card-line); border-radius: var(--radius); background: var(--panel); box-shadow: 3px 3px 0 var(--card-shadow); overflow: hidden; }
+[data-style=paper] .progress-strip .kpi { border: 0; border-radius: 0; box-shadow: none; border-right: 1.5px dashed var(--rule); border-bottom: 1.5px dashed var(--rule); margin: 0 -1.5px -1.5px 0; padding: 14px 16px; }
+[data-style=paper] .progress-strip .big-number { font-size: 1.9rem; letter-spacing: -.04em; }
+/* Ready to submit: ticked and open boxes */
+[data-style=paper] .ready-list li { align-items: center; }
+[data-style=paper] .ready-list :is(.good, .bad) { display: inline-flex; align-items: center; justify-content: center; width: 1.25em; height: 1.25em; border: 1.5px solid var(--card-line); border-radius: 4px; font-size: .85em; line-height: 1; }
+[data-style=paper] .ready-list .good { background: var(--good-soft); color: var(--pill-ink); }
+[data-style=paper] .ready-list .bad { color: transparent; background: var(--panel); }

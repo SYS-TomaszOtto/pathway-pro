@@ -16,7 +16,7 @@ VIEWS.home = async () => {
   // Brand new portfolio: a short "start here" list instead of a screen of zeros.
   if (!isMentor() && P().mode !== 'cpd' && !items.length && !Object.keys(S.prr).length && !P().meetings.length && !P().cpd.activities.length) {
     return `<h1>Welcome, ${esc(P().name || 'there')}</h1>
-      <div class="card get-started"><h2>Three steps to get going</h2>
+      <div class="card get-started">${lessonArt('folder', 'mini get-started-art')}<h2>Three steps to get going</h2><p class="small">New to this? <a href="#lesson/1">Take the first lesson</a> (five short steps).</p>
         <ol class="steps">
           <li><b>Check your framework.</b> This is the list of ${esc(LABEL.attr.toLowerCase())} you will map your evidence to. ${esc(FRAMEWORK.name)} is chosen. <a class="btn" href="#framework">Check or change it</a></li>
           <li><b>Put your evidence files in your OneDrive folder.</b> Save them in <code>${esc(FOLDERS.evidence)}</code> (sub-folders are fine) and start each file name with a code such as <code>CO-14</code>. <button id="homeRefresh" class="primary">Look for my files</button></li>
@@ -27,7 +27,7 @@ VIEWS.home = async () => {
   return `<h1>${isMentor() ? esc(P() ? P().name : 'Apprentice') + '’s portfolio' : 'Your portfolio'}</h1>
     ${(() => { const k = P().settings && P().settings.keyDate; if (!k) return ''; const days = Math.round((new Date(k + 'T00:00:00') - new Date(today() + 'T00:00:00')) / 86400000); const what = esc(P().settings.keyDateLabel || 'Key date'); return `<p class="key-date"><b>${what}:</b> ${esc(fmtDate(k))} · ${days > 1 ? days + ' days to go (about ' + Math.ceil(days / 7) + ' weeks)' : days === 1 ? 'tomorrow' : days === 0 ? 'today' : Math.abs(days) + ' days ago'}</p>`; })()}
     <p class="muted small">Assessing against ${esc(FRAMEWORK.name)}.${isMentor() ? '' : ' <a href="#framework">Change</a>'} <a href="#summary">Print a one-page summary</a></p>
-    <div class="kpis">
+    <div class="kpis progress-strip${homeFillOnce() ? ' fill' : ''}">
       <div class="kpi"><div class="label">Overall</div><div class="big-number">${Math.round(c.total * 100)}%</div>${meter(c.total)}</div>
       <div class="kpi"><div class="label">Evidence slots (${LEVELS.map((l) => LEVEL_SHORT[l]).join('/')} × ${goal()})</div><div class="big-number">${Math.round(c.evidence * 100)}%</div>${meter(c.evidence)}<div class="small muted">${met} of ${SUBS.length} sub-attributes full</div></div>
       <div class="kpi"><div class="label">PRR sections</div><div class="big-number">${Math.round(c.prr * 100)}%</div>${meter(c.prr)}<div class="small muted">${Object.keys(S.prr).length} Word file(s) in PRR</div></div>
@@ -38,7 +38,7 @@ VIEWS.home = async () => {
     </div>
     <div class="grid">
       ${!isMentor() && P().mode !== 'cpd' ? `<div class="card"><h2>Ready to submit?</h2><ul class="list-plain ready-list">${readiness().map((r) => `<li><span class="${r.ok ? 'good' : 'bad'}" aria-hidden="true">${r.ok ? '✓' : '✗'}</span> <span class="sr-only">${r.ok ? 'Done: ' : 'Not yet: '}</span>${r.ok ? esc(r.text) : `<a href="${r.href}">${esc(r.text)}</a>`}</li>`).join('')}</ul></div>` : ''}
-      <div class="card"><h2>Next steps</h2>${steps.length ? `<ol>${steps.map((s) => `<li><a href="${s.href}">${esc(s.text)}</a></li>`).join('')}</ol>` : '<p class="good">Nothing outstanding. 🎉</p>'}</div>
+      <div class="card"><h2>Next steps</h2>${steps.length ? `<div class="keypoint"><b class="keypoint-label">Key point: do this first</b><p><a href="${steps[0].href}">${esc(steps[0].text)}</a></p></div>${steps.length > 1 ? `<ol start="2">${steps.slice(1).map((s) => `<li><a href="${s.href}">${esc(s.text)}</a></li>`).join('')}</ol>` : ''}` : '<p class="good">Nothing outstanding. 🎉</p>'}</div>
       <div class="card"><h2>Open actions from meetings</h2>${actions.length ? `<ul class="list-plain">${actions.slice(0, 10).map((a) => `<li>${a.due ? `<span class="chip ${a.due < today() ? 'bad' : ''}">${fmtDate(a.due)}</span> ` : ''}${linkify(a.text)} <span class="small muted">· <a href="#meeting/${a.meeting.id}">${fmtDate(a.meeting.date)}</a></span></li>`).join('')}</ul>` : '<p class="muted">None. Actions come from tagging "To do" in a meeting.</p>'}</div>
       <div class="card"><h2>${esc(LABEL.attr)}</h2><table><tbody>${GROUPS.map((g) => {
         const subs = SUBS.filter((a) => a.group === g.group);
@@ -47,6 +47,11 @@ VIEWS.home = async () => {
       }).join('')}</tbody></table></div>
     </div>`;
 };
+
+// The Home meters fill once per session (the figures show at once; only the bars move). sessionStorage, in try/catch.
+function homeFillOnce() {
+  try { if (sessionStorage.getItem('pathwayPro.filled')) return false; sessionStorage.setItem('pathwayPro.filled', '1'); return true; } catch (_) { return false; }
+}
 
 VIEWS.home.after = () => {
   const b = $('#homeRefresh');
@@ -77,6 +82,7 @@ VIEWS.evidence = async (arg, q) => {
       ${canEdit() ? '<button id="addFiles" class="primary" title="Copy files into your evidence folder (or drag them onto this page)">Add files…</button>' : ''}
       ${canEdit() ? '<button id="autoCodes" title="Give codes to files that have none">Number files…</button>' : ''}
       <button id="exportXlsx">Export Excel matrix</button></div></div>
+    ${facts([[plural(counts.all, 'file')], counts.unmapped ? [counts.unmapped + ' not mapped', 'part'] : [ 'all mapped', 'good'], counts.missing ? [counts.missing + ' missing', 'bad'] : null, [plural(folders.length, 'folder')]])}
     <p class="muted small">Every file in <code>${FOLDERS.evidence}</code> (and its sub-folders) is listed. Save each file in the folder for its kind (correspondence, markups, calculations…). Put a code such as <code>CO-14</code> at the start of a file name and it is picked up; otherwise type one in. Click a row to map it.</p>
     <div class="sub-tabs">${['all', 'unmapped', 'mapped', 'missing'].map((s) => `<a href="${qs({ show: s })}" class="${show === s ? 'active' : ''}">${{ all: 'All', unmapped: 'Not mapped', mapped: 'Mapped', missing: 'File missing' }[s]} (${counts[s]})</a>`).join('')}
       <select id="folderSel" aria-label="Folder"><option value="">All folders</option>${folders.map((f) => `<option ${f === folder ? 'selected' : ''}>${esc(f)}</option>`).join('')}</select>
@@ -253,7 +259,9 @@ VIEWS.attributes = async (arg, q) => {
   const prr = prrBySub();
   const fb = feedbackItems();
   const only = q.get('g');
+  const metN = SUBS.filter((a) => slotStatus(cov[a.id]) === 'met').length;
   return `<h1>${esc(LABEL.attr)}</h1>
+    ${facts([[plural(SUBS.length, LABEL.item, LABEL.items)], [metN + ' met', metN === SUBS.length ? 'good' : metN ? 'part' : 'bad'], ['Goal ' + goal()]])}
     <p class="muted small">Goal: ${goal()} different pieces of evidence at each level (${LEVELS.map((l) => LEVEL_NAME[l]).join(', ')}) for every ${LABEL.item}. Click a row for everything about it.</p>
     ${GROUPS.filter((g) => !only || String(g.group) === only).map((g) => `<div class="card"><h2>${g.group}. ${esc(g.title)}</h2><div class="table-wrap" tabindex="0" role="region" aria-label="Table"><table class="attr">
       <thead><tr><th>Sub</th><th>Description</th><th>${LEVELS.map((l) => LEVEL_SHORT[l]).join(' / ')}</th><th>Evidence</th><th>PRR</th><th>Comments</th>${M() ? '<th>Mentor</th>' : ''}</tr></thead><tbody>

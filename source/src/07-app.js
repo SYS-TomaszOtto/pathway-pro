@@ -31,14 +31,14 @@ function tabsAll() {
   if (P().mode === 'cpd') return [['cpd', 'CPD'], ['settings', 'Settings'], ['help', 'Help']];
   return [['home', 'Home'], ['evidence', 'Evidence'], ['attributes', LABEL.attr], ['ksbs', LABEL.ksb], ['reports', 'Reports'], ['feedback', 'Feedback'], ['meetings', 'Meetings'], ['cpd', 'CPD'], ['mentor', 'Mentor'], ['settings', 'Settings'], ['help', 'Help']];
 }
-const ACTIVE_TAB = { summary: 'home', framework: 'settings', item: 'evidence', sub: 'attributes', report: 'reports', meeting: 'meetings', ksb: 'ksbs' };
+const ACTIVE_TAB = { lesson: 'help', summary: 'home', framework: 'settings', item: 'evidence', sub: 'attributes', report: 'reports', meeting: 'meetings', ksb: 'ksbs' };
 
 function renderHeader(active) {
   const who = S.data ? (isMentor() ? `Mentor: ${esc(S.data.name)} · apprentice: ${esc((P() && P().name) || S.data.apprentice || '?')}` : esc(S.data.name)) : '';
   const openFb = S.data && P() ? feedbackItems().filter((f) => f.status === 'open').length : 0;
   $('#top').innerHTML = `<div class="bar">
     <a class="brand" href="#${S.data && P() && P().mode === 'cpd' ? 'cpd' : 'home'}">${LOGO_SVG}Pathway Pro<small>${who}</small></a>
-    <div class="top-right">${S.data ? `<button id="tourBtn" class="small" title="A short guided tour of this tool">Show me around</button><div class="search-wrap"><input id="search" type="search" placeholder="Search (Ctrl+K)" autocomplete="off"><div id="searchResults" hidden></div></div>
+    <div class="top-right">${S.data ? `<button id="tourBtn" class="small" title="A short guided tour of this tool">Show me around</button><div class="search-wrap"><input id="search" type="search" placeholder="Search (Ctrl+K)" autocomplete="off" aria-keyshortcuts="Control+K"><kbd class="kbd-hint" aria-hidden="true">Ctrl K</kbd><div id="searchResults" hidden></div></div>
       <button id="undoBtn" class="small" title="Undo the last change (Ctrl+Z)" ${UNDO.stack.length ? '' : 'hidden'}>↶ Undo</button><button id="redoBtn" class="small" title="Redo (Ctrl+Y)" ${UNDO.redo.length ? '' : 'hidden'}>Redo</button>
       <span id="saveState" class="save-state">${S.dirty ? 'Saving…' : isMentor() || S.data.saved ? 'Saved' : ''}</span>` : ''}</div></div>`;
   renderTabbar(active, openFb);
@@ -82,6 +82,7 @@ async function render() {
   const tabs = tabsFor().map((t) => t[0]);
   if (!VIEWS[name] || (!tabs.includes(name) && !tabs.includes(ACTIVE_TAB[name]))) name = tabs[0];
   renderHeader(ACTIVE_TAB[name] || name);
+  if (!S.demo) lookIntro();
   const banners = S.warnings.map((w) => `<div class="banner bad">${esc(w)}</div>`).join('');
   if (isMentor() && !P() && !['settings', 'help', 'mentor'].includes(name)) {
     main.innerHTML = banners + `<div class="card"><h1>Link the apprentice's folder</h1><p>Open <a href="#settings">Settings</a> and press <b>Link apprentice’s portfolio folder</b> (or <b>Reconnect</b>) to see their work.</p></div>`;
@@ -129,6 +130,8 @@ const linkify = (text) => esc(text)
   .replace(/\b([A-Z]{2,3}-\d{2,3})\b/g, (m) => (itemByCode(m) ? codeLink(m) : m))
   .replace(/(^|[\s(,;])([A-Za-z0-9][A-Za-z0-9.\-]{0,11})(?=[\s),.;:]|$)/g, (m, pre, id) => (SUB[id] ? pre + subLink(id) : m));
 const chip = (text, cls = '') => `<span class="chip ${cls}">${esc(text)}</span>`;
+// Page fact pills under a page title, e.g. facts([['38 files'], ['6 not mapped', 'part']]).
+const facts = (list) => `<ul class="facts" aria-label="At a glance">${list.filter(Boolean).map(([t, cls]) => `<li>${chip(t, cls || '')}</li>`).join('')}</ul>`;
 const prrChip = (state) => chip(...(PRR_STATE[state] || [state, '']));
 const meter = (frac, cls = '') => `<div class="bar-meter ${cls}" title="${Math.round(frac * 100)}%"><span style="width:${Math.round(Math.min(1, frac) * 100)}%"></span></div>`;
 function slotsHtml(cell) {
@@ -361,8 +364,9 @@ function welcome(note = '') {
       <button id="wCpd" title="Just the ICE Development Action Plan and Personal Development Record, without the Professional Review parts">CPD record only</button>
       <button id="wDemo" title="See the tool filled in with made-up data. Nothing is saved and no folder is needed">Look around with sample data</button></p>
     <div class="card"><h2>New to this?</h2><p>You do not need to know how to organise your evidence first. See how the folders are laid out and what goes where, then follow a worked example.</p>
-      <div class="row"><button id="wFolders">Suggested folder layout</button><button id="wSteps">Example: empty folder to finished portfolio</button></div></div>
-    <p class="small muted">Your files never leave your computer and OneDrive. Edge will ask to let this page see and save files in the folder you pick.</p></div>`;
+      <div class="row"><button id="wLesson" class="primary">Lesson 1: set up your portfolio</button><button id="wFolders">Suggested folder layout</button><button id="wSteps">Example: empty folder to finished portfolio</button></div></div>
+    <p class="small muted">Your files never leave your computer and OneDrive. Edge will ask to let this page see and save files in the folder you pick.</p>
+    ${lookQuickHtml()}</div>`;
   $('#wNew').addEventListener('click', () => setupPortfolio('ice'));
   $('#wCpd').addEventListener('click', () => setupPortfolio('cpd'));
   $('#wOpen').addEventListener('click', async () => {
@@ -372,6 +376,7 @@ function welcome(note = '') {
   });
   $('#wMentor').addEventListener('click', setupMentor);
   $('#wDemo').addEventListener('click', startDemo);
+  $('#wLesson').addEventListener('click', () => lessonDialog(1));
   $('#wFolders').addEventListener('click', () => showGuide('folders'));
   $('#wSteps').addEventListener('click', () => showGuide('steps'));
 }
