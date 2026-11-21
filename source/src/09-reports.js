@@ -12,6 +12,11 @@ VIEWS.reports = async () => {
   return `<div class="row spread"><h1>Professional Review Reports</h1><div class="row">
       <button id="reload">↻ Re-read Word files</button>${canEdit() ? '<button class="primary" id="newPrr">New PRR from template…</button>' : ''}</div></div>
     ${facts([[plural(reports.length, 'Word file')], [(SUBS.length - missing.length) + ' of ' + SUBS.length + ' written', missing.length ? 'part' : 'good']])}
+    ${neededChecklist([
+      { ok: reports.length > 0, text: `Save at least one Word report in ${FOLDERS.prr}` },
+      { ok: missing.length === 0, text: `Write a heading for every ${LABEL.item} (${missing.length} missing)` },
+      { ok: reports.length > 0 && reports.every((r) => !r.error && r.doc.sections.every((s) => !(bySub[s.id].sections.find((x) => x.file === r.path && x.section === s)?.issues || []).some((i) => i[0] !== 'info'))), text: 'Clear all report check warnings' },
+    ])}
     <p class="muted small">Write your PRRs in Word, in the <code>${FOLDERS.prr}</code> folder. The tool reads them (it never changes them) and checks the structure.
       <a href="#" id="howWrite">How to write them so the checks work</a></p>
     ${reports.length ? reports.map((r) => {
@@ -31,7 +36,7 @@ VIEWS.reports = async () => {
               <td class="small">${s.discussed.map(codeLink).join(' ') || '<span class="muted">–</span>'}</td>
               <td>${issues.map(([lv, msg]) => `<div class="issue ${lv}">${linkify(msg)}</div>`).join('') || '<span class="good small">✓</span>'}</td></tr>`;
           }).join('')}</tbody></table></div>` : `<p class="muted">No ${LABEL.item} headings found (a heading looks like "2b – Contribute to the design…").</p>`}</div>`;
-    }).join('') : `<div class="empty">No Word files in <b>${FOLDERS.prr}</b> yet.${canEdit() ? ' Press <b>New PRR from template</b> to start one.' : ''}</div>`}
+    }).join('') : emptyState('report', `No Word files in <b>${FOLDERS.prr}</b> yet.${canEdit() ? ' Press <b>New PRR from template</b> to start one.' : ''}`)}
     ${reports.length && missing.length ? `<div class="card"><h2>Not in any PRR yet</h2><p>${missing.map((a) => subLink(a.id)).join(' ')}</p></div>` : ''}`;
 };
 VIEWS.reports.after = () => {
@@ -105,7 +110,7 @@ VIEWS.feedback = async (arg, q) => {
       <select id="fbSub" aria-label="${cap1(LABEL.item)}"><option value="">All ${LABEL.items}</option>${subs.map((s) => `<option ${s === sub ? 'selected' : ''}>${s}</option>`).join('')}</select>
       <a href="${qs({ focus: focus ? '' : '1', i: 0 })}" class="${focus ? 'active' : ''}" title="Show one comment at a time">One at a time</a></div>
     ${focus && list.length ? `<div class="row" style="margin-bottom:8px"><a class="btn small" href="${qs({ i: Math.max(0, at - 1) })}">‹ Previous</a><span>${at + 1} of ${list.length}</span><a class="btn small" href="${qs({ i: Math.min(list.length - 1, at + 1) })}">Next ›</a></div>` : ''}
-    ${shown.length ? shown.map(fbCard).join('') : `<div class="empty">${all.length ? 'Nothing here.' : 'No comments found yet. When your mentor comments in your Word PRR, they appear here.'}</div>`}`;
+    ${shown.length ? shown.map(fbCard).join('') : emptyState('bubble', all.length ? 'Nothing here.' : 'No comments found yet. When your mentor comments in your Word PRR, they appear here.')}`;
 };
 function fbCard(f) {
   const ed = canEdit();

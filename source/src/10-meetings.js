@@ -19,7 +19,7 @@ VIEWS.meetings = async (arg, q) => {
     <div class="cols wide-left">
       <div class="card"><h2>All meetings</h2>${meetings.length ? `<table><thead><tr><th>Date</th><th>Meeting</th><th>Done</th><th>To do</th><th>Teaching</th></tr></thead><tbody>
         ${meetings.map((m) => `<tr class="click" data-href="#meeting/${m.id}"><td class="nowrap">${fmtDate(m.date)}</td><td>${esc(m.title)}</td>${['done', 'todo', 'teaching'].map((k) => `<td>${m.items.filter((i) => i.kind === k).length || ''}</td>`).join('')}</tr>`).join('')}</tbody></table>`
-        : '<div class="empty">No meetings yet.</div>'}</div>
+        : emptyState('file', 'No meetings yet.')}</div>
       <div class="card"><h2>Actions</h2>
         <div class="sub-tabs">${['open', 'done', 'all'].map((s) => `<a href="#meetings?actions=${s}" class="${show === s ? 'active' : ''}">${s[0].toUpperCase() + s.slice(1)}</a>`).join('')}</div>
         ${actions.length ? `<ul class="list-plain">${actions.map((a) => `<li class="row" style="flex-wrap:nowrap;align-items:flex-start">

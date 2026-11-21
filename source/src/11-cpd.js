@@ -56,6 +56,11 @@ function cpdOverview() {
     }).join('')}
     <div class="kpi"><div class="label">Objectives</div><div class="big-number">${cpd().objectives.filter((o) => o.status === 'active').length}</div><div class="small muted">active · ${cpd().objectives.filter((o) => o.status === 'complete').length} complete</div></div></div>
     <p class="small muted">ICE asks for at least ${target} hours of effective learning a year up to the Professional Review. Effective learning time is the time you actually learned for, not how long the activity lasted: no more than 6 hours for a day and 30 hours for one activity.</p>
+    ${neededChecklist([
+      { ok: hours >= target, text: `Log at least ${target} effective learning hours for ${cpdYearLabel(yr)} (${hours} h logged)`, href: '#cpd/record' },
+      { ok: cpd().objectives.some((o) => o.status === 'active'), text: 'Have at least one active Development Action Plan objective', href: '#cpd/plan' },
+      { ok: warnings.length === 0, text: `Complete details and evaluations (${warnings.length} to tidy up)` },
+    ])}
     <div class="grid">
       <div class="card"><h2>${cpdYearLabel(yr)} by objective</h2>${table(sum(acts, (a) => { const o = objectiveOf(a); return o ? `${o.ref} ${o.title || o.area}` : ''; }))}</div>
       <div class="card"><h2>${cpdYearLabel(yr)} by type</h2>${table(sum(acts, (a) => a.type))}</div>
@@ -75,7 +80,7 @@ function cpdRecord(id, q) {
       ${list.map((a) => { const o = objectiveOf(a); const w = cpdWarnings(a); return `<tr class="click" data-href="#cpd/activity/${a.id}"><td class="nowrap small">${fmtDate(a.dateFrom)}${a.dateTo && a.dateTo !== a.dateFrom ? ' – ' + fmtDate(a.dateTo) : ''}</td>
         <td>${esc(a.details || '(no details)')}${a.documents && a.documents.length ? ' 📎' : ''}</td><td class="small">${esc(a.type)}</td><td class="right">${esc(a.hours)}</td><td>${o ? esc(o.ref) : ''}</td><td class="small">${esc(a.theme)}</td>
         <td>${w.length ? `<span class="part" title="${esc(w.join('\n'))}">!</span>` : ''}</td></tr>`; }).join('')}</tbody></table></div>`
-      : '<div class="empty">No activities recorded for this year.</div>'}`;
+      : emptyState('grid', 'No activities recorded for this year.')}`;
 }
 function afterRecord(id, q) {
   $$('tr[data-href]').forEach((tr) => tr.addEventListener('click', () => { location.hash = tr.dataset.href; }));

@@ -59,6 +59,13 @@ const ART = {
   meter: () => isoBox(-60, -8, 0, 120, 16, 10, 'var(--panel)') + isoBox(-60, -8, 10, 76, 16, 3, 'var(--accent-soft)', 'pop grow'),
 };
 const lessonArt = (key, cls = '') => `<svg class="lesson-art ${cls}" viewBox="20 20 160 130" role="img" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round">${(ART[key] || ART.folder)()}</svg>`;
+const emptyState = (art, html) => `<div class="empty">${lessonArt(art, 'empty-art')}${html}</div>`;
+function neededChecklist(items, label = "What's needed here") {
+  const left = items.filter((i) => !i.ok).length;
+  return `<details class="needed-list"><summary>${esc(label)} ${chip(left ? `${left} to do` : '✓ All done', left ? 'part' : 'good')}</summary><ul>${items.map((i) =>
+    `<li><span class="${i.ok ? 'good' : 'part'}" aria-hidden="true">${i.ok ? '✓' : '☐'}</span> <span class="sr-only">${i.ok ? 'Done: ' : 'To do: '}</span>${i.href ? `<a href="${i.href}">${esc(i.text)}</a>` : esc(i.text)}</li>`
+  ).join('')}</ul></details>`;
+}
 
 // ---------- progress ----------
 function lessonRead() { try { return JSON.parse(localStorage.getItem(LESSON_KEY)) || {}; } catch (_) { return lessonMem; } }

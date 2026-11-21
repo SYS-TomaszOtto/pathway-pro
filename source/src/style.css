@@ -548,6 +548,13 @@ ul.facts .chip { margin: 0; }
 .lesson-art.mini { width: 56px; height: 46px; flex: none; }
 .lesson-panel { margin: 0; }
 .lesson-panel h2 { margin-top: 0; }
+
+/* ---------- Phase 5: live "What's needed here" checklists & empty-state illustrations ---------- */
+.needed-list { margin: .5rem 0 .8rem; background: var(--panel); border: 1px solid var(--card-line); border-radius: var(--radius); padding: .45rem .8rem; }
+.needed-list summary { cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: .5rem; }
+.needed-list ul { margin: .45rem 0 .1rem; padding-left: 0; list-style: none; }
+.needed-list li { padding: .15rem 0; }
+.empty-art { width: 120px; height: auto; margin: 0 auto .5rem; display: block; opacity: .85; }
 .lesson-panel h2:focus { outline: none; }
 .lesson-nav { position: sticky; bottom: calc(var(--tabbar-space, 0px) + 8px); z-index: 5; display: flex; align-items: center; gap: 8px; margin-top: 14px; padding: 8px; background: var(--panel); border: 1px solid var(--card-line); border-radius: var(--radius); box-shadow: var(--shadow); }
 .lesson-dialog .lesson-nav { position: static; }

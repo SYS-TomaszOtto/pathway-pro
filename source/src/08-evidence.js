@@ -83,6 +83,11 @@ VIEWS.evidence = async (arg, q) => {
       ${canEdit() ? '<button id="autoCodes" title="Give codes to files that have none">Number files…</button>' : ''}
       <button id="exportXlsx">Export Excel matrix</button></div></div>
     ${facts([[plural(counts.all, 'file')], counts.unmapped ? [counts.unmapped + ' not mapped', 'part'] : [ 'all mapped', 'good'], counts.missing ? [counts.missing + ' missing', 'bad'] : null, [plural(folders.length, 'folder')]])}
+    ${neededChecklist([
+      { ok: counts.all > 0, text: `Add at least one file to ${FOLDERS.evidence}` },
+      { ok: counts.all > 0 && counts.unmapped === 0, text: `Map every file (${counts.unmapped} left)`, href: counts.unmapped ? '#evidence?show=unmapped' : '' },
+      { ok: counts.missing === 0, text: `No missing files (${counts.missing} missing)`, href: counts.missing ? '#evidence?show=missing' : '' },
+    ])}
     <p class="muted small">Every file in <code>${FOLDERS.evidence}</code> (and its sub-folders) is listed. Save each file in the folder for its kind (correspondence, markups, calculations…). Put a code such as <code>CO-14</code> at the start of a file name and it is picked up; otherwise type one in. Click a row to map it.</p>
     <div class="sub-tabs">${['all', 'unmapped', 'mapped', 'missing'].map((s) => `<a href="${qs({ show: s })}" class="${show === s ? 'active' : ''}">${{ all: 'All', unmapped: 'Not mapped', mapped: 'Mapped', missing: 'File missing' }[s]} (${counts[s]})</a>`).join('')}
       <select id="folderSel" aria-label="Folder"><option value="">All folders</option>${folders.map((f) => `<option ${f === folder ? 'selected' : ''}>${esc(f)}</option>`).join('')}</select>
@@ -94,7 +99,7 @@ VIEWS.evidence = async (arg, q) => {
         <td>${((i.rec && i.rec.maps) || []).sort((a, b) => natural(a.sub, b.sub)).map((m) => chip(`${m.sub} ${LEVEL_SHORT[m.level]}`, 'accent')).join('')}</td>
         <td class="small nowrap">${esc((i.rec && i.rec.date) || '')}</td>
         <td>${i.missing ? '' : `<a href="#" data-preview="${esc(i.path)}" class="preview-link small" aria-label="Preview ${esc(i.title)}"><span aria-hidden="true">👁</span> Preview</a>`}</td></tr>`).join('')}</tbody></table></div>`
-      : `<div class="empty">${counts.all ? 'Nothing matches. <a href="#evidence">Show everything</a>.' : `<b>No evidence files yet.</b><br>Press <b>Add files…</b> (or drag files onto this page), or save them into the <code>${FOLDERS.evidence}</code> folder in your OneDrive yourself (sub-folders are fine). Start each file name with a code such as <code>CO-14</code>, then press <b>Refresh</b> above. Not sure how to organise them? <a href="#help">See the suggested folder layout</a>.`}</div>`}`;
+      : emptyState('folders', counts.all ? 'Nothing matches. <a href="#evidence">Show everything</a>.' : `<b>No evidence files yet.</b><br>Press <b>Add files…</b> (or drag files onto this page), or save them into the <code>${FOLDERS.evidence}</code> folder in your OneDrive yourself (sub-folders are fine). Start each file name with a code such as <code>CO-14</code>, then press <b>Refresh</b> above. Not sure how to organise them? <a href="#help">See the suggested folder layout</a>.`)}`;
 };
 VIEWS.evidence.after = (arg, q) => {
   $$('tr[data-href]').forEach((tr) => tr.addEventListener('click', (e) => { if (!e.target.closest('a')) location.hash = tr.dataset.href; }));
@@ -262,6 +267,10 @@ VIEWS.attributes = async (arg, q) => {
   const metN = SUBS.filter((a) => slotStatus(cov[a.id]) === 'met').length;
   return `<h1>${esc(LABEL.attr)}</h1>
     ${facts([[plural(SUBS.length, LABEL.item, LABEL.items)], [metN + ' met', metN === SUBS.length ? 'good' : metN ? 'part' : 'bad'], ['Goal ' + goal()]])}
+    ${neededChecklist([
+      { ok: metN === SUBS.length, text: `${metN} of ${SUBS.length} ${LABEL.items} meet the goal of ${goal()} items per level` },
+      { ok: fb.filter((f) => f.status === 'open').length === 0, text: `Resolve open mentor comments (${fb.filter((f) => f.status === 'open').length} open)`, href: fb.some((f) => f.status === 'open') ? '#feedback' : '' },
+    ])}
     <p class="muted small">Goal: ${goal()} different pieces of evidence at each level (${LEVELS.map((l) => LEVEL_NAME[l]).join(', ')}) for every ${LABEL.item}. Click a row for everything about it.</p>
     ${GROUPS.filter((g) => !only || String(g.group) === only).map((g) => `<div class="card"><h2>${g.group}. ${esc(g.title)}</h2><div class="table-wrap" tabindex="0" role="region" aria-label="Table"><table class="attr">
       <thead><tr><th>Sub</th><th>Description</th><th>${LEVELS.map((l) => LEVEL_SHORT[l]).join(' / ')}</th><th>Evidence</th><th>PRR</th><th>Comments</th>${M() ? '<th>Mentor</th>' : ''}</tr></thead><tbody>
