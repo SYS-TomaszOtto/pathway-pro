@@ -1,3 +1,5 @@
+<img src="source/src/logo.png" alt="" width="96">
+
 # Pathway Pro
 
 A free tracker for professional review portfolios and **CPD**, for apprentices, candidates and their mentors. It has built-in frameworks for **ICE** (IEng apprenticeship, and the current Incorporated, Chartered and Technician Professional Review attributes), **IStructE** (Chartered, Incorporated and Technician Member) and the Engineering Council's **UK-SPEC** competences (CEng, IEng and EngTech, in the 4th edition and, for CEng and IEng, the older 3rd edition wording that some institutions' forms still use). There are also lists for **IChemE** (Chartered Member), **CIBSE** (MCIBSE, ACIBSE), **IMechE** (CEng and IEng application questions), **RINA** (CEng and IEng experiential learning outcomes), **IHE** (RITTech) and **CIHT** (Transport Planning Professional units, with minimum levels). Every list can be edited, and you can write your own for any institution or level.

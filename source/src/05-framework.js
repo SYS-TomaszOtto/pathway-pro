@@ -9,6 +9,7 @@ let SUBS = [], SUB = {}, GROUPS = [], KSBS = [], KSB = {};
 let HEADING_RE = /$^/, SUB_LC = {};
 let LABEL = { attr: 'Attributes', ksb: 'KSBs', item: 'sub-attribute', items: 'sub-attributes' };
 let FRAMEWORK = null;
+let FOLDER_MAP = null;   // folders the person already had, used instead of the default names (see adoptFolders)
 const DEFAULT_FOLDERS = { ...FOLDERS };
 const DEFAULT_CATEGORIES = EVIDENCE_CATEGORIES.slice();
 
@@ -167,16 +168,110 @@ function applyFramework(fw) {
   const ids = SUBS.map((a) => a.id).sort((x, y) => y.length - x.length).map(escRe);
   HEADING_RE = ids.length ? new RegExp(`^\\s*(${ids.join('|')})\\s*[–—\\-:.)]\\s*(.*)$`, 'i') : /$^/;
   LABEL = { attr: (fw.labels && fw.labels.attr) || 'Attributes', ksb: (fw.labels && fw.labels.ksb) || 'KSBs', ...itemLabels(fw.labels) };
-  Object.assign(FOLDERS, DEFAULT_FOLDERS, fw.folders || {});
-  EVIDENCE_CATEGORIES = (fw.evidenceFolders || []).slice();
+  Object.assign(FOLDERS, DEFAULT_FOLDERS, fw.folders || {}, (FOLDER_MAP && FOLDER_MAP.folders) || {});
+  const ev = (FOLDER_MAP && FOLDER_MAP.evidence) || {};
+  EVIDENCE_CATEGORIES = (fw.evidenceFolders || []).map((c) => ev[c] || c);
   S.prr = S.demo ? demoPrr() : {};   // parsed reports depend on the requirement ids: read them again
 }
 const subIdFromHeading = (text) => SUB_LC[String(text).toLowerCase()] || '';
 applyFramework(null);
 
-// Make the folders in the person's OneDrive folder, including one per kind of evidence.
+// ---------- using folders the person already has ----------
+// Someone may have made their folders before using the tool, with slightly different names
+// ("4 - Feedback Compliance and Status", "1 - Modelling Snaps - MO"). Rather than make a second set, the tool
+// uses theirs: FOLDER_MAP (saved in the portfolio data as folderMap) maps a folder setting to the existing name.
+// Words of a folder name compared loosely: no leading number, no punctuation, no plural s, no double letters.
+const looseWords = (s) => String(s).toLowerCase().replace(/^\s*\d+\s*[-–—._)]*\s*/, '').split(/[^a-z0-9]+/).filter(Boolean)
+  .map((w) => (w.length > 3 ? w.replace(/s$/, '') : w).replace(/(.)\1+/g, '$1'));
+const loose = (s) => looseWords(s).join(' ');
+const withoutCode = (s) => String(s).replace(/\s*-\s*[A-Z]{2,3}\s*$/, '');
+const FOLDER_WORDS = { prr: ['report', 'prr'], matrix: ['matrix'], evidence: ['evidence'], feedback: ['feedback', 'compliance'], meetings: ['meeting', 'minutes'], cpd: ['cpd'], exports: ['export'] };
+
+// Which existing name (of `names`) is the one meant by `want`, or '' if none or more than one fits.
+// `byNumber`: last resort for a kind of evidence, the same leading number when both names end in a code.
+function matchFolder(want, names, key, byNumber = false) {
+  const one = (xs) => (xs.length === 1 ? xs[0] : '');
+  const same = one(names.filter((n) => loose(n) === loose(want)));
+  if (same) return same;
+  if (key) {   // a top folder: by its keywords
+    const kw = FOLDER_WORDS[key].map(loose);
+    return one(names.filter((n) => {
+      const w = looseWords(n);
+      if (key === 'evidence' && w.includes('matrix')) return false;
+      if (key === 'prr' && (w.includes('feedback') || w.includes('deliverable'))) return false;
+      return w.some((x) => kw.some((k) => x.startsWith(k)));
+    }));
+  }
+  const code = categoryPrefix(want);   // a kind of evidence: by its code, then by its name
+  if (code) { const byCode = one(names.filter((n) => categoryPrefix(n) === code)); if (byCode) return byCode; }
+  const name = loose(withoutCode(want));
+  const byName = one(names.filter((n) => loose(withoutCode(n)) === name));
+  if (byName) return byName;
+  const first = looseWords(withoutCode(want))[0] || '';
+  const byFirst = first.length >= 4 ? one(names.filter((n) => (looseWords(withoutCode(n))[0] || '') === first)) : '';
+  if (byFirst || !byNumber || !code) return byFirst;
+  const num = (s) => (/^\s*(\d+)\s*[-–—._)]/.exec(s) || [])[1];
+  return num(want) ? one(names.filter((n) => num(n) === num(want) && categoryPrefix(n))) : '';
+}
+
+async function folderNames(dir) {
+  const out = [];
+  try { for await (const [name, h] of dir.entries()) if (h.kind === 'directory' && !IGNORE.test(name) && name !== DATA_DIR) out.push(name); } catch (_) { /* not there */ }
+  return out;
+}
+async function hasFiles(dir) {
+  for await (const [name, h] of dir.entries()) {
+    if (IGNORE.test(name)) continue;
+    if (h.kind === 'file' || await hasFiles(h)) return true;
+  }
+  return false;
+}
+async function emptyFolder(dir, path) {
+  try { return !(await hasFiles(await subDir(dir, path))); } catch (_) { return true; }
+}
+
+// Point each folder setting at a folder the person already has, when the configured one is missing (or is an
+// empty copy the tool made next to theirs). Returns lines like "Feedback → 4 - Feedback Compliance and Status".
+async function adoptFolders(dir, mode) {
+  if (S.demo || !dir || !canEdit() || !P()) return [];
+  const map = { folders: { ...((FOLDER_MAP && FOLDER_MAP.folders) || {}) }, evidence: { ...((FOLDER_MAP && FOLDER_MAP.evidence) || {}) } };
+  const changed = [];
+  const pick = async (base, want, names, taken, key, byNumber) => {
+    if (names.includes(want) && !(await emptyFolder(dir, base + want))) return '';
+    const n = matchFolder(want, names.filter((x) => x !== want && !taken.has(x)), key, byNumber);
+    if (!n || (names.includes(want) && await emptyFolder(dir, base + n))) return '';
+    return n;
+  };
+  const top = await folderNames(dir);
+  const keys = mode === 'cpd' ? ['cpd', 'exports'] : Object.keys(DEFAULT_FOLDERS);
+  const takenTop = new Set(keys.map((k) => FOLDERS[k]).filter((f) => top.includes(f)));
+  for (const k of keys) {
+    const n = await pick('', FOLDERS[k], top, takenTop, k);
+    if (n) { map.folders[k] = n; takenTop.add(n); changed.push(`${FOLDER_LABELS[k]} → ${n}`); FOLDERS[k] = n; }
+  }
+  if (mode !== 'cpd') {
+    let sub = [];
+    try { sub = await folderNames(await subDir(dir, FOLDERS.evidence)); } catch (_) { /* no evidence folder yet */ }
+    const takenSub = new Set(EVIDENCE_CATEGORIES.filter((c) => sub.includes(c)));
+    const base = (FRAMEWORK.evidenceFolders || []);
+    for (const byNumber of [false, true]) {   // by code or name first, so a number match never takes a folder another kind fits better
+      for (let i = 0; i < EVIDENCE_CATEGORIES.length; i++) {
+        if (sub.includes(EVIDENCE_CATEGORIES[i]) && takenSub.has(EVIDENCE_CATEGORIES[i]) && !(await emptyFolder(dir, `${FOLDERS.evidence}/${EVIDENCE_CATEGORIES[i]}`))) continue;
+        const n = await pick(FOLDERS.evidence + '/', EVIDENCE_CATEGORIES[i], sub, takenSub, '', byNumber);
+        if (n) { map.evidence[base[i] || EVIDENCE_CATEGORIES[i]] = n; takenSub.add(n); changed.push(`${EVIDENCE_CATEGORIES[i]} → ${n}`); EVIDENCE_CATEGORIES[i] = n; }
+      }
+    }
+  }
+  if (changed.length) { FOLDER_MAP = map; P().folderMap = map; }
+  return changed;
+}
+
+// Make the folders in the person's OneDrive folder, including one per kind of evidence. Folders the person
+// already has under a similar name are used instead of making new ones.
 async function ensureFolders(dir, mode) {
   if (S.demo) return;
+  const adopted = await adoptFolders(dir, mode);
+  if (adopted.length) toast(`Using your existing folders: ${adopted.join('; ')}`);
   const names = mode === 'cpd' ? [FOLDERS.cpd, FOLDERS.exports] : Object.values(FOLDERS);
   for (const f of names) await subDir(dir, f, true);
   if (mode !== 'cpd') for (const c of EVIDENCE_CATEGORIES) await subDir(dir, `${FOLDERS.evidence}/${c}`, true);

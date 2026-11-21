@@ -25,9 +25,9 @@ VIEWS.framework = async () => {
       <div class="card"><h2>Groups</h2><p class="small muted">Group id | Title. Groups collect requirements, for example one per attribute, unit or competence area.</p>
         <textarea id="fwGroups"${rows(8)}${dd}>${esc(toGroupText(fw))}</textarea></div>
       <div class="card"><h2>Folders</h2><p class="small muted">Folder names inside your portfolio folder. New names are created when you save; existing folders are not renamed or moved.</p>
-        <div class="form-grid">${Object.keys(DEFAULT_FOLDERS).map((k) => `<div><label>${FOLDER_LABELS[k]}</label><input data-folder="${k}" value="${esc(fw.folders[k] || DEFAULT_FOLDERS[k])}"${dd}></div>`).join('')}</div>
+        <div class="form-grid">${Object.keys(DEFAULT_FOLDERS).map((k) => `<div><label>${FOLDER_LABELS[k]}</label><input data-folder="${k}" value="${esc((fw === FRAMEWORK ? FOLDERS[k] : '') || fw.folders[k] || DEFAULT_FOLDERS[k])}"${dd}></div>`).join('')}</div>
         <label>Kinds of evidence (folders inside the evidence folder, one per line; end with " - " and 2 or 3 letters for the code, e.g. <code>4 - Calculations - CA</code>)</label>
-        <textarea id="fwEvFolders"${rows(9)}${dd}>${esc((fw.evidenceFolders || []).join('\n'))}</textarea></div>
+        <textarea id="fwEvFolders"${rows(9)}${dd}>${esc((fw === FRAMEWORK ? EVIDENCE_CATEGORIES : fw.evidenceFolders || []).join('\n'))}</textarea></div>
     </div>
     <div class="card"><h2>Requirements</h2><p class="small muted">Id | Group id | Text, then optionally <code>| needs: K</code> to say the requirement is met by evidence at that level or above (otherwise every level needs evidence). The id is what you write in report headings, for example <code>2b – Contribute to…</code>.</p>
       <textarea id="fwAttrs"${rows(14)}${dd}>${esc(toAttrText(fw))}</textarea></div>
@@ -74,6 +74,8 @@ VIEWS.framework.after = () => {
   if ($('#fwSave')) $('#fwSave').addEventListener('click', (e) => act(e.currentTarget, async () => {
     const fw = read();
     P().framework = fw;
+    delete P().folderMap;   // the boxes showed the folder names in use, so they are now part of the framework
+    FOLDER_MAP = null;
     applyFramework(fw);
     await ensureFolders(S.own, P().mode);
     changed();
