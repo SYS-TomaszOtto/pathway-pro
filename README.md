@@ -6,7 +6,7 @@ A free tracker for professional review portfolios and **CPD**, for apprentices, 
 
 It is a single web page. There is nothing to install, no account, no server and no AI. Your files never leave your computer: the tool reads and saves them in a folder you choose, such as your OneDrive folder.
 
-**[Open Pathway Pro](https://SYS-TomaszOtto.github.io/pathway-pro/)**, or **[download it (Pathway-Pro.zip)](https://github.com/SYS-TomaszOtto/pathway-pro/raw/main/Pathway-Pro.zip)** to use it offline.
+**[Download Pathway Pro (Pathway-Pro.zip)](https://github.com/SYS-TomaszOtto/pathway-pro/raw/main/Pathway-Pro.zip)**, unzip it, and open `Pathway Pro.html` in Edge or Chrome. There is no online version: the app runs from the downloaded file.
 
 Use **Microsoft Edge** or **Google Chrome** on a computer. Other browsers cannot use a folder on your computer.
 
@@ -108,7 +108,7 @@ The full guide is in **[How to use Pathway Pro.docx](How%20to%20use%20Pathway%20
 
 ## Privacy
 
-Everything stays in the folder you pick. The page sends nothing anywhere: there are no analytics, no accounts and no uploads. The online version and the downloaded file are the same page.
+Everything stays in the folder you pick. The page sends nothing anywhere: there are no analytics, no accounts and no uploads.
 
 ## Building from source
 
