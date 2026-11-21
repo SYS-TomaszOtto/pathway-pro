@@ -55,7 +55,7 @@ const TOURS = {
     { title: 'Reports', page: 'reports', sel: ['#main > p.muted', '#reload'],
       text: 'Write your report in Word and save it in the Reports folder. The tool checks it and shows any problems here.',
       key: 'Word stays the master copy: the tool reads your report and never changes it.' },
-    { title: 'Mentor feedback', page: 'feedback', sel: ['#exportResp', '#main .sub-tabs'],
+    { title: 'Mentor feedback', page: 'feedback', sel: ['#exportResp', '#dock .sub-tabs', '#main .sub-tabs'],
       text: 'Your mentor\'s comments from the Word report are listed here. Answer each one and mark it done.' },
     { title: 'What to do next', page: 'home', sel: [() => tCardTitled('Next steps')],
       text: 'Come back to Home any time: the Next steps list tells you the most useful thing to do now.' },
@@ -68,7 +68,7 @@ const TOURS = {
     { title: 'Share it', sel: ['#fwExport'], text: 'Export the framework as a file to give to another apprentice, who can then import it.' },
   ] },
   evidence: { name: 'Evidence', steps: [
-    { title: 'Filters', sel: ['#main .sub-tabs'], text: 'Show all files, or only those not mapped yet. The Not mapped chip is the quickest way to find what still needs doing.' },
+    { title: 'Filters', sel: ['#dock .sub-tabs', '#main .sub-tabs'], text: 'Show all files, or only those not mapped yet. The Not mapped chip is the quickest way to find what still needs doing.' },
     { title: 'Codes', sel: ['#main table thead th'], text: 'Each file starts with a code such as CO-14: two or three letters for the kind of evidence, then a number.' },
     { title: 'Open a file', sel: ['#main table tr[data-href]'], text: () => `Click a row to map that file to ${itemsWord().toLowerCase()} and levels.` },
     { title: 'Refresh and number files', sel: ['#rescan'], text: 'After saving new files in OneDrive, press Refresh. Number files... gives codes to files that have none.' },
@@ -87,10 +87,10 @@ const TOURS = {
     { title: 'New report', sel: ['#newPrr', '#reload'], text: 'New PRR from template makes a Word file with the headings already in place. Existing files are never overwritten.' },
   ] },
   feedback: { name: 'Feedback', steps: [
-    { title: 'Open, done, won\'t change', sel: ['#main .sub-tabs'], text: 'Switch between comments still open and those you have dealt with.' },
+    { title: 'Open, done, won\'t change', sel: ['#dock .sub-tabs', '#main .sub-tabs'], text: 'Switch between comments still open and those you have dealt with.' },
     { title: 'Mark each one', sel: ['#main .fb-status'], text: 'Use the buttons to say whether you changed it (Done) or decided not to (Won\'t change).' },
     { title: 'Write a response', sel: ['#main .fb-resp'], text: 'Say what you changed, or why not. This becomes your response to your mentor.' },
-    { title: 'One at a time', sel: ['#main .sub-tabs a[title*="one comment"]'], text: 'Work through the comments one by one to stay focused.' },
+    { title: 'One at a time', sel: ['#dock .sub-tabs a[title*="one comment"]', '#main .sub-tabs a[title*="one comment"]'], text: 'Work through the comments one by one to stay focused.' },
     { title: 'Export the response', sel: ['#exportResp'], text: 'Export "Response to feedback" as a Word table to send to your mentor.' },
   ] },
   mentor: { name: 'Mentor', steps: [

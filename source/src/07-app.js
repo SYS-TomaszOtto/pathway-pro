@@ -38,7 +38,7 @@ function renderHeader(active) {
   const openFb = S.data && P() ? feedbackItems().filter((f) => f.status === 'open').length : 0;
   $('#top').innerHTML = `<div class="bar">
     <a class="brand" href="#${S.data && P() && P().mode === 'cpd' ? 'cpd' : 'home'}">${LOGO_SVG}Pathway Pro<small>${who}</small></a>
-    <div class="top-right">${S.data ? `<button id="tourBtn" class="small" title="A short guided tour of this tool">Show me around</button><div class="search-wrap"><input id="search" type="search" placeholder="Search (Ctrl+K)" autocomplete="off" aria-keyshortcuts="Control+K"><kbd class="kbd-hint" aria-hidden="true">Ctrl K</kbd><div id="searchResults" hidden></div></div>
+    <div class="top-right">${S.data ? `<button id="tourBtn" class="small" title="A short guided tour of this tool">Show me around</button>
       <button id="undoBtn" class="small" title="Undo the last change (Ctrl+Z)" ${UNDO.stack.length ? '' : 'hidden'}>↶ Undo</button><button id="redoBtn" class="small" title="Redo (Ctrl+Y)" ${UNDO.redo.length ? '' : 'hidden'}>Redo</button>
       <span id="saveState" class="save-state">${S.dirty ? 'Saving…' : isMentor() || S.data.saved ? 'Saved' : ''}</span>` : ''}</div></div>`;
   renderTabbar(active, openFb);
@@ -92,7 +92,9 @@ async function render() {
     const html = await VIEWS[name](arg, q);
     if (html !== undefined) { main.innerHTML = banners + html; }
     if (VIEWS[name].after) VIEWS[name].after(arg, q);
+    if (typeof dockPageControls === 'function') dockPageControls();
     autoLabel(main);
+    if ($('#dock')) autoLabel($('#dock'));
     labelTableCells(main);
   } catch (err) {
     console.error(err);

@@ -106,9 +106,11 @@ VIEWS.feedback = async (arg, q) => {
   return `<div class="row spread"><h1>Mentor feedback</h1><div class="row">
       <button id="exportResp" class="primary">Export “Response to feedback” (Word)</button></div></div>
     <p class="muted small">Comments and tracked changes from the Word files in <code>${FOLDERS.prr}</code>, sorted by ${LABEL.item}. ${canEdit() ? 'Write what you changed under each one and mark it done: that becomes your response table for the mentor.' : 'The apprentice’s responses are shown under each comment.'}</p>
-    <div class="sub-tabs">${['open', 'done', 'wont', 'all'].map((s) => `<a href="${qs({ status: s, i: 0 })}" class="${status === s ? 'active' : ''}">${s === 'all' ? 'All' : FB_STATUS[s]} (${count(s)})</a>`).join('')}
-      <select id="fbSub" aria-label="${cap1(LABEL.item)}"><option value="">All ${LABEL.items}</option>${subs.map((s) => `<option ${s === sub ? 'selected' : ''}>${s}</option>`).join('')}</select>
-      <a href="${qs({ focus: focus ? '' : '1', i: 0 })}" class="${focus ? 'active' : ''}" title="Show one comment at a time">One at a time</a></div>
+    <div class="sub-tabs" data-dock>
+      <div class="filter-controls" id="fbFilterControls">${['open', 'done', 'wont', 'all'].map((s) => `<a href="${qs({ status: s, i: 0 })}" class="${status === s ? 'active' : ''}">${s === 'all' ? 'All' : FB_STATUS[s]} (${count(s)})</a>`).join('')}
+        <select id="fbSub" aria-label="${cap1(LABEL.item)}"><option value="">All ${LABEL.items}</option>${subs.map((s) => `<option ${s === sub ? 'selected' : ''}>${s}</option>`).join('')}</select>
+        <a href="${qs({ focus: focus ? '' : '1', i: 0 })}" class="${focus ? 'active' : ''}" title="Show one comment at a time">One at a time</a></div>
+      <button type="button" class="small filter-toggle" id="fbFilterToggle" aria-expanded="false" aria-controls="fbFilterControls">Filters</button></div>
     ${focus && list.length ? `<div class="row" style="margin-bottom:8px"><a class="btn small" href="${qs({ i: Math.max(0, at - 1) })}">‹ Previous</a><span>${at + 1} of ${list.length}</span><a class="btn small" href="${qs({ i: Math.min(list.length - 1, at + 1) })}">Next ›</a></div>` : ''}
     ${shown.length ? shown.map(fbCard).join('') : emptyState('bubble', all.length ? 'Nothing here.' : 'No comments found yet. When your mentor comments in your Word PRR, they appear here.')}`;
 };

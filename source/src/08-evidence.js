@@ -89,9 +89,11 @@ VIEWS.evidence = async (arg, q) => {
       { ok: counts.missing === 0, text: `No missing files (${counts.missing} missing)`, href: counts.missing ? '#evidence?show=missing' : '' },
     ])}
     <p class="muted small">Every file in <code>${FOLDERS.evidence}</code> (and its sub-folders) is listed. Save each file in the folder for its kind (correspondence, markups, calculations…). Put a code such as <code>CO-14</code> at the start of a file name and it is picked up; otherwise type one in. Click a row to map it.</p>
-    <div class="sub-tabs">${['all', 'unmapped', 'mapped', 'missing'].map((s) => `<a href="${qs({ show: s })}" class="${show === s ? 'active' : ''}">${{ all: 'All', unmapped: 'Not mapped', mapped: 'Mapped', missing: 'File missing' }[s]} (${counts[s]})</a>`).join('')}
-      <select id="folderSel" aria-label="Folder"><option value="">All folders</option>${folders.map((f) => `<option ${f === folder ? 'selected' : ''}>${esc(f)}</option>`).join('')}</select>
-      <input id="evFilter" type="search" placeholder="Filter…" value="${esc(q.get('q') || '')}"></div>
+    <div class="sub-tabs" data-dock>
+      <div class="filter-controls" id="evFilterControls">${['all', 'unmapped', 'mapped', 'missing'].map((s) => `<a href="${qs({ show: s })}" class="${show === s ? 'active' : ''}">${{ all: 'All', unmapped: 'Not mapped', mapped: 'Mapped', missing: 'File missing' }[s]} (${counts[s]})</a>`).join('')}
+        <select id="folderSel" aria-label="Folder"><option value="">All folders</option>${folders.map((f) => `<option ${f === folder ? 'selected' : ''}>${esc(f)}</option>`).join('')}</select>
+        <input id="evFilter" type="search" aria-label="Filter evidence" placeholder="Filter…" value="${esc(q.get('q') || '')}"></div>
+      <button type="button" class="small filter-toggle" id="evFilterToggle" aria-expanded="false" aria-controls="evFilterControls">Filters</button></div>
     ${list.length ? `<div class="card table-wrap" tabindex="0" role="region" aria-label="Table"><table><thead><tr><th>Code</th><th>Title</th><th>Folder</th><th>Mapped to</th><th>Date</th><th></th></tr></thead><tbody>
       ${list.map((i) => `<tr class="click" data-href="${itemHref(i)}"><td class="nowrap"><b>${i.code ? `<a class="row-link" href="${itemHref(i)}">${esc(i.code)}</a>` : `<a class="row-link muted" href="${itemHref(i)}" aria-label="Open ${esc(i.title)}">–</a>`}</b></td>
         <td>${esc(i.title)}${i.missing ? ' ' + chip('file missing', 'bad') : ''}${M() && i.code && M().evidence[i.code] ? ' ' + chip('mentor note', 'accent') : ''}</td>

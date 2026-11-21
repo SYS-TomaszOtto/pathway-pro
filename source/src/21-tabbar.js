@@ -39,16 +39,57 @@ function tabbarSplit(active) {
   return { bar: all.filter((t) => pick.has(t[0])), more: all.filter((t) => !pick.has(t[0])) };
 }
 
+let tabbarObserver = null;
+function fitTabbar() {
+  const nav = $('#tabbar');
+  if (!nav || nav.hidden) {
+    document.documentElement.style.removeProperty('--tabbar-space');
+    return;
+  }
+  document.documentElement.style.setProperty('--tabbar-space', nav.offsetHeight + 'px');
+}
+
+function dockPageControls() {
+  const slot = $('#dockFilters');
+  if (!slot) return;
+  slot.innerHTML = '';
+  const items = $$('#main [data-dock]');
+  items.forEach((el) => slot.append(el));
+  slot.querySelectorAll('.sub-tabs').forEach((box) => {
+    const toggle = $('.filter-toggle', box);
+    const controls = $('.filter-controls', box);
+    if (!toggle || !controls) return;
+    const syncCount = () => {
+      const selN = $$('select', controls).filter((s) => s.selectedIndex > 0).length;
+      const inpN = $$('input[type=search]', controls).filter((i) => i.value.trim()).length;
+      const n = selN + inpN;
+      toggle.textContent = n ? `Filters (${n})` : 'Filters';
+      toggle.classList.toggle('has-active', n > 0);
+    };
+    toggle.addEventListener('click', () => {
+      const open = box.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', String(open));
+      fitTabbar();
+    });
+    controls.addEventListener('change', syncCount);
+    controls.addEventListener('input', syncCount);
+    syncCount();
+  });
+  fitTabbar();
+}
+
 function renderTabbar(active, openFb = 0) {
   const nav = $('#tabbar'), sheet = $('#moreSheet');
   if (!nav || !sheet) return;
   // Keyboard users keep their place: if focus was in the bar or sheet, put it back on the open page's tab after.
-  const hadFocus = tabbarRefocus || nav.contains(document.activeElement) || sheet.contains(document.activeElement);
+  const hadFocus = tabbarRefocus || (nav.contains(document.activeElement) && !document.activeElement.closest('#dock')) || sheet.contains(document.activeElement);
+  const prevSearch = $('#search') ? $('#search').value : '';
   tabbarRefocus = false;
   closeMoreSheet(false);
   if (!S.data || !tabsFor().length) {
     nav.innerHTML = ''; sheet.innerHTML = ''; nav.hidden = true;
     document.body.classList.remove('has-tabbar');
+    fitTabbar();
     return;
   }
   const { bar, more } = tabbarSplit(active);
@@ -60,11 +101,16 @@ function renderTabbar(active, openFb = 0) {
     return `<a role="tab" href="#${id}" data-tab="${id}" class="${active === id ? 'active' : ''}" aria-selected="${active === id}"${active === id ? ' aria-current="page"' : ''} tabindex="${on ? 0 : -1}" title="${esc(name)}">${tabIcon(id)}<span class="tab-label">${esc(name)}</span>${count(id)}</a>`;
   };
   nav.hidden = false;
-  nav.innerHTML = `<div class="tabbar-in" role="tablist" aria-label="Main pages" aria-orientation="horizontal">${bar.map(tab).join('')}${more.length
+  nav.innerHTML = `<div class="tabbar-dock" id="dock"><div class="search-wrap"><input id="search" type="search" placeholder="Search (Ctrl+K)" autocomplete="off" aria-keyshortcuts="Control+K" aria-label="Search" value="${esc(prevSearch)}"><kbd class="kbd-hint" aria-hidden="true">Ctrl K</kbd><div id="searchResults" hidden></div></div><div class="dock-filters" id="dockFilters"></div></div><div class="tabbar-in" role="tablist" aria-label="Main pages" aria-orientation="horizontal">${bar.map(tab).join('')}${more.length
     ? `<button type="button" role="tab" id="moreBtn" class="${inMore ? 'active' : ''}" aria-selected="${inMore}" aria-haspopup="dialog" aria-expanded="false" aria-controls="moreSheet" tabindex="${inMore ? 0 : -1}">${tabIcon('more')}<span class="tab-label">More</span>${inMore ? `<span class="sr-only">, now on ${esc(more.find((t) => t[0] === active)[1])}</span>` : ''}${more.some((t) => t[0] === 'feedback') ? count('feedback') : ''}</button>`
     : ''}</div>`;
   sheet.innerHTML = more.length ? `<h2 id="moreTitle">More pages</h2><ul>${more.map(([id, name]) => `<li><a href="#${id}" data-tab="${id}" class="${active === id ? 'active' : ''}"${active === id ? ' aria-current="page"' : ''}>${tabIcon(id)}<span>${esc(name)}</span>${count(id)}</a></li>`).join('')}</ul>${lookQuickHtml()}` : '';
   document.body.classList.add('has-tabbar');
+  if (window.ResizeObserver && !tabbarObserver) {
+    tabbarObserver = new ResizeObserver(fitTabbar);
+    tabbarObserver.observe(nav);
+  }
+  fitTabbar();
   if (hadFocus) { const t = $('[role=tab][tabindex="0"]', nav); if (t) t.focus({ preventScroll: true }); }
 }
 
