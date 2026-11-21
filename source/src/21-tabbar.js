@@ -47,6 +47,7 @@ function fitTabbar() {
     return;
   }
   document.documentElement.style.setProperty('--tabbar-space', nav.offsetHeight + 'px');
+  positionMoreSheet();
 }
 
 function dockPageControls() {
@@ -115,14 +116,25 @@ function renderTabbar(active, openFb = 0) {
 }
 
 function moreSheetOpen() { const s = $('#moreSheet'); return !!s && !s.hidden; }
+function positionMoreSheet() {
+  const sheet = $('#moreSheet'), btn = $('#moreBtn');
+  if (!sheet || sheet.hidden || !btn) return;
+  const vw = document.documentElement.clientWidth;
+  const sw = sheet.offsetWidth;
+  const br = btn.getBoundingClientRect();
+  const left = Math.max(8, Math.min(vw - sw - 8, br.left + br.width / 2 - sw / 2));
+  sheet.style.left = Math.round(left) + 'px';
+}
 function openMoreSheet() {
   const sheet = $('#moreSheet'), btn = $('#moreBtn');
   if (!sheet || !btn || !sheet.innerHTML) return;
   sheet.hidden = false;
+  positionMoreSheet();
   btn.setAttribute('aria-expanded', 'true');
   const first = $('a.active', sheet) || $('a', sheet);
   if (first) first.focus({ preventScroll: true });
 }
+window.addEventListener('resize', positionMoreSheet);
 function closeMoreSheet(refocus = true) {
   const sheet = $('#moreSheet'), btn = $('#moreBtn');
   if (!sheet || sheet.hidden) return;

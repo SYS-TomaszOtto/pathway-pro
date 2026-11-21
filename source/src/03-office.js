@@ -222,3 +222,141 @@ function makeXlsx(sheets) {
     + `</cellXfs></styleSheet>`;
   return writeZip(files, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 }
+
+// ---------- reading Excel (.xlsx), CSV, and PDF text/tables (no external libraries) ----------
+async function parseXlsx(buffer) {
+  const zip = await readZip(buffer);
+  const ssXml = await zip.text('xl/sharedStrings.xml');
+  const shared = ssXml ? [...xmlDoc(ssXml).getElementsByTagName('si')].map((si) => [...si.getElementsByTagName('t')].map((t) => t.textContent).join('')) : [];
+  // Detect date number-format styles from styles.xml
+  const dateStyles = new Set();
+  const stylesXml = await zip.text('xl/styles.xml');
+  if (stylesXml) {
+    const sdoc = xmlDoc(stylesXml);
+    const customDateFmts = new Set();
+    for (const nf of sdoc.getElementsByTagName('numFmt')) {
+      const code = (nf.getAttribute('formatCode') || '').toLowerCase();
+      if (/[ymd]/.test(code) && !/\[red\]/.test(code)) customDateFmts.add(+(nf.getAttribute('numFmtId') || -1));
+    }
+    const cellXfs = sdoc.getElementsByTagName('cellXfs')[0];
+    if (cellXfs) {
+      [...cellXfs.getElementsByTagName('xf')].forEach((xf, idx) => {
+        const id = +(xf.getAttribute('numFmtId') || 0);
+        if ((id >= 14 && id <= 22) || (id >= 45 && id <= 47) || customDateFmts.has(id)) dateStyles.add(idx);
+      });
+    }
+  }
+  const colIdx = (ref) => { let n = 0; for (const ch of (ref || '').replace(/\d+$/, '')) n = n * 26 + (ch.charCodeAt(0) - 64); return Math.max(0, n - 1); };
+  const excelDate = (num) => { const ms = Math.round((num - 25569) * 86400000); return new Date(ms).toISOString().slice(0, 10); };
+  const wbXml = await zip.text('xl/workbook.xml');
+  const relsXml = await zip.text('xl/_rels/workbook.xml.rels');
+  const relMap = {};
+  if (relsXml) for (const r of xmlDoc(relsXml).getElementsByTagName('Relationship')) relMap[r.getAttribute('Id')] = r.getAttribute('Target');
+  const sheetDefs = wbXml ? [...xmlDoc(wbXml).getElementsByTagName('sheet')].map((s, i) => ({
+    name: s.getAttribute('name') || `Sheet${i + 1}`,
+    path: 'xl/' + (relMap[s.getAttribute('r:id')] || `worksheets/sheet${i + 1}.xml`).replace(/^\/?xl\//, ''),
+  })) : [{ name: 'Sheet1', path: 'xl/worksheets/sheet1.xml' }];
+  const sheets = [];
+  for (const def of sheetDefs) {
+    const xml = await zip.text(def.path);
+    if (!xml) continue;
+    const rows = [];
+    for (const rowEl of xmlDoc(xml).getElementsByTagName('row')) {
+      const cells = [];
+      for (const c of rowEl.getElementsByTagName('c')) {
+        const ci = colIdx(c.getAttribute('r'));
+        const t = c.getAttribute('t');
+        const st = +(c.getAttribute('s') || -1);
+        let val = '';
+        if (t === 's') { const v = c.getElementsByTagName('v')[0]; val = v ? (shared[+v.textContent] ?? '') : ''; }
+        else if (t === 'inlineStr') { val = [...c.getElementsByTagName('t')].map((x) => x.textContent).join(''); }
+        else {
+          const v = c.getElementsByTagName('v')[0];
+          if (v) {
+            const raw = v.textContent;
+            if (!t && dateStyles.has(st) && /^\d+(\.\d+)?$/.test(raw) && +raw > 20000 && +raw < 70000) val = excelDate(+raw);
+            else val = raw;
+          }
+        }
+        cells[ci] = String(val).replace(/\s+/g, ' ').trim();
+      }
+      if (cells.some(Boolean)) rows.push(cells.map((x) => x || ''));
+    }
+    if (rows.length) sheets.push({ name: def.name, rows });
+  }
+  return sheets;
+}
+
+function parseCsvText(text) {
+  const rows = [];
+  let row = [], cell = '', q = false;
+  const s = String(text || '').replace(/^\uFEFF/, '');
+  for (let i = 0; i < s.length; i++) {
+    const ch = s[i];
+    if (q) {
+      if (ch === '"' && s[i + 1] === '"') { cell += '"'; i++; }
+      else if (ch === '"') q = false;
+      else cell += ch;
+    } else if (ch === '"') q = true;
+    else if (ch === ',') { row.push(cell.trim()); cell = ''; }
+    else if (ch === '\n' || ch === '\r') {
+      if (ch === '\r' && s[i + 1] === '\n') i++;
+      row.push(cell.trim()); cell = '';
+      if (row.some(Boolean)) rows.push(row);
+      row = [];
+    } else cell += ch;
+  }
+  row.push(cell.trim());
+  if (row.some(Boolean)) rows.push(row);
+  return rows;
+}
+
+async function parsePdfLines(buffer) {
+  const bytes = new Uint8Array(buffer);
+  const latin = new TextDecoder('latin1').decode(bytes);
+  const streams = [];
+  const re = /stream\r?\n([\s\S]*?)endstream/g;
+  let m;
+  const inflate = async (raw) => {
+    for (const fmt of ['deflate', 'deflate-raw']) {
+      try {
+        const ds = new DecompressionStream(fmt);
+        const w = ds.writable.getWriter();
+        w.write(raw); w.close();
+        const ab = await new Response(ds.readable).arrayBuffer();
+        return new TextDecoder('latin1').decode(ab);
+      } catch (_) {}
+    }
+    return null;
+  };
+  while ((m = re.exec(latin)) !== null) {
+    const start = m.index + m[0].indexOf('\n') + 1;
+    const end = m.index + m[0].length - 'endstream'.length;
+    const raw = bytes.subarray(start, end);
+    const dict = latin.slice(Math.max(0, m.index - 220), m.index);
+    const txt = /FlateDecode/.test(dict) ? await inflate(raw) : new TextDecoder('latin1').decode(raw);
+    if (txt && /BT\b/.test(txt)) streams.push(txt);
+  }
+  const unesc = (s) => s.replace(/\\([nrtbf()\\]|[0-7]{1,3})/g, (_, c) => ({ n: '\n', r: '\r', t: '\t', b: '\b', f: '\f', '(': '(', ')': ')', '\\': '\\' }[c] || String.fromCharCode(parseInt(c, 8))));
+  const lines = [];
+  for (const st of streams) {
+    let cur = '';
+    const tokRe = /\(((?:\\.|[^\\()])*)\)\s*Tj|\[((?:\\.|[^\]])*)\]\s*TJ|\b(T\*|Td|TD|Tm|ET)\b/g;
+    let t;
+    while ((t = tokRe.exec(st)) !== null) {
+      if (t[1] !== undefined) cur += unesc(t[1]);
+      else if (t[2] !== undefined) {
+        const parts = t[2].match(/\((?:\\.|[^\\()])*\)|-?\d+(?:\.\d+)?/g) || [];
+        for (const p of parts) {
+          if (p.startsWith('(')) cur += unesc(p.slice(1, -1));
+          else if (+p < -180) cur += '\t';
+        }
+      } else if (cur.trim()) {
+        lines.push(cur.replace(/[ ]{2,}/g, '\t').trim());
+        cur = '';
+      }
+    }
+    if (cur.trim()) lines.push(cur.replace(/[ ]{2,}/g, '\t').trim());
+  }
+  return lines;
+}
