@@ -173,8 +173,8 @@ VIEWS.item = async (arg) => {
     <h1>${esc(rec.code || it.code || '')} ${esc(rec.title || it.title)}</h1>
     ${it.missing ? `<div class="banner bad">The file <code>${esc(it.path)}</code> is not in the Evidence folder any more.${relink.length ? ` It may be one of these: ${relink.map((f) => `<button class="small relink" data-path="${esc(f.path)}">${esc(f.path)}</button>`).join(' ')}` : ''}
       ${ed ? ' <button class="small danger" id="dropRec">Remove this record</button>' : ''}</div>` : ''}
-    <div class="cols">
-      <div>
+    <div class="cols item-cols">
+      <div class="item-scroll">
         <div class="card"><div class="form-grid">
           <div><label>Code</label><input data-field="code" value="${esc(rec.code || it.code)}" placeholder="e.g. CO-14"${dis(ed)}></div>
           <div><label>Date</label><input type="date" data-field="date" value="${esc(rec.date || '')}"${dis(ed)}></div>
