@@ -21,13 +21,13 @@ var LESSONS = [
   ] },
   { title: 'Map evidence', learn: () => [`Linking a file to ${lw.items()}`, 'Choosing a level', 'Reading the goal and the gaps'], steps: [
     { title: 'Open a file', art: 'file', text: 'On the Evidence page, click a row to open that file. You can preview it and add a title, date, project and notes.' },
-    { title: () => `Tick the ${lw.items()} it shows`, art: 'grid', text: () => `Tick every ${lw.item()} the file is evidence for. One good piece of work often shows several.`, key: () => `One file can count towards several ${lw.items()}.` },
-    { title: 'Choose the level', art: 'grid', text: () => `For each tick, pick how well the file shows it: ${levelNames()}. Pick the highest level it really proves.` },
+    { title: () => `Add the ${lw.items()} it shows`, art: 'grid', text: () => `Press + Add for every ${lw.item()} the file is evidence for; each gets its own card. One good piece of work often shows several.`, key: () => `One file can count towards several ${lw.items()}.` },
+    { title: 'Choose the level', art: 'grid', text: () => `For each one, pick how well the file shows it: ${levelNames()}. Pick the highest level it really proves.` },
     { title: 'The goal', art: 'meter', text: () => `Each level needs ${typeof goal === 'function' && P() ? goal() : 3} different files. Home shows how full every slot is, and the bars fill as you map.`, key: 'Different files count; the same file twice does not.' },
     { title: 'Find the gaps', art: 'grid', text: () => `The ${lw.attr()} page shows a small box per slot. Empty boxes are what to look for next.` },
   ] },
   { title: 'Reports and feedback', learn: ['Headings the checks can read', 'Listing evidence in your report', 'Answering your mentor'], steps: [
-    { title: 'Write in Word', art: 'report', text: 'Write your report in Word and save it in the Reports folder. The tool reads it and never changes it. New PRR from template gives you a file with the headings in place.', key: 'Word stays your master copy.' },
+    { title: 'Write your report', art: 'report', text: 'Press Start on the Reports page to write it here, checked as you type, or write it in Word in the Reports folder (the tool reads Word files and never changes them).', key: 'Make Word gives your mentor a copy to comment on.' },
     { title: 'A heading per section', art: 'report', text: () => `Start each section with the ${lw.item()} id and a dash, for example 2b – Contribute to the design. The checks use these headings to find each section.` },
     { title: 'List your evidence', art: 'file', text: 'Under each heading add a line such as Evidence: CO-14, DD-03, and write about each file it lists. The Reports page flags codes you list but never write about.' },
     { title: "Your mentor's comments", art: 'bubble', text: 'Your mentor comments in the Word file as usual. The Feedback page lists every comment and suggested change under its section.' },

@@ -8,39 +8,45 @@ VIEWS.reports = async () => {
   const bySub = prrBySub();
   const reports = Object.values(S.prr).sort((a, b) => natural(a.name, b.name));
   const missing = SUBS.filter((a) => bySub[a.id].state === 'missing');
+  const notes = new Set(reports.filter((r) => r.kind === 'note').map((r) => noteGroup(r.path)));
+  const inApp = new Set(reports.filter((r) => r.kind === 'note').flatMap((r) => r.doc.sections.map((s) => s.id)));
   const stateChip = (st) => chip({ draft: 'draft', placeholder: 'placeholder', empty: 'heading only' }[st] || st, st === 'draft' ? 'part' : 'outline');
   return `<div class="row spread"><h1>Professional Review Reports</h1><div class="row">
-      <button id="reload">↻ Re-read Word files</button>${canEdit() ? '<button class="primary" id="newPrr">New PRR from template…</button>' : ''}</div></div>
-    ${facts([[plural(reports.length, 'Word file')], [(SUBS.length - missing.length) + ' of ' + SUBS.length + ' written', missing.length ? 'part' : 'good']])}
+      <button id="reload">↻ Re-read reports</button>${canEdit() ? '<button id="newPrr">New Word PRR from template…</button>' : ''}</div></div>
+    ${facts([[plural(reports.length, 'report')], [(SUBS.length - missing.length) + ' of ' + SUBS.length + ' written', missing.length ? 'part' : 'good']])}
     ${neededChecklist([
-      { ok: reports.length > 0, text: `Save at least one Word report in ${FOLDERS.prr}` },
+      { ok: reports.length > 0, text: 'Start at least one report (in Pathway Pro or in Word)' },
       { ok: missing.length === 0, text: `Write a heading for every ${LABEL.item} (${missing.length} missing)` },
       { ok: reports.length > 0 && reports.every((r) => !r.error && r.doc.sections.every((s) => !(bySub[s.id].sections.find((x) => x.file === r.path && x.section === s)?.issues || []).some((i) => i[0] !== 'info'))), text: 'Clear all report check warnings' },
     ])}
-    <p class="muted small">Write your PRRs in Word, in the <code>${FOLDERS.prr}</code> folder. The tool reads them (it never changes them) and checks the structure.
+    <div class="card"><h2>Write in Pathway Pro</h2><p class="small muted">One report per ${esc(LABEL.attr.replace(/s$/, '').toLowerCase())}, saved as you type in <code>${FOLDERS.prr}</code>, checked as you write. <b>Make Word</b> in the editor saves a copy for your mentor to comment on.</p>
+      <div class="row">${GROUPS.map((g) => `<a class="btn${notes.has(String(g.group)) ? ' primary' : ''}" href="#edit/${esc(g.group)}" title="${esc(g.title)}">${notes.has(String(g.group)) ? 'Edit' : canEdit() ? 'Start' : 'View'} ${esc(g.group)}</a>`).join('')}</div></div>
+    <p class="muted small">Or write your PRRs in Word, in the <code>${FOLDERS.prr}</code> folder: the tool reads them (it never changes them) and checks the structure. A section written in Pathway Pro counts instead of the same section in a Word file.
       <a href="#" id="howWrite">How to write them so the checks work</a></p>
     ${reports.length ? reports.map((r) => {
       const group = (/attribute\s*([A-Za-z0-9]+)/i.exec(r.name) || /attribute\s*([A-Za-z0-9]+)/i.exec(r.doc.title) || [])[1];
       const expected = group ? SUBS.filter((a) => String(a.group) === group && !r.doc.sections.some((s) => s.id === a.id)) : [];
       const open = feedbackItems().filter((f) => f.file === r.path && f.status === 'open').length;
-      return `<div class="card"><div class="row spread"><h2 style="margin:0">${fileLink(r.path, r.name)}</h2>
+      const copy = r.kind !== 'note' && r.doc.sections.length && r.doc.sections.every((s) => inApp.has(s.id));
+      return `<div class="card"><div class="row spread"><h2 style="margin:0">${r.kind === 'note' ? `<a href="#edit/${esc(noteGroup(r.path))}">${esc(r.name)}</a> ${chip('in Pathway Pro', 'accent')}` : fileLink(r.path, r.name) + (copy ? ' ' + chip('copy for comments') : '')}</h2>
         <span class="small muted">${r.doc.title ? esc(r.doc.title) + ' · ' : ''}changed ${new Date(r.mtime).toLocaleString('en-GB')}${open ? ' · ' + `<a href="#feedback?file=${encodeURIComponent(r.path)}">${plural(open, 'open comment')}</a>` : ''}</span></div>
         ${r.error ? `<div class="banner bad">Could not read this file: ${esc(r.error)}</div>` : ''}
         ${expected.length ? `<div class="issue warn">No heading for ${expected.map((a) => a.id).join(', ')} (expected in Attribute ${group})</div>` : ''}
         ${r.doc.sections.length ? `<div class="table-wrap" tabindex="0" role="region" aria-label="Table"><table><thead><tr><th>Sub</th><th>Heading</th><th>State</th><th>Words</th><th>Evidence line</th><th>Written about</th><th>Checks</th></tr></thead><tbody>
           ${r.doc.sections.map((s) => {
             const issues = (bySub[s.id].sections.find((x) => x.file === r.path && x.section === s) || { issues: [] }).issues;
+            const over = r.kind !== 'note' && inApp.has(s.id);
             return `<tr><td><b>${subLink(s.id)}</b></td><td class="small">${esc(s.heading)}</td>
-              <td>${issues.some((i) => i[0] !== 'info') || s.state !== 'draft' ? stateChip(s.state) : chip('ready', 'good')}</td><td class="right">${s.words}</td>
+              <td>${over ? '<span class="small muted">counted from the report in Pathway Pro</span>' : issues.some((i) => i[0] !== 'info') || s.state !== 'draft' ? stateChip(s.state) : chip('ready', 'good')}</td><td class="right">${s.words}</td>
               <td class="small">${s.listed.map(codeLink).join(' ') || '<span class="muted">–</span>'}</td>
               <td class="small">${s.discussed.map(codeLink).join(' ') || '<span class="muted">–</span>'}</td>
               <td>${issues.map(([lv, msg]) => `<div class="issue ${lv}">${linkify(msg)}</div>`).join('') || '<span class="good small">✓</span>'}</td></tr>`;
           }).join('')}</tbody></table></div>` : `<p class="muted">No ${LABEL.item} headings found (a heading looks like "2b – Contribute to the design…").</p>`}</div>`;
-    }).join('') : emptyState('report', `No Word files in <b>${FOLDERS.prr}</b> yet.${canEdit() ? ' Press <b>New PRR from template</b> to start one.' : ''}`)}
+    }).join('') : emptyState('report', `No reports yet.${canEdit() ? ' Press <b>Start</b> above to write one here, or <b>New Word PRR from template</b> for Word.' : ''}`)}
     ${reports.length && missing.length ? `<div class="card"><h2>Not in any PRR yet</h2><p>${missing.map((a) => subLink(a.id)).join(' ')}</p></div>` : ''}`;
 };
 VIEWS.reports.after = () => {
-  $('#reload').addEventListener('click', (e) => act(e.currentTarget, async () => { S.prr = {}; await loadReports(); await render(); }, 'Word files re-read'));
+  $('#reload').addEventListener('click', (e) => act(e.currentTarget, async () => { if (!S.demo) S.prr = {}; await loadReports(); await render(); }, 'Reports re-read'));
   $('#howWrite').addEventListener('click', (e) => { e.preventDefault(); dialog(PRR_HELP + '<div class="row" style="justify-content:flex-end"><button onclick="this.closest(\'dialog\').close()">Close</button></div>'); });
   if ($('#newPrr')) $('#newPrr').addEventListener('click', newPrrDialog);
 };

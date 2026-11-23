@@ -48,7 +48,7 @@ const TOURS = {
       text: 'Save your files in the Evidence folder in OneDrive and start each file name with a code such as CO-14. Then press Refresh on the Evidence tab.',
       key: 'A file only counts once its name starts with a code.' },
     { title: 'Map a file', page: 'evidence', sel: ['#main table tr[data-href]', '#main .empty'],
-      text: () => `Click a file, then tick each ${itemWord()} it shows and at what level.`,
+      text: () => `Click a file, then press + Add for each ${itemWord()} it shows and pick the level.`,
       key: () => `One file can count towards several ${itemsWord()}.` },
     { title: () => `Check your ${attrWord()}`, page: 'attributes', sel: ['#main > p.muted', '#main h1'],
       text: () => `This shows what is covered and what is missing. The goal is shown in the note at the top of the ${attrWord()} page.` },
@@ -84,7 +84,7 @@ const TOURS = {
     { title: 'Where the files live', sel: ['#main > p.muted'], text: 'Write your reports in Word and save them in the Reports folder. The tool reads them but never changes them.' },
     { title: 'Headings', sel: ['#howWrite'], text: () => `Start each ${itemWord()} with a heading such as "2b – Contribute to the design". This link shows exactly how.` },
     { title: 'The check list', sel: ['#main table', '#main .card'], text: 'Each heading is listed with its state and any checks, such as evidence listed but not written about.' },
-    { title: 'New report', sel: ['#newPrr', '#reload'], text: 'New PRR from template makes a Word file with the headings already in place. Existing files are never overwritten.' },
+    { title: 'New report', sel: ['#main a[href^="#edit/"]', '#newPrr', '#reload'], text: 'Start writes a report here in Pathway Pro, checked as you type. Or New Word PRR from template makes a Word file with the headings in place.' },
   ] },
   feedback: { name: 'Feedback', steps: [
     { title: 'Open, done, won\'t change', sel: ['#dock .sub-tabs', '#main .sub-tabs'], text: 'Switch between comments still open and those you have dealt with.' },
@@ -102,9 +102,15 @@ const TOURS = {
     { title: 'Record an activity', sel: ['#addAct'], text: 'Add each piece of learning as you do it: what it was, the hours and what you learnt.' },
     { title: 'Three views', sel: ['#main .sub-tabs'], text: 'Overview shows your hours against the target. Development plan is what you intend to do; Development record is what you did.' },
     { title: 'Export', sel: ['#main .sub-tabs a[href="#cpd/export"]'], text: 'Export your record when your institution asks for it.' },
+  ] },  skills: { name: 'Skills', steps: [
+    { title: 'Areas and small skills', sel: ['#skAddSkill', '#skAddArea', '#skFilter'], text: 'Make a skill area (such as Drainage design), then add the small skills in it to clear one at a time.' },
+    { title: 'Your skills', sel: ['#main .sk-list', '#main .sk-area', '#main .empty'], text: 'Each skill shows its 9 steps as dots (dashed ones are your mentor\'s steps) and how confident you are.' },
+    { title: 'The cycle', sel: ['#main .sk-steps', '#main .sk-detail ol'], text: 'Every skill goes through the same 9 steps. Tick each one as it happens: the date and a short note are kept.',
+      key: 'Ready to teach = rated 5 with steps 6, 7 and 8 done.' },
+    { title: 'Training pack', sel: ['#skPack'], text: 'Skills that are ready to teach make a training pack you can print or save in Word, to brief the next apprentice.' },
   ] },
 };
-const TOUR_PAGES = ['framework', 'evidence', 'attributes', 'reports', 'feedback', 'mentor', 'cpd'];
+const TOUR_PAGES = ['framework', 'evidence', 'attributes', 'reports', 'feedback', 'mentor', 'cpd', 'skills'];
 
 // ---------- engine ----------
 let T = null;                 // the running tour, or null

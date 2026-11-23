@@ -25,7 +25,7 @@ function folderTreeHtml() {
   }).join('');
   return `<ul class="tree"><li><span class="tree-name"><span aria-hidden="true">☁️ </span><b>OneDrive</b></span>
     <ul>${folderItem('Portfolio - Your Name', 'you', 'Make this empty folder yourself, then pick it when you press <b>Start my portfolio</b>. The tool makes everything below.', `<ul>
-      ${folderItem(FOLDERS.prr, 'both', 'Your reports (PRR) in Word. <b>Reports → New PRR from template…</b> makes a starter file here. Your mentor comments in these files.')}
+      ${folderItem(FOLDERS.prr, 'both', 'Your reports (PRR): written in Pathway Pro (<b>Reports → Start</b>) or in Word (<b>New Word PRR from template…</b>). Your mentor comments in the Word files.')}
       ${folderItem(FOLDERS.matrix, 'tool', 'The Excel evidence matrix, written by <b>Evidence → Export Excel matrix</b>. Nothing to add yourself.')}
       ${folderItem(FOLDERS.evidence, 'both', 'Your evidence, one sub-folder per kind:', `<ul>${cats}</ul>`)}
       ${folderItem(FOLDERS.feedback, 'tool', 'The “Response to feedback” tables you export from <b>Feedback</b>.')}
@@ -68,11 +68,11 @@ function walkthroughHtml() {
       'once their folder is linked in Settings, their assessment shows on the <b>Mentor</b> page.')}
     ${step('Drop in your first evidence', `<p>Save three to five files into the right sub-folders of <b>${esc(FOLDERS.evidence)}</b>, each named with a code. Then open <b>Evidence</b> and press <b>Refresh</b>.</p>`,
       'each file listed with its code and title, and a count of files “not mapped yet”.')}
-    ${step('Map each file', `<p>Click a file. For each ${LABEL.item} it shows, press a level: ${lv}. Add a short note on why.</p>`,
-      'the level buttons light up, and the file no longer counts as “not mapped”.')}
+    ${step('Map each file', `<p>Click a file. For each ${LABEL.item} it shows, press <b>+ Add a ${LABEL.item}</b>, pick it and its level (${lv}), and say how the file contributes.</p>`,
+      'a card for each one under the file, and the file no longer counts as “not mapped”.')}
     ${step(`Check ${esc(LABEL.attr)} for gaps`, `<p>Open <b>${esc(LABEL.attr)}</b>. Each ${LABEL.item} needs ${P() ? goal() : 3} pieces of evidence at each level. Plan what to collect next.</p>`,
       `a bar per ${LABEL.item}. <b>Home</b> lists the biggest gaps under <b>Next steps</b>.`)}
-    ${step('Write your report in Word', `<p><b>Reports → New PRR from template…</b> makes a Word file in <b>${esc(FOLDERS.prr)}</b>. Under each heading such as <b>2b – …</b>, add a line like <b>Evidence: CO-00, CA-03</b>. Put <b>{CO-00}</b> before you write about that file.</p>`,
+    ${step('Write your report', `<p>On <b>Reports</b>, press <b>Start</b> for an attribute to write it in Pathway Pro (or <b>New Word PRR from template…</b> for a Word file in <b>${esc(FOLDERS.prr)}</b>). Under each heading such as <b>2b – …</b>, add a line like <b>Evidence: CO-00, CA-03</b>. Put <b>{CO-00}</b> before you write about that file.</p>`,
       'the file listed on <b>Reports</b> with its sections.')}
     ${step('Run the Reports checks', '<p>Save the Word file, then press <b>Re-read Word files</b> on <b>Reports</b>. Fix what it flags in Word and check again.</p>',
       'warnings such as evidence listed but not written about, codes that do not exist, or very short write-ups.')}

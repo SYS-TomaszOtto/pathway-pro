@@ -135,13 +135,14 @@ async function loadReports() {
   if (S.demo) return;   // sample reports are made up in S.prr
   const root = portfolioRoot();
   if (!root) return;
-  const files = (await listDir(root, FOLDERS.prr)).filter((f) => /\.docx$/i.test(f.name));
+  const files = (await listDir(root, FOLDERS.prr)).filter((f) => /\.docx$/i.test(f.name) || /^PRR - Attribute .+\.md$/i.test(f.name));
   const keep = new Set();
   for (const f of files) {
     const path = `${FOLDERS.prr}/${f.path}`;
     keep.add(path);
     if (S.prr[path] && S.prr[path].mtime === f.mtime) continue;
     try {
+      if (/\.md$/i.test(f.name)) { S.prr[path] = noteDoc(path, await (await f.handle.getFile()).text(), f.mtime); continue; }   // written in Pathway Pro (09b-prr-edit.js)
       const parsed = await parseDocx(await (await f.handle.getFile()).arrayBuffer());
       const doc = parsePrr(parsed.paragraphs);
       const sectionAt = (para) => doc.sections.find((s) => para !== null && para >= s.start && para < s.end);
@@ -176,8 +177,11 @@ function prrBySub() {
   const codes = new Set(items.map((i) => i.code).filter(Boolean));
   const mapped = new Set(items.flatMap((i) => ((i.rec && i.rec.maps) || []).map((m) => i.code + '|' + m.sub)));
   const out = Object.fromEntries(SUBS.map((a) => [a.id, { sections: [], state: 'missing' }]));
+  // A section written in Pathway Pro counts instead of the same section in a Word file (that file is then a copy for comments).
+  const inApp = new Set(Object.values(S.prr).filter((r) => r.kind === 'note').flatMap((r) => r.doc.sections.map((s) => s.id)));
   for (const r of Object.values(S.prr)) {
     for (const s of r.doc.sections) {
+      if (r.kind !== 'note' && inApp.has(s.id)) continue;
       const issues = sectionChecks(s, codes, mapped);
       const dup = r.doc.sections.filter((x) => x.id === s.id).length > 1;
       if (dup) issues.unshift(['error', `${s.id} appears more than once in ${r.name}`]);

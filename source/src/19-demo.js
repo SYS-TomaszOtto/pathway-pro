@@ -105,6 +105,24 @@ function demoPortfolio() {
       ],
       items: [{ id: 'demo-i-5', kind: 'todo', text: 'Book the CDM course and join a site safety walk', who: DEMO_NAME, time: '00:01:10', line: 1, sub: '6a', due: demoDay(50), status: 'done', evidence: 'CE-01' }] },
   ];
+  // Skills tracker: one skill ready to teach, one part way, one not started (mentor ticks in demoMentor).
+  const tick = (ago, by, note = '') => ({ done: true, date: demoDay(ago), note, by, at: Date.now() - ago * 864e5 });
+  const skill = (id, area, title, ago, extra) => ({ id, area, title, created: Date.now() - ago * 864e5, steps: {}, ratings: [], sessions: [], evidence: [], subs: [], ksbs: [], notes: '', comments: [], ...extra });
+  d.skills = { areas: [
+    { id: 'demo-sa-1', title: 'Drainage design', objective: plan.id, note: 'Most of my project work.', created: Date.now() - 60 * 864e5 },
+    { id: 'demo-sa-2', title: 'Temporary works', objective: '', note: '', created: Date.now() - 50 * 864e5 }], skills: [
+    skill('demo-sk-1', 'demo-sa-1', 'Size a pipe run with the rational method', 58, {
+      steps: { 2: tick(56, DEMO_NAME, 'Asked about time of entry'), 4: tick(56, DEMO_NAME), 6: tick(45, DEMO_NAME, 'Did the Harbour Road run'), 8: tick(30, DEMO_NAME), 9: tick(30, DEMO_NAME) },
+      ratings: [{ date: demoDay(56), rating: 2 }, { date: demoDay(40), rating: 4 }, { date: demoDay(28), rating: 5 }],
+      sessions: [{ id: 'demo-ss-1', date: demoDay(56), minutes: 30, note: 'Briefing and worked example', by: DEMO_NAME, cpd: true }],
+      evidence: ['CA-02'], subs: ['2b'], ksbs: ['S4'],
+      notes: '1. Split the catchment into areas.\n2. Find the time of concentration.\n3. Read the rainfall intensity and size each pipe.\nCheck: velocity at least 1 m/s when flowing full.' }),
+    skill('demo-sk-2', 'demo-sa-1', 'Check a soakaway', 35, {
+      steps: { 2: tick(33, DEMO_NAME) }, ratings: [{ date: demoDay(33), rating: 2 }],
+      comments: [{ by: DEMO_NAME, text: 'Can we do the worked task on the car park extension?', at: Date.now() - 32 * 864e5 }] }),
+    skill('demo-sk-3', 'demo-sa-2', 'Read a trench support drawing', 20, {}),
+  ] };
+  d.cpd.activities.push({ ...act('skill-demo-ss-1', 56, 1, 0.5, 'Skills session: Size a pipe run with the rational method (Drainage design)', 'Peer guidance and discussion', 'Briefing and worked example', '', plan.id), tags: ['skills tracker'], subs: ['2b'], fromSkill: 'demo-sk-1' });
   return { data: d, files };
 }
 
@@ -118,6 +136,12 @@ function demoMentor() {
     '6a': { status: 'developing', comment: 'Add something from your own site work.', date: demoDay(5) },
     '8a': { status: 'met', comment: 'The toolbox talk is a good example.', date: demoDay(5) },
     '7a': { status: 'notyet', comment: 'Nothing beyond knowledge yet.', date: demoDay(5) },
+  };
+  const mt = (ago, note = '') => ({ done: true, date: demoDay(ago), note, by: 'Sample Mentor', at: Date.now() - ago * 864e5 });
+  m.skills = {
+    'demo-sk-1': { steps: { 1: mt(56, 'Why pipe sizing matters on this job'), 3: mt(56), 5: mt(56, 'Good grasp of the method'), 7: mt(40, 'Checked: all pipes within limits') },
+      comments: [{ by: 'Sample Mentor', text: 'Ready to show the next graduate. Add the spreadsheet template to the notes.', at: Date.now() - 29 * 864e5 }] },
+    'demo-sk-2': { steps: { 1: mt(33), 3: mt(33, 'Explained BRE 365 test') }, comments: [{ by: 'Sample Mentor', text: 'Yes, the car park is a good one.', at: Date.now() - 31 * 864e5 }] },
   };
   m.actions = [{ id: 'demo-ma-1', text: 'Write up the toolbox talk for 8a', due: demoDay(-14), status: 'open' }];
   return m;

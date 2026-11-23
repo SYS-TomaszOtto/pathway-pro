@@ -13,9 +13,10 @@ Use **Microsoft Edge** or **Google Chrome** on a computer. Other browsers cannot
 ## What it does
 
 - **Framework**: pick ICE IEng (apprenticeship), the current ICE Incorporated, Chartered or Technician Professional Review attributes, an IStructE grade, a UK-SPEC level or a blank one when you start, and edit it any time in Settings → Framework (levels, requirements, standards, folder names). Nothing is locked: if a built-in list is wrong or out of date, correct it there. Requirements can have a minimum level, as in IStructE's core objectives. Frameworks export and import as a file.
-- **Evidence**: lists every file in your Evidence folder, which has one sub-folder per kind of evidence. You map each one to the requirements at a level, with the standards it covers and a note.
-- **Attributes and KSBs**: shows what is covered and what is missing, against a goal of 3 pieces of evidence per level for each sub-attribute. On the KSB page you can rate how well you know each item (1 to 5) and re-rate over time.
-- **Reports**: reads your Word PRRs, without changing them, and checks the structure:
+- **Summary**: overall completion, next steps, a table by attribute and by sub-attribute (every level slot and the evidence in it), evidence by folder, and how each file is used (not used anywhere, mapped but not in a report, in a report but not mapped there). **Print summary** gives one page for a meeting.
+- **Evidence**: lists every file in your Evidence folder, which has one sub-folder per kind of evidence, with filters by folder, sub-attribute and your mentor's check. Each file's page shows the file first, then a summary, and one card per sub-attribute it is mapped to: level, strength, the official wording, standards, how it contributes, why that level, quotes and a comment thread with your mentor.
+- **Attributes and KSBs** (one page): shows what is covered and what is missing, against a goal of 3 pieces of evidence per level for each sub-attribute. Below it, the KSBs, where you can rate how well you know each item (1 to 5) and re-rate over time.
+- **Reports**: write your PRR in Pathway Pro (saved as you type, with a history and a Word copy for your mentor), or in Word, which it reads without changing. Either way it checks the structure:
   - evidence listed but not written about;
   - codes that don't exist;
   - very short write-ups;
@@ -23,6 +24,7 @@ Use **Microsoft Edge** or **Google Chrome** on a computer. Other browsers cannot
 - **Feedback**: lists your mentor's Word comments and tracked changes by sub-attribute. You write a response to each, and export a "Response to feedback" table.
 - **Meetings**: you import a Teams transcript and tag each line as Done, To do or Teaching. To-dos become actions, and the tool writes the meeting notes in Word.
 - **CPD**: follows ICE's CPD guidance, with a Development Action Plan and a Personal Development Record. It shows hours per year, and exports Word files in the layout of ICE's CPD templates. There is also a "CPD record only" mode.
+- **Skills**: split development areas into small skills and work through each with your mentor in a 9-step cycle (briefing, questions, explanation, Q&A, feedback, full task, review, notes, update). Rate yourself over time, log sessions as CPD, and make a training pack once you could teach it.
 - **Mentor**: your mentor uses the same tool to record an assessment per sub-attribute, kept in their own folder. Each of you can only read the other's folder, because OneDrive's sharing enforces it.
 
 ## Getting started
@@ -45,7 +47,7 @@ Keep everything for your review in one OneDrive folder. This is the layout the t
 
 - **OneDrive**
   - **Portfolio - Your Name**: *you make it.* Make this empty folder, then pick it when you start.
-    - **0 - Reports**: *tool makes it, you fill it.* Your reports (PRR) in Word. Reports → New PRR from template… makes a starter file here. Your mentor comments in these files.
+    - **0 - Reports**: *tool makes it, you fill it.* Your reports (PRR): written in Pathway Pro (Reports → Start) or in Word (Reports → New Word PRR from template…). Your mentor comments in the Word files.
     - **1 - Evidence Matrix**: *tool makes and fills it.* The Excel evidence matrix from Evidence → Export Excel matrix.
     - **2 - Evidence**: *tool makes it, you fill it.* One sub-folder per kind of evidence. For ICE IEng these are:
       - **0 - Correspondences - CO**: emails, letters and meeting minutes about your work. Save emails as PDF.
@@ -85,11 +87,11 @@ A typical route. Steps 3 to 9 repeat as your portfolio grows.
    *What you'll see:* once their folder is linked in Settings, their assessment shows on the Mentor page.
 3. **Drop in your first evidence.** Save three to five files into the right sub-folders of **2 - Evidence**, each named with a code. Then open **Evidence** and press **Refresh**.
    *What you'll see:* each file listed with its code and title, and a count of files "not mapped yet".
-4. **Map each file.** Click a file. For each sub-attribute it shows, press a level: **K** Knowledge, **E** Experience or **A** Ability (ICE IEng). Add a short note on why.
-   *What you'll see:* the level buttons light up, and the file no longer counts as "not mapped".
+4. **Map each file.** Click a file. For each sub-attribute it shows, press **+ Add a sub-attribute**, pick it and its level (Knowledge, Experience or Ability for ICE IEng), and say how the file contributes.
+   *What you'll see:* a card for each one under the file, and the file no longer counts as "not mapped".
 5. **Check Attributes for gaps.** Open **Attributes**. Each sub-attribute needs 3 pieces of evidence at each level (you can change this number). Plan what to collect next.
    *What you'll see:* a bar per sub-attribute. Home lists the biggest gaps under Next steps.
-6. **Write your report in Word.** **Reports → New PRR from template…** makes a Word file in **0 - Reports**. Under each heading such as **2b – …**, add a line like **Evidence: CO-00, CA-03**. Put **{CO-00}** before you write about that file.
+6. **Write your report.** On **Reports**, press **Start** for an attribute to write it in Pathway Pro, checked as you type (**Make Word** saves a copy for your mentor to comment on). Or **New Word PRR from template…** makes a Word file in **0 - Reports**. Under each heading such as **2b – …**, add a line like **Evidence: CO-00, CA-03**. Put **{CO-00}** before you write about that file.
    *What you'll see:* the file listed on Reports with its sections.
 7. **Run the Reports checks.** Save the Word file, then press **Re-read Word files** on **Reports**. Fix what it flags in Word and check again.
    *What you'll see:* warnings such as evidence listed but not written about, codes that do not exist, or very short write-ups.
@@ -99,7 +101,7 @@ A typical route. Steps 3 to 9 repeat as your portfolio grows.
    *What you'll see:* the open comment count on Home goes down. The table is saved in 4 - Feedback, Compliance and Status.
 10. **Meetings and CPD along the way.** After each mentor meeting, import the Teams transcript on **Meetings** and tag lines as done, to do or teaching. Record training and learning on **CPD** as it happens.
     *What you'll see:* to-dos listed as open actions on Home, and your CPD hours for the year.
-11. **Final check before you submit.** On **Home**, aim for full evidence slots, no Reports warnings and no open comments. Export the Excel matrix and your CPD record. Check your institution's current submission rules.
+11. **Final check before you submit.** On **Home** and **Summary**, aim for full evidence slots, no Reports warnings and no open comments. Export the Excel matrix and your CPD record. Check your institution's current submission rules.
     *What you'll see:* the files in 1 - Evidence Matrix and Exports, ready to attach.
 
 ## The full guide

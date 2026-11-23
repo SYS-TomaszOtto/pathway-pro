@@ -152,6 +152,8 @@ async function exportMatrix() {
 }
 
 // ---------- help ----------
+const SKILLS_HELP = () => `<div class="card"><h2>Skills</h2><p>Split an area you want to develop (such as Drainage design) into small skills and clear them one at a time with your mentor, through the same 9 steps: briefing, your questions, explanation, quick questions and feedback (about 30 minutes together), then a complete task of your own, your mentor's review, your notes or templates, and updating the tracker.</p>
+    <p>Rate yourself 1 to 5 as you go, log sessions (tick <b>Add to CPD</b> to record them in your CPD), and link the finished task's evidence code. A skill rated 5 with steps 6, 7 and 8 done is <b>ready to teach</b> and goes into the <b>Training pack</b>. Your mentor can tick their steps (1, 3, 5 and 7) and comment from their own copy.</p></div>`;
 VIEWS.help = async () => (P() && P().mode === 'cpd' ? `<h1>How to use the Pathway Pro</h1><div class="grid">
   <div class="card"><h2>CPD record</h2><p>This follows ICE's CPD guidance. Review your learning needs at least once a year (a SWOT works well), set objectives with reference codes in the <b>Development plan</b>, and record what you do in the <b>Development record</b> with its effective learning time and what you learned.</p>
     <p>Keep an <b>Unplanned</b> objective for learning you did not plan. ICE advises no more than 6 hours for a day and 30 hours for one activity.</p>
@@ -159,19 +161,20 @@ VIEWS.help = async () => (P() && P().mode === 'cpd' ? `<h1>How to use the Pathwa
   <div class="card"><h2>Good to know</h2><ul>
     <li>Your folder holds <b>${FOLDERS.cpd}</b> (attached certificates and notes), <b>${FOLDERS.exports}</b> and <b>${DATA_DIR}</b> (the record itself: do not edit by hand).</li>
     <li>It saves as you type, and keeps one copy a day in <code>${DATA_DIR}/backups</code>.</li>
-    <li>To track a Professional Review as well, switch in <a href="#settings">Settings</a>.</li></ul></div></div>` : '') || `<h1>How to use the Pathway Pro</h1>
+    <li>To track a Professional Review as well, switch in <a href="#settings">Settings</a>.</li></ul></div>${SKILLS_HELP()}</div>` : '') || `<h1>How to use the Pathway Pro</h1>
   <p>New to it? Start with the <a href="#help" onclick="jumpTo('guideFolders');return false">suggested folder layout</a> and the <a href="#help" onclick="jumpTo('guideSteps');return false">worked example</a> below.</p><div class="grid">
   ${lessonsCardHtml()}
   <div class="card wide"><h2>The idea</h2><p>One HTML file that keeps a tracker of your ${esc(P() && P().framework ? P().framework.name : 'ICE IEng')} in your OneDrive folder. It does no thinking for you (no AI): it lists, links, counts and checks, so nothing gets missed. Your files stay in your folder, laid out as shown below.</p></div>
   <div class="card wide guide">${FOLDER_GUIDE_HTML()}</div>
   <div class="card wide guide">${walkthroughHtml()}</div>
   <div class="card"><h2>1. Evidence</h2><ol><li>Save evidence files into <b>${FOLDERS.evidence}</b>. Start file names with a code such as <code>CO-14</code> to have it picked up (or use <b>Number files…</b>).</li>
-    <li>Open each one and click <b>K</b>, <b>E</b> or <b>A</b> against every ${LABEL.item} it shows. Add a note on why.</li>
+    <li>Open each one and press <b>+ Add a ${LABEL.item}</b> for every ${LABEL.item} it shows, with its level. Say how it contributes on the card.</li>
     <li><b>${esc(LABEL.attr)}</b> shows what is covered; the goal is ${P() ? goal() : 3} pieces at each level for every ${LABEL.item}. <b>Home</b> lists the biggest gaps.</li></ol></div>
   <div class="card">${PRR_HELP}</div>
   <div class="card"><h2>3. Mentor feedback</h2><p>Your mentor comments in your Word PRR as usual. <b>Feedback</b> lists every comment and suggested edit under its ${LABEL.item}. Write what you changed, mark it Done (or Won't change), and export the <b>Response to feedback</b> table for your mentor. Use <b>One at a time</b> when there are lots.</p></div>
   <div class="card"><h2>4. Meetings</h2><p>Download the Teams transcript (.vtt or .docx), import it, and tag each line with <kbd>D</kbd> done, <kbd>T</kbd> to do, <kbd>L</kbd> teaching. To-dos become actions; <b>Write notes to Word</b> makes tidy minutes in the Meetings folder.</p></div>
   <div class="card"><h2>5. CPD</h2><p>Follows ICE's CPD guidance: a <b>Development plan</b> (objectives with reference codes, after a yearly review of your learning needs) and a <b>Development record</b> (activities with effective learning time and an evaluation). <b>Export</b> makes Word files in the layout of ICE's templates.</p></div>
+  ${SKILLS_HELP()}
   <div class="card" id="help-mentor"><h2>Working with your mentor</h2><ol>
     <li>Share your portfolio folder with your mentor in OneDrive as <b>Can view</b>, and the <b>${FOLDERS.prr}</b> folder (or just the PRR files) as <b>Can edit</b> so they can comment in Word.</li>
     <li>Your mentor adds it to their OneDrive (Shared → <b>Add shortcut to My files</b>), opens this same file and picks <b>I am a mentor</b>: they make a folder of their own for their assessment and share it back with you as <b>Can view</b>.</li>

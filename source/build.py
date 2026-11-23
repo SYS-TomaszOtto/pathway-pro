@@ -18,7 +18,9 @@ js = [f'const INST_DATA = {json.dumps(INST, ensure_ascii=False, separators=(",",
       f'const IPD_DATA = {json.dumps(IPD, ensure_ascii=False, separators=(",", ":"))};\n',
       f'const TOOL_VERSION = {json.dumps(version)};\n',
       f'// ICE IEng sub-attributes and apprenticeship KSBs, from "IEng Attributes and KSB List.xlsx".\nconst REF = {json.dumps(ref, ensure_ascii=False, separators=(",", ":"))};\n']
-js += [p.read_text() for p in sorted(src.glob('*.js'))]
+# Whole-line // comments are left out of the built file (they stay in the source) to keep it under the size budget.
+from strip_comments import strip_line_comments
+js += [strip_line_comments(p.read_text()) for p in sorted(src.glob('*.js'))]
 page = (src / 'index.html').read_text()
 CSS_FILES = ['style.css', 'paper.css', 'clear.css', 'neon.css', 'journal.css', 'tour.css', 'selfrate.css', 'demo.css']
 css = ''.join((src / f).read_text() for f in CSS_FILES if (src / f).exists())
@@ -38,7 +40,7 @@ main = page.replace('__JS__', '\n'.join(js))
 (out / 'Pathway Pro.html').write_text(main.replace('__TEST__', ''))
 size = len(main.replace('__TEST__', '').encode())
 print('dist/Pathway Pro.html', size // 1000, 'KB')
-BUDGET = 580_000   # New Look plan hard limit with an embedded font (Atkinson Hyperlegible Next for Clear); 500 KB without
+BUDGET = 650_000   # raised 23 Nov 2026 (Skills, evidence page, in-app reports to match the server copy); was 580 KB with the embedded font
 if '--test' in sys.argv:
     harness = (root / 'test' / 'harness.js').read_text()
     (out / 'Pathway Pro.test.html').write_text(main.replace('__TEST__', f'<script>\n{harness}\n</script>'))
@@ -53,6 +55,12 @@ if '--test' in sys.argv:
         rest = re.sub(r'/\*.*?\*/', '', rest, flags=re.S)
         for m in re.finditer(r'#[0-9a-fA-F]{3,8}\b|rgba?\(|hsla?\(', rest):
             problems.append(f'{f}: colour outside the token blocks: ' + rest[max(0, m.start() - 50):m.end() + 12].replace(chr(10), ' '))
+    # The stripped scripts must still parse.
+    import shutil, subprocess, tempfile
+    if shutil.which('node'):
+        with tempfile.NamedTemporaryFile('w', suffix='.js', delete=False) as f: f.write('\n'.join(js))
+        r = subprocess.run(['node', '--check', f.name], capture_output=True, text=True)
+        if r.returncode: problems.append('the built script does not parse: ' + r.stderr[:400])
     if problems:
         print('BUILD CHECKS FAILED:\n  ' + '\n  '.join(problems)); sys.exit(1)
     print('build checks passed (size, look script first, no stray colours)')

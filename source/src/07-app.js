@@ -6,14 +6,14 @@ const canEdit = () => !isMentor();   // the portfolio data belongs to the appren
 
 // Every page that exists for this person (used for routing); the bottom tab bar (21-tabbar.js) shows some of them
 // and puts the rest under "More".
-function tabsFor() { return tabsAll().filter((t) => t[0] !== 'ksbs' || KSBS.length); }
+function tabsFor() { return tabsAll(); }
 // Progressive tabs: a new apprentice sees only Home, Evidence, CPD, Settings and Help. The others appear as soon as
 // there is something for them to show (or always, with Settings -> "Show every tab"); the rest stay under "More".
 function tabUnlocked(id) {
   if (isMentor() || !P() || P().mode === 'cpd' || (P().settings && P().settings.showAllTabs)) return true;
   const hasEvidence = evidenceItems().length > 0 || Object.values(P().evidence || {}).some((r) => r.maps && r.maps.length);
   switch (id) {
-    case 'attributes': case 'ksbs': case 'reports': return hasEvidence || Object.keys(S.prr || {}).length > 0;
+    case 'summary': case 'print': case 'attributes': case 'reports': return hasEvidence || Object.keys(S.prr || {}).length > 0;
     case 'feedback': return feedbackItems().length > 0;
     case 'meetings': return (P().meetings || []).length > 0;
     case 'mentor': return !!S.other || !!S.otherData;
@@ -27,11 +27,11 @@ function tabsShown(active) {
 }
 function tabsAll() {
   if (!S.data) return [];
-  if (isMentor()) return [['home', 'Home'], ['evidence', 'Evidence'], ['attributes', LABEL.attr], ['ksbs', LABEL.ksb], ['reports', 'Reports'], ['feedback', 'Feedback'], ['meetings', 'Meetings'], ['mentor', 'Assessment'], ['cpd', 'CPD'], ['settings', 'Settings'], ['help', 'Help']];
-  if (P().mode === 'cpd') return [['cpd', 'CPD'], ['settings', 'Settings'], ['help', 'Help']];
-  return [['home', 'Home'], ['evidence', 'Evidence'], ['attributes', LABEL.attr], ['ksbs', LABEL.ksb], ['reports', 'Reports'], ['feedback', 'Feedback'], ['meetings', 'Meetings'], ['cpd', 'CPD'], ['mentor', 'Mentor'], ['settings', 'Settings'], ['help', 'Help']];
+  if (isMentor()) return [['home', 'Home'], ['summary', 'Summary'], ['evidence', 'Evidence'], ['attributes', LABEL.attr], ['reports', 'Reports'], ['feedback', 'Feedback'], ['meetings', 'Meetings'], ['mentor', 'Assessment'], ['cpd', 'CPD'], ['skills', 'Skills'], ['print', 'Print summary'], ['settings', 'Settings'], ['help', 'Help']];
+  if (P().mode === 'cpd') return [['cpd', 'CPD'], ['skills', 'Skills'], ['settings', 'Settings'], ['help', 'Help']];
+  return [['home', 'Home'], ['summary', 'Summary'], ['evidence', 'Evidence'], ['attributes', LABEL.attr], ['reports', 'Reports'], ['feedback', 'Feedback'], ['meetings', 'Meetings'], ['cpd', 'CPD'], ['skills', 'Skills'], ['mentor', 'Mentor'], ['print', 'Print summary'], ['settings', 'Settings'], ['help', 'Help']];
 }
-const ACTIVE_TAB = { lesson: 'help', summary: 'home', framework: 'settings', item: 'evidence', sub: 'attributes', report: 'reports', meeting: 'meetings', ksb: 'ksbs' };
+const ACTIVE_TAB = { edit: 'reports', lesson: 'help', framework: 'settings', item: 'evidence', sub: 'attributes', report: 'reports', meeting: 'meetings', ksbs: 'attributes', ksb: 'attributes' };
 
 function renderHeader(active) {
   const who = S.data ? (isMentor() ? `Mentor: ${esc(S.data.name)} · apprentice: ${esc((P() && P().name) || S.data.apprentice || '?')}` : esc(S.data.name)) : '';
@@ -213,6 +213,7 @@ function searchIndex() {
   }
   if (P()) {
     for (const a of P().cpd.activities) out.push({ kind: 'CPD', text: `${a.details} ${a.learning} ${a.ref}`, label: `${a.dateFrom || ''} · ${a.details}`, href: '#cpd/activity/' + a.id });
+    for (const s of P().skills.skills) out.push({ kind: 'Skill', text: `${s.title} ${s.notes}`, label: s.title, href: '#skills/' + s.id });
     for (const o of P().cpd.objectives) out.push({ kind: 'Objective', text: `${o.ref} ${o.title} ${o.area}`, label: `${o.ref} · ${o.title || o.area}`, href: '#cpd/plan' });
   }
   return out;

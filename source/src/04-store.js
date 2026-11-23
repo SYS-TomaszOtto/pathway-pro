@@ -159,7 +159,7 @@ function newMentor(name, apprentice) {
 // Fill in anything an older file lacks, so new features never meet undefined.
 function upgrade(d) {
   if (d.role === 'mentor') {
-    d.subs = d.subs || {}; d.evidence = d.evidence || {}; d.actions = d.actions || [];
+    d.subs = d.subs || {}; d.evidence = d.evidence || {}; d.actions = d.actions || []; d.skills = d.skills || {};
     return d;
   }
   d.mode = d.mode || 'ice';
@@ -170,6 +170,7 @@ function upgrade(d) {
   d.cpd = d.cpd || { objectives: [], activities: [], reviews: [] };
   d.cpd.reviews = d.cpd.reviews || [];
   d.ksbRatings = d.ksbRatings || {};
+  d.skills = { areas: [], skills: [], ...(d.skills || {}) };   // skills tracker (24-skills.js)
   return d;
 }
 
